@@ -1,6 +1,8 @@
 ---
 title: "Marburg sites notebook"
-output: html_notebook
+output:
+  github_document:
+    toc: true
 ---
 
 ```{r}
@@ -11,6 +13,14 @@ library(arcpullr)
 
 
 ## Uganda
+
+We will need this GADM layer, so let's go ahead and load it. 
+
+```{r}
+uga_gadm_4 <- st_read("./input_data/Uganda/gadm/gadm36_UGA.gpkg", layer="gadm36_UGA_4") %>%
+  janitor::clean_names()
+```
+
 
 ### uga_x6
 
