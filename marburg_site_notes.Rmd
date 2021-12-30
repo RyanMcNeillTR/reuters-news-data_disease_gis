@@ -1,0 +1,222 @@
+---
+title: "Marburg sites notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(sf)
+library(arcpullr)
+```
+
+
+## Uganda
+
+### uga_x6
+
+Let's start with the 2017 outbreak in Kween. [According to this paper](https://researchonline.lshtm.ac.uk/id/eprint/4653965/1/Marburg-virus-disease-outbreak.pdf):
+
+"The initial probable index case was a 35-year-old male herdsman (cattle and goats)
+from Tulwo village, Kamwam Parish, Kaproron Sub-county of Kween District who undertook
+frequent hunting forays to the Kaptum grazing grounds in Kween District, which include a
+cave inhabited by bats of Rousettus species. The investigation established that he was also a
+crop farmer. He lived in an area close to a cave, inhabited by Rousettus species fruit bats, on
+the slopes of Mount Elgon. Contacts reported he frequented the interior of the cave with chil-
+dren to mine rock salt for livestock and collect bat droppings for manure for his crop farm."
+
+So I was able to track it down to Kamwam parish. I could not identify the exact location of Tulwo village, so there is room for improvement here. 
+
+
+```{r}
+uga_x6 <- uga_gadm_4 %>%
+  filter(str_detect(name_4, "Kamwam")) %>%
+  select(poly_geom = geom) %>%
+  mutate(point_geom = st_centroid(poly_geom),
+         precision = "centroid")
+  
+```
+
+### uga_21
+
+Next up is a 2014 outbreak in Kampala. 
+
+https://www.who.int/emergencies/disease-outbreak-news/item/10-october-2014-marburg-en
+https://pubmed.ncbi.nlm.nih.gov/28518032/
+https://wwwnc.cdc.gov/eid/article/23/6/17-0047_article
+https://academic.oup.com/trstmh/article/109/6/366/2461644
+
+In particular, the last link points us to the Mawokota district of Mpigi. 
+
+```{r}
+uga_21 <- uga_gadm_4 %>%
+  filter(str_detect(name_2, "Mawokota")) %>%
+  select(name_2) %>%
+  group_by(name_2) %>%
+  summarise(geom = st_union(geom)) %>%
+  select(poly_geom = geom) %>%
+  mutate(point_geom = st_centroid(poly_geom),
+         precision = "centroid")
+
+```
+
+
+
+
+
+### uga_40
+
+https://pubmed.ncbi.nlm.nih.gov/26209681/
+
+The closest I can get is Ibanda district. 
+
+```{r}
+uga_40 <- uga_gadm_4 %>%
+  filter(str_detect(name_2, "Ibanda")) %>%
+  select(name_2) %>% 
+  group_by(name_2) %>%
+  summarise(geom = st_union(geom)) %>%
+  select(poly_geom = geom) %>%
+  mutate(point_geom = st_centroid(poly_geom),
+         precision = "centroid")
+
+```
+
+
+### uga_53
+
+This should be one of two spillover events linked to Python cave. One is an American, the other involved Dutch travelers. This one is for the Dutch travelers. 
+
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2815969/
+
+
+In Nyakarahuka, et. al., they published the locations of Marburg cases but no metadata. So the data are simply lats/longs and a species. 
+
+With some deductive reasoning, we can sort some locations out. 
+
+
+```{r}
+nyakarahuka <- readxl::read_xlsx("./input_data/Marburg/Nyakarahuka/S1.xlsx") %>%
+  janitor::clean_names() %>%
+  mutate(latitude_subbed = str_replace(latitude, "S", "0")) %>%
+  mutate(latitude_clean = as.numeric(latitude_subbed)) %>%
+  select(species, latitude = latitude_clean, longitude)
+```
+
+```{r}
+nyakarahuka_marburg <- nyakarahuka %>%
+  filter(species=="Marburg case") %>%
+  st_as_sf(coords=c("longitude", "latitude"), crs=4326)
+```
+
+
+```{r}
+hits <- st_join(nyakarahuka_marburg, uga_gadm_4) 
+```
+
+There's two hits within Queen Elizabeth NP territory. Did some additional sleuthing and pretty confident these represent the Python Cave. Obviously we want to check it out. 
+
+```{r}
+uga_53 <- hits %>%
+  filter(str_detect(name_4, "Queen")) %>%
+  select(geometry) %>%
+  distinct() %>%
+  select(point_geom = geometry) %>%
+  mutate(precision = "exact")
+```
+
+### uga_59
+
+Based on this article, it sounds like a company called Simba has the rights for the location of the Kitka mine. 
+
+Uganda has its mining cadastral on a Trimble site, which means it's on an arcgis rest server, which means we can use arcpullr to extract it. After some investigating, I figured out this is the url we want:
+
+
+```{r}
+uganda_active_mining <- arcpullr::get_spatial_layer("https://miningcadastre.minerals.go.ug/arcgis/rest/services/Uganda_Licenses/MapServer/2") %>%
+  janitor::clean_names()
+```
+
+
+```{r}
+uga_59 <- uganda_active_mining %>%
+  filter(str_detect(parties, "Simba")) %>%
+  select(poly_geom = geoms) %>%
+  mutate(point_geom = st_centroid(poly_geom),
+         precision = "centroid")
+
+```
+
+
+
+
+### uga_60
+
+We can just repeat the data we extracted earlier from uga_53. 
+
+```{r}
+uga_60 <- hits %>%
+  filter(str_detect(name_4, "Queen")) %>%
+  select(geometry) %>%
+  distinct() %>%
+  select(point_geom = geometry) %>%
+  mutate(precision = "exact")
+```
+
+
+## Angola 
+
+We only have one known Marburg event in Angola. 
+
+### ago_70
+
+According to [this paper](https://journals.asm.org/doi/10.1128/JVI.00069-06), the index case was never determined. For now, we'll use the centroid of the province where the outbreak occurred. 
+
+Let's get the layers of the Angola GADM data. 
+
+```{r}
+st_layers("./input_data/Angola/GADM/gadm36_AGO.gpkg")
+```
+
+```{r}
+angola_gadm <- st_read("./input_data/Angola/GADM/gadm36_AGO.gpkg", layer = "gadm36_AGO_1") %>%
+  janitor::clean_names()
+```
+```{r}
+uige_province <- angola_gadm %>%
+  filter(gid_1 == "AGO.17_1")
+```
+
+
+```{r}
+ago_70 <- uige_province %>%
+  select(poly_geom = geom) %>%
+  mutate(point_geom = st_centroid(poly_geom),
+         precision = "centroid")
+```
+
+# Put it all together
+
+Let's combine the individual records. 
+
+```{r}
+marburg_points <- bind_rows(ago_70, uga_x6, uga_21, uga_40, uga_53, uga_59, uga_60)
+```
+
+Export the points. 
+
+```{r}
+st_geometry(marburg_points) <- "point_geom"
+```
+
+
+```{r}
+marburg_points %>%
+  st_write("./testing/marburg_dots.gpkg", append=FALSE)
+```
+
+
+
+
+
+
+

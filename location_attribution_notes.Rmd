@@ -1,0 +1,158 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(sf)
+library(tidyverse)
+```
+
+
+# Democratic Republic of the Congo
+
+## Health Zones
+
+I  downloaded the DRC health zones data [from the HDX site](https://data.humdata.org/dataset/dr-congo-health-0) on 20/12/2021. 
+
+```{r}
+unzip("./input_data/DRC/rdc_zone_de_sante_09092019.zip", exdir = "./input_data/DRC/health_zones") 
+```
+
+
+
+```{r}
+drc_hz_raw <- st_read("./input_data/DRC/health_zones/RDC_Zone_de_sante_09092019.shp") %>%
+  janitor::clean_names()
+```
+
+```{r}
+plot(drc_hz_raw$geometry)
+```
+
+From here, we need to get the following shapes:
+
+* Biena Health Zone, North Kivu Province
+* Mangina health area, North Kivu province (SEE NOTE BELOW)
+* Likati health zone of the province of Bas Uélé
+* Isiro health zone †(index)
+* Luebo health zone (index)
+
+```{r}
+drc_hz_hits <- drc_hz_raw %>%
+  filter(nom %in% c("Biena", "Likati", "Isiro", "Luebo"))
+
+```
+
+Just curious: How big are these areas?
+
+```{r}
+drc_hz_hits %>%
+  mutate(the_area = st_area(.)) %>%
+  mutate(the_area_m2 = units::set_units(the_area, "m^2"),
+         the_area_km2 = units::set_units(the_area_m2, "km^2")) %>%
+  select(nom, the_area_km2)
+```
+```{r}
+drc_hz_hits %>%
+  ggplot() + 
+  geom_sf()
+```
+
+
+
+
+However, it appears Mangina isn't a health area, but rather a town.
+
+
+Remaining places:
+* Mbandaka, Equateur Province
+* Bikoro region of Equateur Province
+* Mangina, North Kivu province (added from health zones above)
+* Ikanamongo Village (Near Boende) in Equateur province
+* Bamoukamba 2 (index)
+
+```{r}
+unzip("./input_data/DRC/cod_admbnda_rgc_itos_20190911_shp.zip", exdir = "./input_data/DRC/hdx_admin")
+```
+
+
+
+
+```{r}
+drc_admin_2 <- st_read("./input_data/DRC/hdx_admin/cod_admbnda_adm2_rgc_20190911.shp") %>%
+  janitor::clean_names()
+```
+Remaining places:
+* Mbandaka, Equateur Province
+* Bikoro region of Equateur Province
+* Mangina, North Kivu province (added from health zones above)
+* Ikanamongo Village (Near Boende) in Equateur province
+* Bamoukamba 2 (index)
+
+
+```{r}
+drc_admin_2 %>%
+  filter(adm2_fr %in% c("Mbandaka", "Bikoro"))
+```
+
+
+
+# Bangladesh
+
+## GADM
+
+```{r}
+st_layers("./input_data/Bangladesh/gadm/gadm36_BGD_gpkg/gadm36_BGD.gpkg")
+```
+
+```{r}
+bgd_gadm_3 <- st_read("./input_data/Bangladesh/gadm/gadm36_BGD_gpkg/gadm36_BGD.gpkg", layer="gadm36_BGD_3") %>%
+  janitor::clean_names()
+```
+
+```{r}
+bgd_gadm_3 %>%
+  filter(str_detect(name_3, "Thakurgaon"))
+```
+
+Some help here....
+
+https://www.sciencedirect.com/science/article/pii/S1201971220322451#bib0195
+
+
+```{r}
+bgd_41 <- bgd_gadm_3 %>%
+  filter(name_3 == "Joypurhat Sadar") %>%
+  mutate(rtrs_id = "41")
+```
+
+
+
+
+
+
+
+
+## Villages
+
+Source: http://geoportal.icpac.net/layers/geonode%3Auga_villages_jan_2009
+
+```{r}
+unzip("./input_data/Uganda/villages/uga_villages_jan_2009.zip", exdir = "./input_data/Uganda/villages")
+```
+
+Now let's import it. 
+
+```{r}
+uganda_villages <- st_read("./input_data/Uganda/villages/uga_villages_jan_2009.shp") %>%
+  janitor::clean_names()
+```
+
+```{r}
+uganda_villages %>%
+  filter(str_detect(name, "moyo"))
+```
+
+
+
