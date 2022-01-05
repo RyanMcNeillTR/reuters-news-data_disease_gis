@@ -114,7 +114,9 @@ ind_88 <- india_gadm_3 %>%
   filter(str_detect(name_3, "Siliguri")) %>%
   select(poly_geom = geom) %>% # this right here is where we start building the end dataset
   mutate(point_geom = st_centroid(poly_geom),
-         precision = "centroid")
+         precision = "centroid") %>%
+  mutate(reuters_id = 88,
+         country_iso = "BGD")
 ```
 
 ## Bangladesh
