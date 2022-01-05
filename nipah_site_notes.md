@@ -40,10 +40,16 @@ instead of letting the unzipper create a new directory.
 
 Because these files are large, you’ll want to use [Github’s Large File
 Storage](https://git-lfs.github.com/) to track them. I would do the
-following commands: - git lfs track “*.zip” - git lfs track ”*.gpkg”
+following commands:
 
-As of now, my goal is to have each incident with the following fields: -
-unique identifier - polygon geometry, if used - point geometry
+-   git lfs track “\*.zip”
+-   git lfs track “\*.gpkg”
+
+As of now, my goal is to have each incident with the following fields:
+
+-   unique identifier
+-   polygon geometry, if used
+-   point geometry
 
 We may want to consider adding a memo field to contain important
 information about each incident but for now I’ve not done that.
