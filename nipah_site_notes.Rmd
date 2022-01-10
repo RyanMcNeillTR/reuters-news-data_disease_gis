@@ -68,7 +68,6 @@ ind_88 <- india_gadm_3 %>%
          country_iso = "BGD")
 ```
 
-
 ## Bangladesh
 
 Get GADM data for repeated use. 
@@ -102,5 +101,4 @@ The above paper leads us to [this paper](https://www.ncbi.nlm.nih.gov/pmc/articl
 "Surveys took place in the villages of Chandpur (population 604), where persons who died or were hospitalized had resided..."
 
 So that's a clue. 
-
-
+=======

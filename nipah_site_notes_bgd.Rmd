@@ -1,0 +1,45 @@
+---
+title: "Nipah sites in Bangladesh"
+output:
+  github_document:
+    toc: true
+---
+
+# TEST COMMIT JAN 10 
+
+```{r}
+library(tidyverse)
+library(sf)
+```
+
+Get GADM data. 
+
+```{r}
+st_layers("./input_data/Bangladesh/gadm/gadm36_BGD_gpkg/gadm36_BGD.gpkg")
+```
+
+```{r}
+bgd_gadm_4 <- st_read("./input_data/Bangladesh/gadm/gadm36_BGD_gpkg/gadm36_BGD.gpkg", layer="gadm36_BGD_4") %>%
+  janitor::clean_names()
+
+```
+
+
+### bgd_87
+
+[This paper identifies an outbreak](https://onlinelibrary.wiley.com/doi/full/10.1002/rmv.2010) in Meherpur, Bangladesh from April-May 2001. 
+
+"The first NiV outbreak was reported in April 2001 from a village in district Meherpur, Bangladesh with 13 confirmed cases and 9 (69.2%) deaths."
+
+What we don't know which Meherpur, though. There's Meherpur at levels 2, 3 and 4. 
+
+
+```{r}
+bgd_gadm_4 %>%
+  filter(str_detect(name_3, "Naogaon"))
+```
+The above paper leads us to [this paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3323384/pdf/04-0701.pdf), which says:
+
+"Surveys took place in the villages of Chandpur (population 604), where persons who died or were hospitalized had resided..."
+
+So that's a clue. 
