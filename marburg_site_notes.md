@@ -266,11 +266,14 @@ Let’s combine the individual records.
 marburg_points <- bind_rows(ago_70, uga_x6, uga_21, uga_40, uga_53, uga_59, uga_60)
 ```
 
-Export the points.
+This command effectively tells R which geometry column is the operative
+one.
 
 ``` r
 st_geometry(marburg_points) <- "point_geom"
 ```
+
+Export the data.
 
 ``` r
 marburg_points %>%

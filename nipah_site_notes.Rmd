@@ -71,7 +71,7 @@ ind_88 <- india_gadm_3 %>%
 
 ## Bangladesh
 
-Get GADM data. 
+Get GADM data for repeated use. 
 
 ```{r}
 st_layers("./input_data/Bangladesh/gadm/gadm36_BGD_gpkg/gadm36_BGD.gpkg")
