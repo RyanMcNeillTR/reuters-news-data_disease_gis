@@ -5,17 +5,27 @@ output:
     toc: true
 ---
 
-# TEST COMMIT JAN 10 
-
 ```{r}
+
 library(tidyverse)
 library(sf)
+
+```
+
+Set working directory for Allison's Windows laptop
+
+```{r}
+
+#setwd("C:/Users/0146156/Documents/mb_checks/reuters-news-data_disease_gis")
+
 ```
 
 Get GADM data. 
 
 ```{r}
+
 st_layers("./input_data/Bangladesh/gadm/gadm36_BGD_gpkg/gadm36_BGD.gpkg")
+
 ```
 
 ```{r}
@@ -23,6 +33,29 @@ bgd_gadm_4 <- st_read("./input_data/Bangladesh/gadm/gadm36_BGD_gpkg/gadm36_BGD.g
   janitor::clean_names()
 
 ```
+
+### bgd_3
+
+Unspecified number of Nipah cases in Bangladesh, 2021, no other details in data.
+
+ProMedMail points to a short Outbreak News piece about an updated Nipah case count for Bangladesh in 2021, listing two cases: 
+http://outbreaknewstoday.com/bangladesh-reports-two-nipah-virus-cases-in-2021/
+
+That is based on this chart from Bangladesh's Institute of Epidemiology, Disease Control and Research: https://iedcr.gov.bd/surveillances/93c87e70-9c22-4f21-9506-a1161ecf404f 
+
+No way to pinpoint potential spillover location based on this source. 
+
+@waiting AM emailed IEDCR director about location of cases from their statistics, Jan 11
+
+### bgd_5
+
+Unspecified number of Nipah cases in Bangladesh in 2020, no other details.
+
+Likely the same source as above but unclear. 
+
+Searched ProMed
+
+
 
 
 ### bgd_87
@@ -37,6 +70,7 @@ What we don't know which Meherpur, though. There's Meherpur at levels 2, 3 and 4
 ```{r}
 bgd_gadm_4 %>%
   filter(str_detect(name_3, "Naogaon"))
+
 ```
 The above paper leads us to [this paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3323384/pdf/04-0701.pdf), which says:
 
