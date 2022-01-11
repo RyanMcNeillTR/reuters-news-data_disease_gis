@@ -5,6 +5,8 @@ Nipah sites notebook
     -   [ind_88](#ind_88)
 -   [Bangladesh](#bangladesh)
     -   [bgd_87](#bgd_87)
+    -   [bgd_76](#bgd_76)
+-   [bgd_73](#bgd_73)
 
 ``` r
 library(tidyverse)
@@ -121,7 +123,7 @@ ind_88 <- india_gadm_3 %>%
 
 ## Bangladesh
 
-Get GADM data.
+Get GADM data for repeated use.
 
 ``` r
 st_layers("./input_data/Bangladesh/gadm/gadm36_BGD_gpkg/gadm36_BGD.gpkg")
@@ -160,53 +162,16 @@ Meherpur, Bangladesh from April-May 2001.
 district Meherpur, Bangladesh with 13 confirmed cases and 9 (69.2%)
 deaths.”
 
-What we don’t know which Meherpur, though. There’s Meherpur at levels 2,
-3 and 4.
+In Bangladesh, the administrative breakdown goes:
 
-``` r
-bgd_gadm_4 %>%
-  filter(str_detect(name_3, "Naogaon"))
-```
+-   Central government (level 0)
+-   Divisions (level 1)
+-   Districts, aka “zila” (level 2)
+-   Sub-districts, aka “upazila” (level 3)
+-   Union councils, municipalities and city corporations (level 4)
 
-    ## Simple feature collection with 13 features and 14 fields
-    ## Geometry type: MULTIPOLYGON
-    ## Dimension:     XY
-    ## Bounding box:  xmin: 88.78811 ymin: 24.72055 xmax: 89.00752 ymax: 24.91384
-    ## Geodetic CRS:  WGS 84
-    ## First 10 features:
-    ##    gid_0     name_0   gid_1   name_1     gid_2  name_2       gid_3
-    ## 1    BGD Bangladesh BGD.5_1 Rajshahi BGD.5.3_1 Naogaon BGD.5.3.6_1
-    ## 2    BGD Bangladesh BGD.5_1 Rajshahi BGD.5.3_1 Naogaon BGD.5.3.6_1
-    ## 3    BGD Bangladesh BGD.5_1 Rajshahi BGD.5.3_1 Naogaon BGD.5.3.6_1
-    ## 4    BGD Bangladesh BGD.5_1 Rajshahi BGD.5.3_1 Naogaon BGD.5.3.6_1
-    ## 5    BGD Bangladesh BGD.5_1 Rajshahi BGD.5.3_1 Naogaon BGD.5.3.6_1
-    ## 6    BGD Bangladesh BGD.5_1 Rajshahi BGD.5.3_1 Naogaon BGD.5.3.6_1
-    ## 7    BGD Bangladesh BGD.5_1 Rajshahi BGD.5.3_1 Naogaon BGD.5.3.6_1
-    ## 8    BGD Bangladesh BGD.5_1 Rajshahi BGD.5.3_1 Naogaon BGD.5.3.6_1
-    ## 9    BGD Bangladesh BGD.5_1 Rajshahi BGD.5.3_1 Naogaon BGD.5.3.6_1
-    ## 10   BGD Bangladesh BGD.5_1 Rajshahi BGD.5.3_1 Naogaon BGD.5.3.6_1
-    ##           name_3          gid_4             name_4 varname_4 type_4 engtype_4
-    ## 1  Naogaon Sadar  BGD.5.3.6.1_1         Baktiarpur            Union     Union
-    ## 2  Naogaon Sadar  BGD.5.3.6.2_1            Balihar            Union     Union
-    ## 3  Naogaon Sadar  BGD.5.3.6.3_1           Barshail            Union     Union
-    ## 4  Naogaon Sadar  BGD.5.3.6.4_1             Boalia            Union     Union
-    ## 5  Naogaon Sadar  BGD.5.3.6.5_1          Chandipur            Union     Union
-    ## 6  Naogaon Sadar  BGD.5.3.6.6_1          Dubalhati            Union     Union
-    ## 7  Naogaon Sadar  BGD.5.3.6.7_1            Hapania            Union     Union
-    ## 8  Naogaon Sadar  BGD.5.3.6.8_1        Hashaighari            Union     Union
-    ## 9  Naogaon Sadar  BGD.5.3.6.9_1           Kirtipur            Union     Union
-    ## 10 Naogaon Sadar BGD.5.3.6.10_1 Naogaon Paurashava            Union     Union
-    ##        cc_4                           geom
-    ## 1  50646013 MULTIPOLYGON (((88.91621 24...
-    ## 2  50646014 MULTIPOLYGON (((88.78811 24...
-    ## 3  50646021 MULTIPOLYGON (((88.8957 24....
-    ## 4  50646029 MULTIPOLYGON (((88.96669 24...
-    ## 5  50646043 MULTIPOLYGON (((88.96239 24...
-    ## 6  50646051 MULTIPOLYGON (((88.85676 24...
-    ## 7  50646058 MULTIPOLYGON (((88.91621 24...
-    ## 8  50646065 MULTIPOLYGON (((88.85122 24...
-    ## 9  50646073 MULTIPOLYGON (((88.89196 24...
-    ## 10 50646099 MULTIPOLYGON (((88.91116 24...
+The union councils are rural areas and villages fall beneath those. For
+now, we don’t have a good villages dataset.
 
 The above paper leads us to [this
 paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3323384/pdf/04-0701.pdf),
@@ -215,4 +180,76 @@ which says:
 “Surveys took place in the villages of Chandpur (population 604), where
 persons who died or were hospitalized had resided…”
 
-So that’s a clue.
+So I eventually found Chandpur on Google Maps: 24.63901152049101,
+88.53916109886907
+
+``` r
+bgd_87_point <- tribble(
+  ~latitude, ~longitude,
+  24.63901152049101, 88.53916109886907
+) %>%
+  st_as_sf(coords=c("longitude", "latitude"), crs=4326) 
+```
+
+``` r
+bgd_87 <- bgd_gadm_4 %>%
+  filter(str_detect(name_2, "Meherpur")) %>%
+  select(name_2) %>%
+  group_by(name_2) %>%
+  summarise(geom = st_union(geom)) %>%
+  select(poly_geom = geom) %>%
+  mutate(point_geom = st_centroid(poly_geom),
+         precision = "centroid")
+```
+
+### bgd_76
+
+This outbreak in Naogoan is also profiled in [the same paper used for
+bgd_87]((https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3323384/pdf/04-0701.pdf)),
+the outbreak in Chandpur village, Meherpur district.
+
+Unfortunately, the paper never tells us where the actual index case
+occured. Here’s two relevant passages:
+
+“Surveys were conducted in the adjacent villages of East Chalksita
+(population 529) and Biljoania (population 481); suspected deaths and
+hospitalizations caused by Nipah virus infection were reported from both
+villages.”
+
+and
+
+“The index case occurred in a 12-year-old boy with symptom onset on
+January 11, 2003, and the last case occurred in 12-year-old girl on
+January 28 (Figure B).”
+
+But they never actually tell us where the index case lived.
+
+In this case, we’re once again left with a large area and unable to
+narrow it down. This needs additional reporting.
+
+In [this report from
+ICDDR,B](http://dspace.icddrb.org/jspui/bitstream/123456789/4811/1/2003-ICDDRBHealthScienceBulletin-Vol1%285%29-English.pdf),
+we learn:
+
+“Between 11 and 28 January 2003, another outbreak of severe illness
+including features of encephalitis was reported affecting at least 17
+residents (range 4- 42 years) of Chalksita and Biljoania villages
+(located 45 km north-east of Rajshahi) in Naogaon district; 8 people
+died.”
+
+FYI: The GADM dataset spells it Naogaon.
+
+``` r
+bgd_76 <- bgd_gadm_4 %>%
+  filter(name_2 == "Naogaon") %>%
+  select(name_2) %>%
+  group_by(name_2) %>%
+  summarise(geom = st_union(geom)) %>%
+  select(poly_geom = geom) %>%
+  mutate(point_geom = st_centroid(poly_geom),
+         precision = "centroid")
+```
+
+# bgd_73
+
+<http://dspace.icddrb.org/jspui/bitstream/123456789/4816/1/2004-ICDDRBHealthScienceBulletin-Vol2%282%29-English.pdf>
