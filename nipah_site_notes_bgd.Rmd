@@ -38,10 +38,9 @@ bgd_gadm_4 <- st_read("./input_data/Bangladesh/gadm/gadm36_BGD_gpkg/gadm36_BGD.g
 
 Unspecified number of Nipah cases in Bangladesh, 2021, no other details in data.
 
-ProMedMail points to a short Outbreak News piece about an updated Nipah case count for Bangladesh in 2021, listing two cases: 
-http://outbreaknewstoday.com/bangladesh-reports-two-nipah-virus-cases-in-2021/
+ProMedMail points to a short Outbreak News piece about an updated Nipah case count for Bangladesh in 2021, listing two cases [here](http://outbreaknewstoday.com/bangladesh-reports-two-nipah-virus-cases-in-2021/)
 
-That is based on this chart from Bangladesh's Institute of Epidemiology, Disease Control and Research: https://iedcr.gov.bd/surveillances/93c87e70-9c22-4f21-9506-a1161ecf404f 
+That is based on this chart from Bangladesh's Institute of Epidemiology, Disease Control and Research, [here](https://iedcr.gov.bd/surveillances/93c87e70-9c22-4f21-9506-a1161ecf404f) 
 
 No way to pinpoint potential spillover location based on this source. 
 
@@ -55,8 +54,43 @@ Likely the same source as above but unclear.
 
 Searched ProMed
 
+@waiting IEDCR director
+
+### bgd_6
+
+Unspecified number of Nipah cases in Thakurgaon District in 2019.
+
+Academic paper describes this outbreak, with cases from Jan 15 to March 17 [here](https://www.ijidonline.com/action/showPdf?pii=S1201-9712%2820%2932414-0)
+
+Primary case: "He was a traditional healer, had no history of taking RDPS, occasionally visited forest to collect herbs and animals."
+
+No additional information about location here. 
+
+Mention in this local press report of Baliadangi Upazila Health Complex, in relation to March cases, but paper also notes "In February, five members of a family died mysteriously in Baliadanga upazila" [here](https://www.newagebd.net/article/67534/3-of-a-family-suspected-to-be-infected-with-nipah-virus)
+
+Seems likely that IEDCR can also sort this out. 
+
+@waiting IEDCR director
+
+### bgd_14 to bgd_19
+
+These are all clearly based on an Outbreak News summary of cases in 2015 reported by IEDCR by district [here](http://outbreaknewstoday.com/bangladesh-reports-nine-nipah-virus-cases-to-date-in-2015/)
+
+Nothing further on ProMedMail.
+
+Local media paces a Naogaon cluster (bgd_17) in "Valain village under Manda Upazila" [here](https://www.risingbd.com/english/Nipah_virus_kills_3_in_Naogaon/22046)
+
+Next: search Nilphamari
+
+```{r}
+
+bgd_gadm_4 %>%
+  filter(str_detect(name_3, "Naogaon"))
+
+bgd_gadm_4 %>% str
 
 
+```
 
 ### bgd_87
 
