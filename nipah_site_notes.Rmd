@@ -89,16 +89,86 @@ bgd_gadm_4 <- st_read("./input_data/Bangladesh/gadm/gadm36_BGD_gpkg/gadm36_BGD.g
 
 "The first NiV outbreak was reported in April 2001 from a village in district Meherpur, Bangladesh with 13 confirmed cases and 9 (69.2%) deaths."
 
-What we don't know which Meherpur, though. There's Meherpur at levels 2, 3 and 4. 
+In Bangladesh, the administrative breakdown goes:
 
+* Central government (level 0)
+* Divisions (level 1)
+* Districts, aka "zila" (level 2)
+* Sub-districts, aka "upazila" (level 3)
+* Union councils, municipalities and city corporations (level 4)
 
-```{r}
-bgd_gadm_4 %>%
-  filter(str_detect(name_3, "Naogaon"))
-```
+The union councils are rural areas and villages fall beneath those. For now, we don't have a good villages dataset. 
+
 The above paper leads us to [this paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3323384/pdf/04-0701.pdf), which says:
 
 "Surveys took place in the villages of Chandpur (population 604), where persons who died or were hospitalized had resided..."
 
-So that's a clue. 
-=======
+So I eventually found Chandpur on Google Maps: 24.63901152049101, 88.53916109886907
+
+```{r}
+bgd_87_point <- tribble(
+  ~latitude, ~longitude,
+  24.63901152049101, 88.53916109886907
+) %>%
+  st_as_sf(coords=c("longitude", "latitude"), crs=4326) 
+```
+
+
+
+```{r}
+bgd_87 <- bgd_gadm_4 %>%
+  filter(str_detect(name_2, "Meherpur")) %>%
+  select(name_2) %>%
+  group_by(name_2) %>%
+  summarise(geom = st_union(geom)) %>%
+  select(poly_geom = geom) %>%
+  mutate(point_geom = st_centroid(poly_geom),
+         precision = "centroid")
+```
+
+### bgd_76
+
+This outbreak in Naogoan is also profiled in [the same paper used for bgd_87]((https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3323384/pdf/04-0701.pdf)), the outbreak in Chandpur village, Meherpur district. 
+
+Unfortunately, the paper never tells us where the actual index case occured. Here's two relevant passages: 
+
+"Surveys were conducted in the adjacent villages of East Chalksita (population 529) and Biljoania (population 481); suspected deaths and hospitalizations caused by Nipah virus infection were reported from both villages."
+
+and 
+
+"The index case occurred in a 12-year-old boy with symptom onset on January 11, 2003, and the last case occurred in 12-year-old girl on January 28 (Figure B)."
+
+But they never actually tell us where the index case lived.  
+
+In this case, we're once again left with a large area and unable to narrow it down. This needs additional reporting. 
+
+
+In [this report from ICDDR,B](http://dspace.icddrb.org/jspui/bitstream/123456789/4811/1/2003-ICDDRBHealthScienceBulletin-Vol1%285%29-English.pdf), we learn:
+
+"Between 11 and 28 January 2003, another outbreak of severe illness including
+features of encephalitis was reported affecting at least 17 residents (range 4-
+42 years) of Chalksita and Biljoania villages (located 45 km north-east of
+Rajshahi) in Naogaon district; 8 people died."
+
+
+
+
+FYI: The GADM dataset spells it Naogaon. 
+
+```{r}
+bgd_76 <- bgd_gadm_4 %>%
+  filter(name_2 == "Naogaon") %>%
+  select(name_2) %>%
+  group_by(name_2) %>%
+  summarise(geom = st_union(geom)) %>%
+  select(poly_geom = geom) %>%
+  mutate(point_geom = st_centroid(poly_geom),
+         precision = "centroid")
+```
+
+
+# bgd_73
+
+http://dspace.icddrb.org/jspui/bitstream/123456789/4816/1/2004-ICDDRBHealthScienceBulletin-Vol2%282%29-English.pdf
+
+
