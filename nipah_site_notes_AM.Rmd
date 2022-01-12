@@ -29,8 +29,14 @@ st_layers("./input_data/Bangladesh/gadm/gadm36_BGD_gpkg/gadm36_BGD.gpkg")
 ```
 
 ```{r}
-bgd_gadm_4 <- st_read("./input_data/Bangladesh/gadm/gadm36_BGD_gpkg/gadm36_BGD.gpkg", layer="gadm36_BGD_4") %>%
-  janitor::clean_names()
+
+bgd_gadm_3 <- st_read("./input_data/Bangladesh/gadm/gadm36_BGD_gpkg/gadm36_BGD.gpkg",
+                      layer = "gadm36_BGD_3") %>%
+              janitor::clean_names()
+
+bgd_gadm_4 <- st_read("./input_data/Bangladesh/gadm/gadm36_BGD_gpkg/gadm36_BGD.gpkg",
+                      layer="gadm36_BGD_4") %>%
+              janitor::clean_names()
 
 ```
 
@@ -83,6 +89,8 @@ Local media paces a Naogaon cluster (bgd_17) in "Valain village under Manda Upaz
 Next: search Nilphamari
 
 ```{r}
+
+
 
 bgd_gadm_4 %>%
   filter(str_detect(name_2, "Nilphamari"))
