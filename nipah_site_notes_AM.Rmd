@@ -114,74 +114,35 @@ Nothing further on ProMedMail.
 Local media paces a Naogaon cluster (bgd_17) in "Valain village under Manda Upazila" [here](https://www.risingbd.com/english/Nipah_virus_kills_3_in_Naogaon/22046)
 
 @waiting IEDCR director
-*** Coding these at the district level
+*** Coding bgd_17 to Manda Upazila, the rest at the district level
 
 ```{r}
 
-test2 <- bgd_gadm_3 %>% 
-  filter(str_detect(name_3, "Baliadangi")) %>%
-  select(poly_geom = geom) %>% 
-  mutate(point_geom = st_centroid(poly_geom),
-         precision = "centroid",
-         reuters_id = 6,
-         country_iso = "BGD")
-
-test2 %>% str
-
-test_func <- function(geom) {
-  geom %>% select(poly_geom = geom) %>% 
-           mutate(point_geom = st_centroid(poly_geom),
-                  precision = "centroid",
-                  reuters_id = "14",
-                  country_iso = "BGD")
-}
-
-
-test <- bgd_gadm_2 %>% filter(str_detect(name_2, "Faridpur")) %>% test_func
-
-test %>% str
-
-bgd_6 %>% str
-
-bgd_6 %>% test_func_2
-
-
-
-test <- bgd_gadm_2 %>%
+bgd_14 <- bgd_gadm_2 %>% 
   filter(str_detect(name_2, "Faridpur")) %>%
-  test_func(14)
+  grab_polygon(14)
 
-test
+bgd_15 <- bgd_gadm_2 %>% 
+  filter(str_detect(name_2, "Rajbari")) %>%
+ bgd_17 <- bgd_gadm_3 %>%
+  filter(str_detect(name_3, "Manda")) grab_polygon(15)
+
+bgd_16 <- bgd_gadm_2 %>% 
+  filter(str_detect(name_2, "Magura")) %>%
+  grab_polygon(16)
+
+bgd_18 <- bgd_gadm_2 %>% 
+  filter(str_detect(name_2, "Nilphamari")) %>%
+  grab_polygon(18)
+
+bgd_19 <- bgd_gadm_2 %>%
+  filter(str_detect(name_2, "Panchagarh")) %>%
+  grab_polygon(19)
+
 
 ```
 
-                
-
-bgd_6 
-
-
-bgd_gadm_2 %>% 
-  filter(str_detect(name_2, "Faridpur")) %>%
-  
-
-
-%>%
-  select(poly_geom = geom) %>% 
-  mutate(point_geom = st_centroid(poly_geom),
-         precision = "centroid") %>%
-  mutate(reuters_id = 6,
-         country_iso = "BGD")
-
-
-bgd_gadm_3 %>%
-  filter(str_detect(name_2, "Nilphamari"))
-
-
-bgd_gadm_4 %>%
-  filter(str_detect(name_2, "Nilphamari"))
-
-
-bgd_gadm_4 %>% str
+    
 
 
 ```
