@@ -10,27 +10,6 @@ library(tidyverse)
 library(sf)
 ```
 
-What I've tried to do here is first group incidents by country, then do an individual section for each event. You'll see that each section is headlined by the ISO 3-digit country code and the unique identifier I added to the Metabiota dataset in Google Sheets.
-
-For general administrative boundaries, I'm using [the GADM database](https://gadm.org/). When I start a new country, I download that country's geopackage into the directory "./input_data/country/GADM/", where I extract the file to that directory instead of letting the unzipper create a new directory. 
-
-Because these files are large, you'll want to use [Github's Large File Storage](https://git-lfs.github.com/) to track them. I would do the following commands:
-
-* git lfs track "*.zip"
-* git lfs track "*.gpkg"
-
-As of now, my goal is to have each incident with the following fields:
-
-* unique identifier
-* polygon geometry, if used
-* point geometry
-
-We may want to consider adding a memo field to contain important information about each incident but for now I've not done that. 
-
-What you might do is create a new R notebook and just start the document like below (i.e. ignore all the stuff above here). Then when you're done, we can just append it to this doc. 
-
-
-
 ## India
 
 ### ind_88
