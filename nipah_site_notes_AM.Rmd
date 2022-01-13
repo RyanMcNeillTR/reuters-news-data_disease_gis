@@ -142,6 +142,27 @@ bgd_19 <- bgd_gadm_2 %>%
 
 ```
 
+#bgd_24
+
+Local press article notes first death in Dhaka, whcih is outside the Nipah belt, with this detail: "'Although the sap was brought from Mymensingh [District], it was consumed in Dhaka. This is the first case of a Nipah-related death in the city,' said Alamgir."
+[source](https://reliefweb.int/report/bangladesh/fresh-outbreak-nipah-virus-bangladesh)
+
+Earlier report from January: "According to its Director, the family drank raw date sap brought from Bhaluka on Jan 11 and fell ill six days later" - goes on to not ethat one person in Bhaluka supplied 100 bottles to families in Dhaka.
+
+Bhaluka is an upazila within the Mymensingh district, but Bhaluka is also a village in the upazila. 
+
+```{r}
+
+bgd_24 <- bgd_gadm_3 %>%
+  filter(str_detect(name_3, "Bhaluka")) %>%
+  grab_polygon(19)
+
+```
+
+
+
+
+
     
 
 
