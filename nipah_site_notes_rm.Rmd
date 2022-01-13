@@ -213,6 +213,14 @@ ggplot() +
   geom_sf(data=bgd_76_point, color="red")
 ```
 
+```{r}
+bgd_76 <- bgd_gadm_4 %>%
+  filter(name_2 == "Naogaon") %>%
+  filter(name_4 == "Sreemantapur") %>%
+  select(poly_geom = geom) %>%
+  mutate(point_geom = st_centroid(poly_geom),
+         precision = "centroid")  
+```
 
 
 
@@ -221,6 +229,56 @@ ggplot() +
 ### bgd_73
 
 http://dspace.icddrb.org/jspui/bitstream/123456789/4816/1/2004-ICDDRBHealthScienceBulletin-Vol2%282%29-English.pdf
+
+https://www.who.int/publications/i/item/WER7917
+
+"All cases lived in Guha Laksmipur village or were in contact with a spiritual leader living in this village who was
+himself a case." 
+
+Walsh placed this event at 23.609688, 89.825636, but I believe it's a centroid of a higher geography. 
+
+```{r}
+bgd_73_point <- tribble(
+  ~latitude, ~longitude,
+  23.609688, 89.825636
+) %>%
+  st_as_sf(coords=c("longitude", "latitude"), crs=4326) 
+```
+
+Faridpur Sadar Paurashava
+
+
+see page 34
+
+http://203.112.218.65:8008/WebTestApplication/userfiles/Image/Atlas/Faridpur.pdf
+
+
+```{r}
+bgd_73 <- bgd_gadm_4 %>%
+  filter(name_2 == "Faridpur") %>%
+  filter(name_4 == "Faridpur Paurashava")
+```
+
+Now let's see how they compare. 
+
+```{r}
+ggplot() + 
+  geom_sf(data=bgd_73) +
+  geom_sf(data=bgd_73_point, color="red")
+```
+
+Let's finalize it.
+
+```{r}
+bgd_73 <- bgd_gadm_4 %>%
+  filter(name_2 == "Faridpur") %>%
+  filter(name_4 == "Faridpur Paurashava") %>%
+  select(poly_geom = geom) %>%
+  mutate(point_geom = st_centroid(poly_geom),
+         precision = "centroid")    
+```
+
+To check: Can we get the actual village? If not, check that the Lakshmipur we used is the same Guha Laksmipur mentioned in the paper. 
 
 
 
@@ -322,5 +380,48 @@ Absent the exact location of the village, this is very accurate.
 ### bgd_68 
 
 http://dspace.icddrb.org/jspui/bitstream/123456789/4852/1/2005-ICDDRBHealthScienceBulletin-Vol3%284%29English.pdf
+
+The Deka data describes this outbreak as occuring at Bashail Upazilla, Tangail District, Bangladesh. 
+
+This bulletin indicates a location slightly more specific: "The study team defined a case of outbreak associated encephalitis as a person who lived or travelled in Habla Union, Basail Upazila, Tangail district, Bangladesh and developed fever with the new onset of seizures or altered mental status between 15 December 2004 and 31 January 2005."
+
+So first let's create a point for the Walsh data, which places this at: 24.233753, 90.046539
+
+```{r}
+bgd_68_point <- tribble(
+  ~latitude, ~longitude,
+  24.233753, 90.046539
+) %>%
+  st_as_sf(coords=c("longitude", "latitude"), crs=4326) 
+```
+
+Now let's use GADM to try to identify the lowest-level polygon that matches our description.
+
+```{r}
+bgd_68 <- bgd_gadm_4 %>%
+  filter(name_1 == "Dhaka") %>%
+  filter(name_2 == "Tangail") %>%
+  filter(name_4 == "Habla")
+```
+
+Let's compare Walsh to our polygon.
+
+```{r}
+ggplot() + 
+  geom_sf(data=bgd_68) +
+  geom_sf(data=bgd_68_point, color="red")
+```
+
+Absent finding the exact village location, this is the most accurate spot we're going to get. 
+
+```{r}
+bgd_68 <- bgd_gadm_4 %>%
+  filter(name_1 == "Dhaka") %>%
+  filter(name_2 == "Tangail") %>%
+  filter(name_4 == "Habla") %>%
+  select(poly_geom = geom) %>%
+  mutate(point_geom = st_centroid(poly_geom),
+         precision = "centroid")
+```
 
 
