@@ -115,8 +115,9 @@ The above paper leads us to [this paper](https://www.ncbi.nlm.nih.gov/pmc/articl
 
 "Surveys took place in the villages of Chandpur (population 604), where persons who died or were hospitalized had resided..."
 
-Walsh, M. G. (2015) place this location at 23.776652, 88.645198; however, Google Maps points toward it being at 23.716740, 88.750830. For now, that's where we'll place this dot. 
+Walsh, M. G. (2015) place this location at 23.776652, 88.645198. Let's check if we can be more accurate. 
 
+First let's create the point. 
 
 ```{r}
 bgd_87_point <- tribble(
@@ -127,17 +128,33 @@ bgd_87_point <- tribble(
 ```
 
 
+Now, we can turn to [this official small-area atlas](http://203.112.218.65:8008/WebTestApplication/userfiles/Image/Atlas/Meherpur.pdf) to find the smallest geography containing the village. See page 14. 
 
 ```{r}
 bgd_87 <- bgd_gadm_4 %>%
-  filter(str_detect(name_2, "Meherpur")) %>%
-  select(name_2) %>%
-  group_by(name_2) %>%
-  summarise(geom = st_union(geom)) %>%
+  filter(name_2 == "Meherpur") %>%
+  filter(name_4 == "Pirojpur")
+```
+
+Now let's compare the Walsh point to our current geography.
+
+```{r}
+ggplot() + 
+  geom_sf(data=bgd_87) + 
+  geom_sf(data=bgd_87_point, color="red")
+```
+We can see this is an improvement in geography. We'll use our new polygon. 
+
+```{r}
+bgd_87 <- bgd_gadm_4 %>%
+  filter(name_2 == "Meherpur") %>%
+  filter(name_4 == "Pirojpur") %>%
   select(poly_geom = geom) %>%
   mutate(point_geom = st_centroid(poly_geom),
-         precision = "centroid")
+         precision = "centroid")  
 ```
+
+
 
 ### bgd_76
 
@@ -163,12 +180,8 @@ features of encephalitis was reported affecting at least 17 residents (range 4-
 42 years) of Chalksita and Biljoania villages (located 45 km north-east of
 Rajshahi) in Naogaon district; 8 people died."
 
-[This Google Maps location](https://www.google.com/maps/place/24%C2%B048'28.4%22N+88%C2%B038'19.2%22E/@24.8064987,88.6364829,16.92z/data=!4m14!1m7!3m6!1s0x39fb83568ef5d7b5:0xec5214898346b1dd!2sBil+Joania,+Bangladesh!3b1!8m2!3d24.8068232!4d88.6392106!3m5!1s0x0:0xbaf409df986e3b12!7e2!8m2!3d24.8078976!4d88.6386637) appears to be Biljoania, spelled Biljonaya. We need to verify with local officials but this appears to be the village we want. 
 
 Walsh used 24.814569, 88.927434, but that appears to be a centroid. 
-
-So we'll use: 24.807898, 88.638664, but this needs to be checked with government officials. 
-
 
 
 ```{r}
@@ -179,24 +192,30 @@ bgd_76_point <- tribble(
   st_as_sf(coords=c("longitude", "latitude"), crs=4326) 
 ```
 
+On page 22 of [this small-area atlas](http://203.112.218.65:8008/WebTestApplication/userfiles/Image/Atlas/Naogaon.pdf), we can see in the index that Chak Sita and Bil Joania are in Sreemantapur Union (in NIAMATPUR UPAZILA).
 
-
-
-
-
+We can use that information to find the level 4 polygon in the GADM data.
 
 FYI: The GADM dataset spells it Naogaon. 
 
 ```{r}
 bgd_76 <- bgd_gadm_4 %>%
   filter(name_2 == "Naogaon") %>%
-  select(name_2) %>%
-  group_by(name_2) %>%
-  summarise(geom = st_union(geom)) %>%
-  select(poly_geom = geom) %>%
-  mutate(point_geom = st_centroid(poly_geom),
-         precision = "centroid")
+  filter(name_4 == "Sreemantapur")
 ```
+
+
+Now let's visualize the Walsh point with our level 4 polygon. 
+
+```{r}
+ggplot() + 
+  geom_sf(data=bgd_76) +
+  geom_sf(data=bgd_76_point, color="red")
+```
+
+
+
+
 
 
 ### bgd_73
@@ -213,9 +232,90 @@ According to this paper:
 
 "On 17 January 2004, a 9-year-old child from Kazipara village was brought to the emergency room of Goalanda health complex in Rajbari district, Bangladesh. The patient had a three-day history of fever and worsening neurological signs: he died within 15 minutes of admission. Between 17 and 21 January, 6 additional children (aged between 2 and 15 years) and a 28 year-old woman (mother of the youngest child) also died with the same symptoms. All patients came from the neighbouring Kazipara and Juran Molla Para villages and lived in two groups of houses located within 1 km of each other."
 
-And we learn from this XXXX paper that it's in Goalanda subdistrict. 
+And we learn from [this 2008 paper](https://academic.oup.com/cid/article/46/7/977/292786) that it's in Goalanda subdistrict. 
 
-So first, let's use GADM to try to identify the polygon for Goalanda subdistrict. 
+So first, let's use GADM to try to identify the polygon for Goalanda subdistrict. GADM appears to spell Goalanda as Goalandaghat.
+
+
+```{r}
+bgd_72 <- bgd_gadm_4 %>%
+  filter(name_3 == "Goalandaghat") %>%
+  select(name_3) %>%
+  group_by(name_3) %>%
+  summarise(geom = st_union(geom)) %>%
+  select(poly_geom = geom)
+```
+
+Walsh placed Nipah at the following location: 23.748507, 89.655376. Let's see how it compared to the GADM polygon.
+
+```{r}
+bgd_72_point <- tribble(
+  ~latitude, ~longitude,
+  23.748507, 89.655376
+) %>%
+  st_as_sf(coords=c("longitude", "latitude"), crs=4326) 
+```
+
+Let's put 'em on a map.
+
+```{r}
+ggplot() +
+  geom_sf(data=bgd_72) +
+  geom_sf(data=bgd_72_point)
+```
+How far from the polygon to the point?
+
+```{r}
+bgd_72_8858 <- bgd_72 %>%
+  st_transform(8858)
+
+bgd_72_point_8858 <- bgd_72_point %>%
+  st_transform(8858)
+
+st_distance(bgd_72_point_8858, bgd_72_8858)
+```
+So there's about a half-kilometer distance between the point used by Walsh and the polygon in which Gurley said the outbreak occurred. 
+
+If we create a centroid, how far between Walsh and our centroid?
+
+```{r}
+bgd_72_8858_centroid <- bgd_72 %>%
+  st_transform(8858) %>%
+  st_centroid()
+
+st_distance(bgd_72_point_8858, bgd_72_8858_centroid)
+
+```
+So now there's about a 1km difference.
+
+We should try to nail down the location of Kazipara village.
+
+By using the [Rajbari small area atlas](http://203.112.218.65:8008/WebTestApplication/userfiles/Image/Atlas/Rajbari.pdf), we're able to figure out that Kazi Para, as its spelled in the document, is in GOALANDAGHAT PAURASHAVA. 
+
+If we go back to our map, we can see that is a level 4 geography. While we don't know the exact village location, we've now narrowed it down to a tiny area. The Goalandaghat Paurashava is in red. 
+
+```{r}
+test <- bgd_gadm_4 %>%
+  filter(name_3 == "Goalandaghat") %>%
+  filter(name_4 == "Goalandaghat Paurashava") 
+
+  ggplot() + 
+  geom_sf(data=bgd_72) +
+  geom_sf(data=test, color="red")
+```
+So we're now going to use that as our polygon and take the centroid of that. 
+
+```{r}
+bgd_72 <- bgd_gadm_4 %>%
+  filter(name_3 == "Goalandaghat") %>%
+  filter(name_4 == "Goalandaghat Paurashava") %>%
+  select(poly_geom = geom) %>%
+  mutate(point_geom = st_centroid(poly_geom),
+         precision = "centroid")
+  
+```
+
+Absent the exact location of the village, this is very accurate. 
 
 
 
