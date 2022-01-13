@@ -207,14 +207,15 @@ http://dspace.icddrb.org/jspui/bitstream/123456789/4816/1/2004-ICDDRBHealthScien
 
 ### bgd_72
 
-This is an outbreak in Rajbari District, Bangladesh during January and February 2004. It occurred at the same time as another outbreak in Manikganj District, Bangladesh, which we probably need to add. I have labeled it as record x7 in the potential adds tab of the spreadsheet. 
+This is an outbreak in Rajbari District, Bangladesh during January and February 2004. It occurred at the same time as another outbreak in Manikganj District, Bangladesh, which isn't in the Metabiota data, so we'll probably need to add it. I have labeled it as record x7 in the potential adds tab of the spreadsheet. 
 
 According to this paper:
 
 "On 17 January 2004, a 9-year-old child from Kazipara village was brought to the emergency room of Goalanda health complex in Rajbari district, Bangladesh. The patient had a three-day history of fever and worsening neurological signs: he died within 15 minutes of admission. Between 17 and 21 January, 6 additional children (aged between 2 and 15 years) and a 28 year-old woman (mother of the youngest child) also died with the same symptoms. All patients came from the neighbouring Kazipara and Juran Molla Para villages and lived in two groups of houses located within 1 km of each other."
 
-The Deka spreadsheet shows this as 23.748507, 89.655376. H	
+And we learn from this XXXX paper that it's in Goalanda subdistrict. 
 
+So first, let's use GADM to try to identify the polygon for Goalanda subdistrict. 
 
 
 
