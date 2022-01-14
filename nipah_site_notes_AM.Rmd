@@ -142,8 +142,98 @@ bgd_19 <- bgd_gadm_2 %>%
 
 ```
 
-    
+#bgd_24
 
+Data says Dhaka, 2013, no other details.
+
+Local press article from early 2013 notes first ever Nipah death in Dhaka, which is outside the Nipah belt, with this detail: "'Although the sap was brought from Mymensingh [District], it was consumed in Dhaka. This is the first case of a Nipah-related death in the city,' said Alamgir."
+[source](https://reliefweb.int/report/bangladesh/fresh-outbreak-nipah-virus-bangladesh)
+
+Earlier report from January: "According to its Director, the family drank raw date sap brought from Bhaluka on Jan 11 and fell ill six days later" - goes on to not ethat one person in Bhaluka supplied 100 bottles to families in Dhaka.
+
+Bhaluka is an upazila within the Mymensingh district, but Bhaluka is also a village in the upazila. 
+
+*** Coding to the upazila
+
+```{r}
+
+bgd_24 <- bgd_gadm_3 %>%
+  filter(str_detect(name_3, "Bhaluka")) %>%
+  grab_polygon(19)
+
+```
+
+#bgd_25
+
+Data notes district Faridpur and 2013, no other details.
+
+Nothing on ProMED or online that I can find.
+
+Faridpur is not mentioned in EICDR's last 2013 report, though it was from May 2013 so possibly [incomplete](http://www.iedcr.org/index.php?option=com_content&view=article&id=135:23-rd-february-2013-nipah-outbreak&catid=11)
+
+*** Not coding yet
+
+#bgd_26
+
+Data notes district Madaripur and 2013, no other details.
+
+Nothing on ProMED or online that I can find.
+
+Faridpur is not mentioned in EICDR's last 2013 report, though it was from May 2013 so possibly [incomplete](http://www.iedcr.org/index.php?option=com_content&view=article&id=135:23-rd-february-2013-nipah-outbreak&catid=11)
+
+*** Not coding
+
+#bgd_27
+
+Data sais "Makikgank" which is not a district, but district Manikganj did have a documented outbreak that year:
+
+"At Hafeznagar village in Shibalaya upazila of the district, 4 people, including a couple, died of an unknown disease in the last 2 weeks. The victims are a 40-year-old woman, her husband age 45 years, the woman's mother of 55 years, and a neighbour, a man 36-years-old. The neighbor and the woman died at Dhaka Community Hospital on 28 and 29 Mar [2013]. The mother died on way to Dhaka on 28 Mar [2013], while the husband died at Monno General Hospital in Manikganj on 14 Mar [2013], family sources said." [source](https://promedmail.org/promed-post/?id=20130401.1613261)
+
+Follow up post confirms this was Nipah, see [here](https://promedmail.org/promed-post/?id=1615535)
+
+Hafeznagara is not in Google Maps or the [Manikganj small area atlas](http://203.112.218.65:8008/WebTestApplication/userfiles/Image/Atlas/Manikganj.pdf)
+
+*** Coding to Shibalaya upazila
+
+```{r}
+
+bgd_27 <- bgd_gadm_3 %>% filter(str_detect(name_3, "Shibalaya")) %>%
+  grab_polygon(27)
+
+
+
+```
+
+
+
+
+
+ProMED-mail:
+
+"Among the casualties, there have been 2 from each of Dhaka, Pabna, and Natore and one from each of Rajbari, Jhenaidah, Naogaon, and Rajshahi, according to Bangladesh's Institute of Epidemiology Diseases Control and Research (IEDCR)."
+
+Pabna (city and district)
+Natore (district)
+Rajbari (district)
+Jhenadidah (district)
+Naogaon (district)
+Rajshahi (city, district and division)
+
+
+
+
+
+#bgd_30
+
+Magura district, 2013, no other details.
+
+ProMED:
+"Nipah virus claimed the life of a minor boy at Ghosgati village in Shalikha upazila on Sunday [10 Mar 2013]. A boy, aged 2, of the village died at Jessore General Hospital in the morning. District Civil Surgeon Dr Muhammad Shafiqul Alam said the boy had fallen sick after drinking date [palm] juice on Thursday [7 Mar 2013]. He was admitted to Magura district hospital."
+[source](https://promedmail.org/promed-post/?id=1592574)
+
+
+
+#
 
 ```
 
