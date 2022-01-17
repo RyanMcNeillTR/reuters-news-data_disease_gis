@@ -16,7 +16,7 @@ Set working directory for Allison's Windows laptop
 
 ```{r}
 
-#setwd("C:/Users/0146156/Documents/mb_checks/reuters-news-data_disease_gis")
+setwd("C:/Users/0146156/Documents/mb_checks/reuters-news-data_disease_gis")
 
 ```
 
@@ -113,6 +113,10 @@ Nothing further on ProMedMail.
 
 Local media paces a Naogaon cluster (bgd_17) in "Valain village under Manda Upazila" [here](https://www.risingbd.com/english/Nipah_virus_kills_3_in_Naogaon/22046)
 
+Daily Star (article)[https://www.thedailystar.net/2-die-of-nipah-virus-in-naogaon-62907]
+
+May 18, 2015: "Two people died of Nipah virus at Manda upazila in Naogaon last week, said the Institute of Epidemiology, Disease Control and Research today."
+
 @waiting IEDCR director
 *** Coding bgd_17 to Manda Upazila, the rest at the district level
 
@@ -200,9 +204,83 @@ Hafeznagara is not in Google Maps or the [Manikganj small area atlas](http://203
 bgd_27 <- bgd_gadm_3 %>% filter(str_detect(name_3, "Shibalaya")) %>%
   grab_polygon(27)
 
+```
 
+#bgd_28
+
+Data notes district Shariatpur and 2013, no other details.
+
+Nothing in ProMED, Daily Star, general Google search, Factiva, IECDR report from May 2013.
+
+*** Not coding 
+
+#bgd_29 
+
+Data notes district Kushtia and 2013, no other details.
+
+*** Coding to Kushtia district
+
+```{r}
+
+bgd_29 <- bgd_gadm_2 %>% 
+  filter(str_detect(name_2, "Kushtia")) %>%
+  grab_polygon(29)
 
 ```
+#bgd_30
+
+Magura district, 2013, no other details.
+
+One case is described in ProMED:
+"Nipah virus claimed the life of a minor boy at Ghosgati village in Shalikha upazila on Sunday [10 Mar 2013]. A boy, aged 2, of the village died at Jessore General Hospital in the morning. District Civil Surgeon Dr Muhammad Shafiqul Alam said the boy had fallen sick after drinking date [palm] juice on Thursday [7 Mar 2013]. He was admitted to Magura district hospital."
+[source](https://promedmail.org/promed-post/?id=1592574)
+
+Magura only appears once on the IECDR list for the year [here](http://www.iedcr.org/index.php?option=com_content&view=article&id=135:23-rd-february-2013-nipah-outbreak&catid=11) so this is likely the right case
+
+The small area atlas lists a "Ghoshgati" in Gangarampur Union of Shalikha upazila. Mindat lists coordinates for a Ghoshgati in Khulna but that's in the wrong upazila. 
+
+*** Coding to Gangarampur Union
+
+```{r}
+
+bgd_30 <- bgd_gadm_4 %>% filter(str_detect(name_2, "Magura")) %>%
+  filter(str_detect(name_4, "Gangarampur")) %>%
+  grab_polygon(30)
+
+```
+#bgd_31
+
+Chapainawabganj district, 2013 no other details.
+
+Alternate transliteration is Chapai Nawabganj.
+
+The district is not on IECDR's 2013 case list but it is on the 2014 one, which actually covers December 2013 as well: [here](http://www.iedcr.org/pdf/files/nipah/Nipah%20situation_18.02.2014.pdf)
+
+Nothing in the Daily Star, Factiva, ProMED.
+
+*** Not coding yet
+
+#bgd_32
+
+
+
+
+Full IECDR location list for 2013:
+[source](http://www.iedcr.org/index.php?option=com_content&view=article&id=135:23-rd-february-2013-nipah-outbreak&catid=11)
+Rajbari - district
+Jhenaidah - district
+Naogaon - district
+Nator - probably Natore, district
+Natore - district
+Gaibandha - distict
+Mymensingh - city and division
+Pabna - city, district
+Rajshahi - division, district and city
+Nilphamari - district
+Kurigram - district
+Kushtia - district
+Magura - district
+Manikganj - district
 
 
 
@@ -223,17 +301,10 @@ Rajshahi (city, district and division)
 
 
 
-#bgd_30
-
-Magura district, 2013, no other details.
-
-ProMED:
-"Nipah virus claimed the life of a minor boy at Ghosgati village in Shalikha upazila on Sunday [10 Mar 2013]. A boy, aged 2, of the village died at Jessore General Hospital in the morning. District Civil Surgeon Dr Muhammad Shafiqul Alam said the boy had fallen sick after drinking date [palm] juice on Thursday [7 Mar 2013]. He was admitted to Magura district hospital."
-[source](https://promedmail.org/promed-post/?id=1592574)
 
 
 
-#
+
 
 ```
 
