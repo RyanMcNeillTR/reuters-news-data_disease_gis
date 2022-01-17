@@ -33,11 +33,11 @@ What you might do is create a new R notebook and just start the document like be
 
 ## India
 
-### ind_88
+https://censusindia.gov.in/2011census/findvillages.aspx
+https://data.gov.in/catalog/complete-villages-directory-indiastatedistrictsub-district-level-census-2011?filters%5Bfield_catalog_reference%5D=166603&format=json&offset=0&limit=6&sort%5Bcreated%5D=desc
 
-According to [this 2006 paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3373078/): “No definitive information about the possible index case exists.”
+https://stategisportal.nic.in/stategisportal/
 
-So, for now, let’s use the GADM layer to at least find the Siliguri area polygon.
 
 First, let’s check the layers.
 
@@ -52,6 +52,14 @@ india_gadm_3 <- st_read("./input_data/India/gadm36_IND.gpkg", layer="gadm36_IND_
   janitor::clean_names()
 ```
 
+
+
+### ind_88
+
+According to [this 2006 paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3373078/): “No definitive information about the possible index case exists.”
+
+So, for now, let’s use the GADM layer to at least find the Siliguri area polygon.
+
 Here we find what appears to be the correct polygon for Siliguri.
 
 As you can see here, the select and mutate function calls are what create the end product mentioned in the intro section.
@@ -65,7 +73,7 @@ ind_88 <- india_gadm_3 %>%
   mutate(point_geom = st_centroid(poly_geom),
          precision = "centroid") %>%
   mutate(reuters_id = 88,
-         country_iso = "BGD")
+         country_iso = "IND")
 ```
 
 
@@ -77,6 +85,26 @@ ind_88_point <- tribble(
   st_as_sf(coords=c("longitude", "latitude"), crs=4326) 
 ```
 
+
+### ind_63
+
+This is an outbreak that's been cited as occuring in Nadia, India. 
+
+According to [this paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3321761/): 
+
+"During April 9–28, 2007, five persons became ill and died within a few days at village Belechuapara, Nadia district, West Bengal, India, which borders Bangladesh."
+
+It appears the Walsh coordinates are exact for this record. 
+
+```{r}
+ind_63_point <- tribble(
+  ~latitude, ~longitude,
+  23.812481, 88.570558
+) %>%
+  st_as_sf(coords=c("longitude", "latitude"), crs=4326) %>%
+  select(point_geom = geometry) %>%
+  mutate(precision = "precise")
+```
 
 
 
@@ -423,5 +451,72 @@ bgd_68 <- bgd_gadm_4 %>%
   mutate(point_geom = st_centroid(poly_geom),
          precision = "centroid")
 ```
+
+
+
+### bgd_62
+
+According to the original Metabiota data, this is a 2007 outbreak in Naoganon, site of a previous outbreak in 2003. However, I can find little information about this outbreak. It is also mentioned [in this USDA document](https://www.star-idaz.net/app/uploads/2018/09/Henipavirus-Gap-Analysis-Report-August-2018.pdf) (Pabna, Natore and Naogaon). A review of IECDR outbreak investigations done during 2007 reveals [no outbreak investigations for Naogaon during 2007](https://iedcr.gov.bd/outbreak/c4fb4e31-5bf4-4235-b4cf-f2dc5a710dda).
+
+However, while investigating this event, I discovered we appear to be missing a 2007 Bangladesh outbreak in Sadar Upazilla, Kushtia District, Bangladesh. I have added it to the potential adds tab in the database as record x8.
+
+For now, I'm going to leave this alone and move onto the next record. I will ask Metabiota if they have any other cites. 
+
+
+### bgd_61
+
+According to the Deka spreadsheet, this outbreak occured in Haripur Upazilla, Thakurgaon District, Bangladesh. 
+
+
+Walsh plotted this site at 25.872185, 88.179755.
+
+```{r}
+bgd_61_point <- tribble(
+  ~latitude, ~longitude,
+  25.872185, 88.179755
+) %>%
+  st_as_sf(coords=c("longitude", "latitude"), crs=4326) 
+```
+
+The closest we can get on this record is level 3. 
+
+[This paper](https://www.cambridge.org/core/journals/epidemiology-and-infection/article/nipah-virus-outbreak-with-persontoperson-transmission-in-a-district-of-bangladesh-2007/7C468D7713F68FD41E7706B9AB0AA034) visited the village but never names it, instead calling it simply "the outbreak village." 
+
+So for now, let's extract what we know.
+
+```{r}
+bgd_61 <- bgd_gadm_4 %>%
+  filter(name_2 == "Thakurgaon") %>%
+  filter(name_3 == "Haripur") %>%
+  select(name_3) %>%
+  group_by(name_3) %>%
+  summarise(geom = st_union(geom)) %>%
+  select(poly_geom = geom) %>%
+  mutate(point_geom = st_centroid(poly_geom),
+         precision = "centroid")
+```
+
+
+Let's compare. 
+
+```{r}
+ggplot() + 
+  geom_sf(data=bgd_61) + 
+  geom_sf(data=bgd_61_point)
+```
+
+This makes me think that perhaps Walsh had specific information on this one. 
+
+COME BACK TO THIS ONE. 
+
+
+### bgd_56
+
+According to [this paper](https://www.ncbi.nlm.nih.gov/sites/books/NBK114490/):
+
+"The communities affected by the outbreak were located in ... Baliakandi Upazila (population 186,562) of Rajbari District in central-western region of Bangladesh (Bangladesh Bureau of Statistics, 2010). These sites are located 44km apart and are separated by a river (Figure A12-1). Date palm sap is widely harvested, sold, and consumed in both areas."
+
+
+
 
 
