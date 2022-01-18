@@ -285,7 +285,7 @@ Natore district, 2013, no other details.
 
 Natore is on IECDR's list of 2013 cases so at minimum we can code to the district. Nothing further in Factiva or ProMED for that year. 
 
-Daily Star, Jan 2013: "In Natore, a mother passed away while her eight-month-old baby has been infected." [source](https://www.thedailystar.net/news-detail-266732)
+Daily Star, Jan 27, 2013: "In Natore, a mother passed away while her eight-month-old baby has been infected." [source](https://www.thedailystar.net/news-detail-266732)
 
 Similar from bdnews24.com [here](https://bdnews24.com/business/2013/01/25/nipah-claims-5-more-lives)
 
@@ -298,8 +298,25 @@ bgd_33 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Natore")) %>%
 
 ```
 
+#bgd_34
 
+Listed as "Rjshahi", likely typo for Rajshahi, 2013, no other details. Rajshahi is a division, district and city. 
 
+Rajshahi is on IECDR's list of 2013 cases. 
+
+bdnews24.com, Jan 27, 2013: "The Director of the government’s disease monitoring outfit, IEDCR, Prof Mahmudur Rahman on Sunday said two more died of the virus taking the total death toll this year to eight. The new deaths were from Pabna and Rajshahi while one 8-month old boy is struggling for life in the Rajshahi Medical College Hospital."
+[source](https://bdnews24.com/health/2013/01/27/nipah-virus-claims-2-more-lives)
+
+Later story makes clear that the 8 month old is the one from Natore, see [here](https://bdnews24.com/bangladesh/2013/01/27/boy-detected-with-nipah-virus)
+
+*** Coding to Rajshahi district
+
+```{r}
+
+bgd_34 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Rajshahi")) %>%
+  grab_polygon(34)
+
+```
 
 Full IECDR location list for 2013:
 [source](http://www.iedcr.org/index.php?option=com_content&view=article&id=135:23-rd-february-2013-nipah-outbreak&catid=11)
