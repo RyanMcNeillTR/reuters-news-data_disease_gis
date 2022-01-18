@@ -1,0 +1,20 @@
+---
+title: "Ebola sites notebook"
+output:
+  github_document:
+    toc: true
+---
+
+```{r}
+library(tidyverse)
+library(sf)
+```
+
+
+
+### uga_89
+
+Excluding because not enough preceding data. 
+
+### gab_86
+

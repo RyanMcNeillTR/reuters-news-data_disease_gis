@@ -3,12 +3,21 @@ Nipah sites notebook
 
 -   [India](#india)
     -   [ind_88](#ind_88)
+    -   [ind_63](#ind_63)
 -   [Bangladesh](#bangladesh)
     -   [bgd_87](#bgd_87)
     -   [bgd_76](#bgd_76)
     -   [bgd_73](#bgd_73)
     -   [bgd_72](#bgd_72)
     -   [bgd_68](#bgd_68)
+    -   [bgd_62](#bgd_62)
+    -   [bgd_61](#bgd_61)
+    -   [bgd_56](#bgd_56)
+    -   [bgd_55](#bgd_55)
+    -   [bgd_50](#bgd_50)
+    -   [bgd_49](#bgd_49)
+    -   [bgd_45](#bgd_45)
+    -   [bgd_44](#bgd_44)
 
 ``` r
 library(tidyverse)
@@ -64,14 +73,10 @@ done, we can just append it to this doc.
 
 ## India
 
-### ind_88
+<https://censusindia.gov.in/2011census/findvillages.aspx>
+<https://data.gov.in/catalog/complete-villages-directory-indiastatedistrictsub-district-level-census-2011?filters%5Bfield_catalog_reference%5D=166603&format=json&offset=0&limit=6&sort%5Bcreated%5D=desc>
 
-According to [this 2006
-paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3373078/): “No
-definitive information about the possible index case exists.”
-
-So, for now, let’s use the GADM layer to at least find the Siliguri area
-polygon.
+<https://stategisportal.nic.in/stategisportal/>
 
 First, let’s check the layers.
 
@@ -105,6 +110,15 @@ india_gadm_3 <- st_read("./input_data/India/gadm36_IND.gpkg", layer="gadm36_IND_
     ## Bounding box:  xmin: 68.18625 ymin: 6.754256 xmax: 97.41516 ymax: 35.50133
     ## Geodetic CRS:  WGS 84
 
+### ind_88
+
+According to [this 2006
+paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3373078/): “No
+definitive information about the possible index case exists.”
+
+So, for now, let’s use the GADM layer to at least find the Siliguri area
+polygon.
+
 Here we find what appears to be the correct polygon for Siliguri.
 
 As you can see here, the select and mutate function calls are what
@@ -120,7 +134,7 @@ ind_88 <- india_gadm_3 %>%
   mutate(point_geom = st_centroid(poly_geom),
          precision = "centroid") %>%
   mutate(reuters_id = 88,
-         country_iso = "BGD")
+         country_iso = "IND")
 ```
 
 ``` r
@@ -129,6 +143,29 @@ ind_88_point <- tribble(
   26.755302, 88.407176
 ) %>%
   st_as_sf(coords=c("longitude", "latitude"), crs=4326) 
+```
+
+### ind_63
+
+This is an outbreak that’s been cited as occuring in Nadia, India.
+
+According to [this
+paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3321761/):
+
+“During April 9–28, 2007, five persons became ill and died within a few
+days at village Belechuapara, Nadia district, West Bengal, India, which
+borders Bangladesh.”
+
+It appears the Walsh coordinates are exact for this record.
+
+``` r
+ind_63_point <- tribble(
+  ~latitude, ~longitude,
+  23.812481, 88.570558
+) %>%
+  st_as_sf(coords=c("longitude", "latitude"), crs=4326) %>%
+  select(point_geom = geometry) %>%
+  mutate(precision = "precise")
 ```
 
 ## Bangladesh
@@ -221,7 +258,8 @@ ggplot() +
   geom_sf(data=bgd_87_point, color="red")
 ```
 
-![](nipah_site_notes_rm_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+![](nipah_site_notes_rm_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+
 We can see this is an improvement in geography. We’ll use our new
 polygon.
 
@@ -303,7 +341,7 @@ ggplot() +
   geom_sf(data=bgd_76_point, color="red")
 ```
 
-![](nipah_site_notes_rm_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+![](nipah_site_notes_rm_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
 
 ``` r
 bgd_76 <- bgd_gadm_4 %>%
@@ -354,7 +392,7 @@ ggplot() +
   geom_sf(data=bgd_73_point, color="red")
 ```
 
-![](nipah_site_notes_rm_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
+![](nipah_site_notes_rm_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
 
 Let’s finalize it.
 
@@ -369,6 +407,12 @@ bgd_73 <- bgd_gadm_4 %>%
 
 To check: Can we get the actual village? If not, check that the
 Lakshmipur we used is the same Guha Laksmipur mentioned in the paper.
+
+COME BACK TO THIS (POSSIBLE VILLAGE IDENTIFICATION):
+<https://www.asianews.it/news-en/Faridpur:-Hindu-family-killed-by-bat-virus-17413.html>
+
+“In 2004, a NiV outbreak killed 17 people in the village of Laxmipur,
+Sadar upazila.”
 
 ### bgd_72
 
@@ -425,7 +469,7 @@ ggplot() +
   geom_sf(data=bgd_72_point)
 ```
 
-![](nipah_site_notes_rm_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->
+![](nipah_site_notes_rm_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
 How far from the polygon to the point?
 
 ``` r
@@ -482,7 +526,7 @@ test <- bgd_gadm_4 %>%
   geom_sf(data=test, color="red")
 ```
 
-![](nipah_site_notes_rm_files/figure-gfm/unnamed-chunk-25-1.png)<!-- -->
+![](nipah_site_notes_rm_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
 So we’re now going to use that as our polygon and take the centroid of
 that.
 
@@ -539,7 +583,7 @@ ggplot() +
   geom_sf(data=bgd_68_point, color="red")
 ```
 
-![](nipah_site_notes_rm_files/figure-gfm/unnamed-chunk-29-1.png)<!-- -->
+![](nipah_site_notes_rm_files/figure-gfm/unnamed-chunk-30-1.png)<!-- -->
 
 Absent finding the exact village location, this is the most accurate
 spot we’re going to get.
@@ -553,3 +597,335 @@ bgd_68 <- bgd_gadm_4 %>%
   mutate(point_geom = st_centroid(poly_geom),
          precision = "centroid")
 ```
+
+### bgd_62
+
+According to the original Metabiota data, this is a 2007 outbreak in
+Naoganon, site of a previous outbreak in 2003. However, I can find
+little information about this outbreak. It is also mentioned [in this
+USDA
+document](https://www.star-idaz.net/app/uploads/2018/09/Henipavirus-Gap-Analysis-Report-August-2018.pdf)
+(Pabna, Natore and Naogaon). A review of IECDR outbreak investigations
+done during 2007 reveals [no outbreak investigations for Naogaon during
+2007](https://iedcr.gov.bd/outbreak/c4fb4e31-5bf4-4235-b4cf-f2dc5a710dda).
+
+However, while investigating this event, I discovered we appear to be
+missing a 2007 Bangladesh outbreak in Sadar Upazilla, Kushtia District,
+Bangladesh. I have added it to the potential adds tab in the database as
+record x8.
+
+For now, I’m going to leave this alone and move onto the next record. I
+will ask Metabiota if they have any other cites.
+
+### bgd_61
+
+Metabiota lists this 2007 event as occuring in Thakurgaon.
+
+According to the Deka spreadsheet, this outbreak occured in Haripur
+Upazilla, Thakurgaon District, Bangladesh.
+
+Walsh plotted this site at 25.872185, 88.179755.
+
+``` r
+bgd_61_point <- tribble(
+  ~latitude, ~longitude,
+  25.872185, 88.179755
+) %>%
+  st_as_sf(coords=c("longitude", "latitude"), crs=4326) 
+```
+
+The closest we can get on this record is level 3.
+
+[This
+paper](https://www.cambridge.org/core/journals/epidemiology-and-infection/article/nipah-virus-outbreak-with-persontoperson-transmission-in-a-district-of-bangladesh-2007/7C468D7713F68FD41E7706B9AB0AA034)
+visited the village but never names it, instead calling it simply “the
+outbreak village.”
+
+So for now, let’s extract what we know.
+
+``` r
+bgd_61 <- bgd_gadm_4 %>%
+  filter(name_2 == "Thakurgaon") %>%
+  filter(name_3 == "Haripur") %>%
+  select(name_3) %>%
+  group_by(name_3) %>%
+  summarise(geom = st_union(geom)) %>%
+  select(poly_geom = geom) %>%
+  mutate(point_geom = st_centroid(poly_geom),
+         precision = "centroid")
+```
+
+Let’s compare.
+
+``` r
+ggplot() + 
+  geom_sf(data=bgd_61) + 
+  geom_sf(data=bgd_61_point)
+```
+
+![](nipah_site_notes_rm_files/figure-gfm/unnamed-chunk-34-1.png)<!-- -->
+
+This makes me think that perhaps Walsh had specific information on this
+one.
+
+COME BACK TO THIS ONE.
+
+### bgd_56
+
+According to [this
+paper](https://www.ncbi.nlm.nih.gov/sites/books/NBK114490/):
+
+“The communities affected by the outbreak were located in … Baliakandi
+Upazila (population 186,562) of Rajbari District in central-western
+region of Bangladesh (Bangladesh Bureau of Statistics, 2010). These
+sites are located 44km apart and are separated by a river (Figure
+A12-1). Date palm sap is widely harvested, sold, and consumed in both
+areas.”
+
+Another key detail:
+
+“In the Rajbari cluster, three members from one family (mother and her
+two children) shared date palm sap purchased from the neighborhood date
+palm sap collector with two other neighborhood residents (brother-in-law
+and nephew of that mother) on February 18; all five subsequently
+developed illness. A salesman who resided nearly 5 km away from those
+households visited the village that morning and also drank the sap
+offered to him. He also died with the similar symptoms to the other four
+cases in Rajbari.”
+
+From [news
+coverage](https://www.thedailystar.net/news-detail-25894?amp), we learn:
+
+“The dead are Aleya Begum, 30, wife of Kamal Mollah of Borohijla village
+in Rajbari, their sons Jewel, 14, and Robiul Islam, 9.”
+
+On page 10 of the Bangladesh [small-area
+atlas](http://203.112.218.65:8008/WebTestApplication/userfiles/Image/Atlas/Rajbari.pdf),
+we see that a village called Bara Hijli is in Nawabpur Union.
+
+``` r
+bgd_56 <- bgd_gadm_4 %>%
+  filter(name_2 == "Rajbari") %>%
+  filter(name_3 == "Balia Kandi") %>%
+  filter(name_4 == "Nawabpur") %>%
+  select(poly_geom = geom) %>%
+  mutate(point_geom = st_centroid(poly_geom),
+         precision = "centroid")
+```
+
+Let’s compare to the Walsh coordinates.
+
+``` r
+bgd_56_point <- tribble(
+  ~latitude, ~longitude,
+  23.748507, 89.655376
+) %>%
+  st_as_sf(coords=c("longitude", "latitude"), crs=4326) 
+```
+
+``` r
+ggplot() + 
+  geom_sf(data=bgd_56) + 
+  geom_sf(data=bgd_56_point)
+```
+
+![](nipah_site_notes_rm_files/figure-gfm/unnamed-chunk-37-1.png)<!-- -->
+
+It appears we’ve been able to improve on this location. Absent a
+specific village coordinate, this appears to be the most accurate
+conclusion.
+
+### bgd_55
+
+This outbreak occured at the same time as bgd_56 and the two areas are
+very close to each other.
+
+According to [this
+paper](https://www.ncbi.nlm.nih.gov/sites/books/NBK114490/):
+
+“In the Manikgonj cluster, three children from one family drank raw date
+palm sap, collected by their father, a local gachi or date palm sap
+collector. They drank the sap early in the morning on February 11 for
+the last time and subsequently two of them developed illness on February
+20 and the third on February 23. The fourth child, who developed illness
+on February 21, was a resident of Dhaka District but visited his
+grandmother’s house on February 6 for 12 days. His grandmother, a
+neighbor of the date palm sap collector, purchased raw date palm sap
+from him and served it to her grandson the same day the other children
+drank the sap.”
+
+According to [this
+article](https://www.thedailystar.net/news-detail-26658):
+
+“IEDCR confirmed the first spell of the Nipah outbreak on February 29
+based on the samples collected from the bodies of the three children who
+hailed from Bishnupur village under Daulatpur Upazila in Manikganj.”
+
+We can [see on page
+10](http://203.112.218.65:8008/WebTestApplication/userfiles/Image/Atlas/Manikganj.pdf),
+Bishnupur village is in the Khalsi Union (level 4) geography.
+
+``` r
+bgd_55 <- bgd_gadm_4 %>%
+  filter(name_1 == "Dhaka") %>%
+  filter(name_2 == "Manikganj") %>%
+  filter(name_3 == "Daulatpur") %>%
+  filter(name_4 == "Khalsi")
+```
+
+WRITE STUFF ON WALSH DATA HERE. IS A CENTROID….ETC
+
+``` r
+bgd_55_point <- tribble(
+  ~latitude, ~longitude,
+  23.86524, 90.010491
+) %>%
+  st_as_sf(coords=c("longitude", "latitude"), crs=4326) 
+```
+
+### bgd_50
+
+This was a 2009 outbreak in Rangpur.
+
+``` r
+bgd_50 <- bgd_gadm_4 %>%
+  filter(name_1 == "Rangpur") %>%
+  filter(name_2 == "Rangpur") %>%
+  select(name_2) %>%
+  group_by(name_2) %>%
+  summarise(geom = st_union(geom)) %>%
+  select(poly_geom = geom) %>%
+  mutate(point_geom = st_centroid(poly_geom),
+         precision = "centroid")
+```
+
+Deka did not cite this in his data. Can we access Walsh supplementary
+material to see if they had it in their original paper?
+
+For now, unfortunately, I’m going to leave this as-is.
+
+### bgd_49
+
+This was a 2009 outbreak in Rajbari.
+
+I don’t know if it’s Rajbari district or town or what??? Can’t find
+anything anywhere.
+
+Come back to this.
+
+### bgd_45
+
+Metabiota lists this as a 2010 outbreak in Dhaka. Walsh has no info on
+this outbreak.
+
+According to [this
+bulletin](http://dspace.icddrb.org/jspui/bitstream/123456789/4870/1/2010-ICDDRBHealthScienceBulletin-Vol8%282%29-English.pdf):
+
+“The index case was a 45 year old male from Bhanga sub-district who died
+after being admitted to the hospital. Another 40 year old female case,
+who was a neighbour of the index case, presented with vomiting,
+headache, convulsion, altered mental status, and loss of consciousness,
+and died at home. Both of them were probable cases. Two other cases from
+the 40-year old female’s family, 10 and 11 year old girls, who were
+admitted in hospital with a clinical diagnosis of encephalitis, died.
+One girl was found anti-Nipah IgM positive. The other girl was a
+probable Nipah case.”
+
+To be clear, the paper points out this is in Dhaka division, Faridpur
+district.
+
+Finally, [ProMed tells us](https://promedmail.org/promed-posts/):
+
+“The deceased were a 30 year old woman of Algi village under Bhanga
+upazila, her 11 year old daughter, and 10 year old nephew. Family
+sources said the woman was the wife of a fisherman and she died on 13
+Jan 2010 after she had a fever and headache. The same day her daughter
+was admitted to Bhanga Health Complex with the same symptoms. Later she
+was transferred to Faridpur Medical College Hospital where she died on
+16 Jan 2010. Her nephew also died of the same disease on 17 Jan 2010 at
+the Faridpur Medical College Hospital. All the 3 had consumed raw date
+juice before they contracted the disease, family sources added.”
+
+``` r
+bgd_45 <- bgd_gadm_4 %>%
+  filter(name_1 == "Dhaka") %>%
+  filter(name_2 == "Faridpur") %>%
+  filter(name_3 == "Bhanga") %>%
+  filter(name_4 == "Algi")
+```
+
+Let’s compare to the Walsh dot.
+
+``` r
+bgd_45_point <- tribble(
+  ~latitude, ~longitude,
+  23.381598, 90.016138
+) %>%
+  st_as_sf(coords=c("longitude", "latitude"), crs=4326) 
+```
+
+From the looks of this, it appears we have improved on the location.
+
+``` r
+ggplot() + 
+  geom_sf(data=bgd_45) + 
+  geom_sf(data=bgd_45_point)
+```
+
+![](nipah_site_notes_rm_files/figure-gfm/unnamed-chunk-43-1.png)<!-- -->
+
+### bgd_44
+
+Metabiota identified this 2011 outbreak in Comilla, Dinajpur, Faridpur,
+Lalmohirhat, Nilphamari.
+
+Deka’s data identifies an outbreak at Hatibandha, Lalmonirhat,
+Bangladesh. This is confirmed via a [Nipah update published by
+IEDCR](http://www.iedcr.org/pdf/files/nipah/Nipah-Update.pdf).
+
+However, it appears we may actually have multiple outbreaks, [according
+to this paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4675679/).
+
+It describes the Lalmonirhat outbreak as one cluster:
+
+“Of the 22 cases in the Lalmonirhat cluster, 21 lived in five adjacent
+villages and the other case was a healthcare worker in a referral
+hospital where cases from this cluster were admitted for treatment.”
+
+[This news clip](https://www.thedailystar.net/news-detail-172896)
+describes the situation thusly:
+
+“The dead were identified as Bachchu Miah, 56, of Baraipara village;
+Joynal, 42, of South Goddimari; and Asadul Islam, 18, of Gendukuri
+village in Hatibandha upazila of Lalmonirhat and Lubna, 14, of South
+Kolkan village in Gangachara upazila of Rangpur. Of them, Bachchu and
+Joynal died at Hatibandha Upazila Health Complex at about 11:30pm on
+Thursday and Asadul died at Rangpur Medical College Hospital early hours
+yesterday and Lubna at her residence around 12:00noon.”
+
+However, based on this description, it’s tough to determine the index
+case and the best we can do for now is level 3.
+
+``` r
+bgd_44 <- bgd_gadm_4 %>%
+  filter(name_1 == "Rangpur") %>%
+  filter(name_2 == "Lalmonirhat") %>%
+  filter(name_3 == "Hatibandha") %>%
+  select(name_3) %>%
+  group_by(name_3) %>%
+  summarise(geom = st_union(geom)) %>%
+  select(poly_geom = geom) %>%
+  mutate(point_geom = st_centroid(poly_geom),
+         precision = "centroid")
+```
+
+“Of the eight cases in the Rangpur cluster, proxies of three probable
+cases reported that the cases regularly drank fermented date palm sap, a
+traditional liquor known locally as tari, from a common source. They
+consumed the drink daily during the 30 days prior to their illness
+onset. These probable cases did not have any history of drinking raw sap
+or of having contact with a Nipah case. Three confirmed cases became ill
+following close contact with one of these probable cases. Two other
+cases from this cluster, one confirmed and one probable, had no reported
+history of consuming raw or fermented date palm sap or contact with a
+Nipah case.”
