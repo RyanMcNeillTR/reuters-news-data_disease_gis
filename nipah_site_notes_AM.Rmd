@@ -318,6 +318,25 @@ bgd_34 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Rajshahi")) %>%
 
 ```
 
+#bgd_35
+
+Dinajpur, 2013, no other details. Dinajpur is both a city and a district. It is not on IECDR's 2013 case list. Nothing further on ProMED, Factiva, DAily Star or BDNews.
+
+*** Not coding
+
+# bgd_36
+
+
+
+
+
+
+
+
+
+
+
+
 Full IECDR location list for 2013:
 [source](http://www.iedcr.org/index.php?option=com_content&view=article&id=135:23-rd-february-2013-nipah-outbreak&catid=11)
 Rajbari - district
