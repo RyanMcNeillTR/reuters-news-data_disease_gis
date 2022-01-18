@@ -262,7 +262,26 @@ Nothing in the Daily Star, Factiva, ProMED.
 
 #bgd_32
 
+Naogaon district, 2013, no other details.
 
+Naogaon is on IECDR's list of 2013 cases so at minimum we can code to the district.
+
+Nothing further in Factiva or ProMED for that year. 
+
+Daily Star mentions a death in Naogaon in January in passing [here](https://www.thedailystar.net/news-detail-266732): "The dead are from Dhaka, Rajbari, Jhenidah, Naogaon, Natore and Gaibandha."
+
+*** Coding to Naogaon district.
+
+```{r}
+
+bgd_32 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Naogaon")) %>%
+  grab_polygon(32)
+
+```
+
+#bgd_33
+
+Daily Star, Jan 2013: "In Natore, a mother passed away while her eight-month-old baby has been infected."
 
 
 Full IECDR location list for 2013:
