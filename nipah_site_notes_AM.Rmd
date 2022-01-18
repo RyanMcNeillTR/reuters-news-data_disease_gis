@@ -330,15 +330,35 @@ Ranpur, 2013, no other details. Rangpur is a city, district and division, and it
 
 *** Not coding
 
+# bgd_41
 
+Joypurhat, 2012, Metabiota data links to [this paper](https://onlinelibrary.wiley.com/doi/full/10.1002/rmv.2010)
 
+The paper contains a table that lists 12 cases and 10 deaths in Joypurhat in January 2012.
 
+Daily Star, January 26, 2012: "Panic has gripped the residents of different villages in Khetlal and Sadar upazilas of Joypurhat district following death of four children infected with “Nipah virus” in three days from January 20 to January 22. 
+The dead are Anik Mondol, 7, son of Alam Mondol, Marium Begum, 7, daughter of Jahangir Hossain of Natunhaat Sardarpara in Joypurhat town, and Tohidul Islam, 8, son of Anwar Hossain of Dadra Jointigram, and Shakila Begum, 9, daughter of of Ikargara village in Khetlal upazila.
+Anik died at Bogra Medical College and Hospital on January 20, Shakila at Joypur Sadar Hospital on January 21 and Marium and Tohidul at Rajshahi Medical College and Hospital on January 22."
+[source](https://www.thedailystar.net/news-detail-219894)
 
+Places mentioned above:
+- Joypurhat town
+- Ikagara village, Khetlal upazila
 
+FluTrackers thread quotes stories no longer available online, and apparently on January 22 they said of Touhid and Marium both "fell sick after drinking date juice from a same tree." The thread is [here](https://flutrackers.com/forum/forum/emerging-diseases-other-health-threats-alphabetical-i-thru-z/nipah-virus/121571-bangladesh-nipah-virus-kills-30-in-joypurhat).
 
+FluTrackers  also quotes an IECDR update that is no longer available, posted to teh thread Jan 23: "From 20 January 2012, two clusters of Nipah were identified in the Joypurhat Municipality area and Khetlal upazila of Joypurhat district. A joint team of IEDCR and ICDDR,B are working in the field now. Till date (23 rd January 2012), the team identified 3 cases from the municipal area and 2 cases from Khetlal. All 5 cases have died. Laboratory tests for Nipah were done in IEDCR. All four samples collected from suspected cases were positive for Nipah."
 
+BDNews24 quotes from the same IEDR bulletin: "The virus that killed five people at Jaipurhat in the last four days has been identified as Nipah. The Institute of Epidemiology Diseases Control and Research (IEDCR) confirmed on its website on Tuesday that the five had indeed died from Nipah. A team from the institute are now working in the affected area. The IECDR said human infections took place in Joypurhat municiplatiy and Khetlal Upazila." [link](https://bdnews24.com/bangladesh/2012/01/24/nipah-virus-attack-confirmed-5-die)
 
+*** Coding to Joypurhat Paurashava union (paurashava is Bengali for 'municipality')
 
+```{r}
+
+bgd_41 <- bgd_gadm_4 %>% filter(str_detect(name_4, "Joypurhat")) %>%
+  grab_polygon(41)
+
+```
 
 
 Full IECDR location list for 2013:
