@@ -326,6 +326,10 @@ Dinajpur, 2013, no other details. Dinajpur is both a city and a district. It is 
 
 # bgd_36
 
+Ranpur, 2013, no other details. Rangpur is a city, district and division, and it is not on EICDR's 2013 outbreak list. Nothing furhter on ProMED, Factiva, DAily 
+
+*** Not coding
+
 
 
 
