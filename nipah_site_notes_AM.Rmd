@@ -281,7 +281,24 @@ bgd_32 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Naogaon")) %>%
 
 #bgd_33
 
-Daily Star, Jan 2013: "In Natore, a mother passed away while her eight-month-old baby has been infected."
+Natore district, 2013, no other details.
+
+Natore is on IECDR's list of 2013 cases so at minimum we can code to the district. Nothing further in Factiva or ProMED for that year. 
+
+Daily Star, Jan 2013: "In Natore, a mother passed away while her eight-month-old baby has been infected." [source](https://www.thedailystar.net/news-detail-266732)
+
+Similar from bdnews24.com [here](https://bdnews24.com/business/2013/01/25/nipah-claims-5-more-lives)
+
+*** Coding to Natore district
+
+```{r}
+
+bgd_33 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Natore")) %>%
+  grab_polygon(33)
+
+```
+
+
 
 
 Full IECDR location list for 2013:
