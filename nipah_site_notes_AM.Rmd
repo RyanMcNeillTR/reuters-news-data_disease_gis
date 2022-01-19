@@ -38,6 +38,23 @@ bgd_gadm_4 <- st_read("./input_data/Bangladesh/gadm/gadm36_BGD_gpkg/gadm36_BGD.g
                       layer="gadm36_BGD_4") %>%
               janitor::clean_names()
 
+st_layers("./input_data/India/gadm36_IND.gpkg")
+
+ind_gadm_3 <- st_read("./input_data/India/gadm36_IND.gpkg",
+                      layer = "gadm36_IND_3") %>%
+              janitor::clean_names()
+
+```
+
+Get other spatial data.
+
+```{r}
+
+ind_taluks <- st_read("./input_data/India/Kerala/gadm36_IND.gpkg",
+                      layer = "gadm36_IND_3") %>%
+              janitor::clean_names()
+
+
 ```
 
 Setting up function that returns variables based on single GADM polygon.
@@ -52,9 +69,40 @@ grab_polygon <-function(geom, id) {
                   country_iso = "BGD")
 }
 
+```
 
+# INDIA 
+
+#bgd_7 
+
+Metabiota lists Kerala, 2019, no other details, but Deb has market coordinates from original reporting.
+
+```{r}
+
+ind_7 <- data.frame(poly_geom = NA,
+                    point_geom = st_point(c(10.17222, 76.21215)),
+                    precision = "point",
+                    reuters_id = 7,
+                    country_iso = "IND")
+
+
+  #*** FIX CODE HERE
 
 ```
+#bgd_11
+
+Kozhikode, 2018, no other details. Kozhikode is a district and a city in Kerala.
+
+There is an index case for this outbreak: "An exhaustive study by the Kerala Health Department tracing the ‘contact history’ of patients affected by the recent Nipah outbreak in the state has found that 17 of the 19 infected persons got the virus directly from Patient No. 1, Muhammed Sabith. [...] Sabith is believed to have caught the infection sometime in the third week of April. On May 2, he developed fever and severe body pain. He went to a nearby hospital in Perambra to get examined, after which he was sent home."
+
+Perambra is a town in Kozhikode district, about an hour north of the city of Kozhikode. 
+
+
+
+ind_gadm_3 %>% str
+
+ind_gadm_3 %>% filter(str_detect(name_3, "Kozhikode")) 
+
 
 ### bgd_3
 
@@ -94,7 +142,6 @@ Mention in this local press report of Baliadangi Upazila Health Complex, in rela
 
 Seems likely that IEDCR can also sort this out. 
 
-@waiting IEDCR director
 *** Coding to Baliadangi Upazila
 
 ```{r}
@@ -105,7 +152,7 @@ bgd_6 <- bgd_gadm_3 %>%
 
 ```
 
-### bgd_14 to bgd_19
+#bgd_14 to bgd_19
 
 These are all clearly based on an Outbreak News summary of cases in 2015 reported by IEDCR by district [here](http://outbreaknewstoday.com/bangladesh-reports-nine-nipah-virus-cases-to-date-in-2015/)
 
