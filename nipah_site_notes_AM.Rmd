@@ -58,6 +58,11 @@ st_layers("./input_data/India/Kerala")
 ind_taluks <- st_read("./input_data/India/Kerala", layer = "taluk") %>%
   rename(geom = geometry, oid = OID_, taluk = TALUK, state = STATE, district = DISTRICT)
 
+
+st_layers("./input_data/Philippines/stanford_level_3")
+
+phl_3 <- st_read("./input_data/Philippines/stanford_level_3", layer = "hn643zf7626")
+
 ```
 
 Setting up function that returns variables based on single GADM polygon.
