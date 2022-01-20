@@ -137,7 +137,17 @@ st_distance(hospital, ind_11$point_geom)
 ind_11 <- ind_11 %>% mutate(point_geom = hospital, precision = "hospital") %>% str
 
 ```
+# PHILIPPINES
 
+2014, area listed as "Sultan Kudarat Senator Ninoy Aquino", no other details.
+
+Academic paper is [here](https://wwwnc.cdc.gov/eid/article/21/2/14-1433_article)
+
+"On April 2, 2014, the Philippine National Epidemiology Center received a report of human deaths in 2 villages, Tinalon and Midtungok, in the municipality of Senator Ninoy Aquino, province of Sultan Kudarat, island of Mindanao. The villages are ≈15 km apart, and the provincial referral hospital is in Isulan, 80 km away."
+
+Likely spillover: "Although the source of the horse infections is unclear, on the basis of the known ecology of henipaviruses, the most likely source is fruit bats (family Pteropodidae) (10). Bats belonging to this family were reported near at least 1 of the 2 villages."
+
+It is not completely established that this was Nipah and not Hendra but there seem to be good reasons to classify it as Nipah: "Clinical presentations, epidemiologic findings, and serologic results suggest that the virus causing this outbreak was a henipavirus. It was most likely NiV or a virus that is antigenically and genetically closely related to NiV."
 
 ### bgd_3
 
