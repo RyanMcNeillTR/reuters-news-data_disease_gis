@@ -58,10 +58,9 @@ st_layers("./input_data/India/Kerala")
 ind_taluks <- st_read("./input_data/India/Kerala", layer = "taluk") %>%
   rename(geom = geometry, oid = OID_, taluk = TALUK, state = STATE, district = DISTRICT)
 
+st_layers("C:/Users/0146156/Documents/mb_checks/stanford_level_3")
 
-st_layers("./input_data/Philippines/stanford_level_3")
-
-phl_3 <- st_read("./input_data/Philippines/stanford_level_3", layer = "hn643zf7626")
+phl_level_3 <- st_read("C:/Users/0146156/Documents/mb_checks/stanford_level_3")
 
 ```
 
@@ -139,6 +138,8 @@ ind_11 <- ind_11 %>% mutate(point_geom = hospital, precision = "hospital") %>% s
 ```
 # PHILIPPINES
 
+#phl_22
+
 2014, area listed as "Sultan Kudarat Senator Ninoy Aquino", no other details.
 
 Academic paper is [here](https://wwwnc.cdc.gov/eid/article/21/2/14-1433_article)
@@ -149,7 +150,19 @@ Likely spillover: "Although the source of the horse infections is unclear, on th
 
 It is not completely established that this was Nipah and not Hendra but there seem to be good reasons to classify it as Nipah: "Clinical presentations, epidemiologic findings, and serologic results suggest that the virus causing this outbreak was a henipavirus. It was most likely NiV or a virus that is antigenically and genetically closely related to NiV."
 
-### bgd_3
+```{r}
+
+phl_22 <- phl_level_3 %>% filter(str_detect(name_3, "Tinalon")) %>%
+  rename(geom = geometry) %>%
+  grab_polygon(22) %>% 
+  mutate(country_iso = "PHL")
+
+```
+
+
+# BANGLADESH
+
+# bgd_3
 
 Unspecified number of Nipah cases in Bangladesh, 2021, no other details in data.
 
