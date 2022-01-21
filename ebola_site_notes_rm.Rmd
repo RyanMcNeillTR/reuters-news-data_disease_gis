@@ -10,6 +10,7 @@ library(tidyverse)
 library(sf)
 ```
 
+sources: https://figshare.com/articles/dataset/Human_index_cases_-_Ebola_virus_disease/3423593?backTo=/collections/eLife_Advances_-_Updates_to_the_zoonotic_niche_map_of_Ebola_virus_disease_in_Africa/3267965
 
 
 ### uga_89
