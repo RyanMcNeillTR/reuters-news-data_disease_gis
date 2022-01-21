@@ -157,7 +157,6 @@ phl_22 <- phl_level_3 %>% filter(str_detect(name_3, "Tinalon")) %>%
   grab_polygon(22) %>% 
   mutate(country_iso = "PHL")
 
-
 ```
 
 
