@@ -472,7 +472,7 @@ Ranpur, 2013, no other details. Rangpur is a city, district and division, and it
 
 Joypurhat, 2012, Metabiota data links to [this paper](https://onlinelibrary.wiley.com/doi/full/10.1002/rmv.2010)
 
-The paper contains a table that lists 12 cases and 10 deaths in Joypurhat in January 2012.
+The paper contains a table that lists 12 cases and 10 deaths in several districts including in January 2012.
 
 Daily Star, January 26, 2012: "Panic has gripped the residents of different villages in Khetlal and Sadar upazilas of Joypurhat district following death of four children infected with “Nipah virus” in three days from January 20 to January 22. 
 The dead are Anik Mondol, 7, son of Alam Mondol, Marium Begum, 7, daughter of Jahangir Hossain of Natunhaat Sardarpara in Joypurhat town, and Tohidul Islam, 8, son of Anwar Hossain of Dadra Jointigram, and Shakila Begum, 9, daughter of of Ikargara village in Khetlal upazila.
@@ -498,32 +498,3 @@ bgd_41 <- bgd_gadm_4 %>% filter(str_detect(name_4, "Joypurhat")) %>%
 
 ```
 
-
-
-
-
-
-
-
-
-```
-
-### bgd_87
-
-[This paper identifies an outbreak](https://onlinelibrary.wiley.com/doi/full/10.1002/rmv.2010) in Meherpur, Bangladesh from April-May 2001. 
-
-"The first NiV outbreak was reported in April 2001 from a village in district Meherpur, Bangladesh with 13 confirmed cases and 9 (69.2%) deaths."
-
-What we don't know which Meherpur, though. There's Meherpur at levels 2, 3 and 4. 
-
-
-```{r}
-bgd_gadm_4 %>%
-  filter(str_detect(name_3, "Naogaon"))
-
-```
-The above paper leads us to [this paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3323384/pdf/04-0701.pdf), which says:
-
-"Surveys took place in the villages of Chandpur (population 604), where persons who died or were hospitalized had resided..."
-
-So that's a clue. 
