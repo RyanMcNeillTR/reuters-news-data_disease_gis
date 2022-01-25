@@ -489,7 +489,10 @@ FluTrackers  also quotes an IECDR update that is no longer available, posted to 
 
 BDNews24 quotes from the same IEDR bulletin: "The virus that killed five people at Jaipurhat in the last four days has been identified as Nipah. The Institute of Epidemiology Diseases Control and Research (IEDCR) confirmed on its website on Tuesday that the five had indeed died from Nipah. A team from the institute are now working in the affected area. The IECDR said human infections took place in Joypurhat municiplatiy and Khetlal Upazila." [link](https://bdnews24.com/bangladesh/2012/01/24/nipah-virus-attack-confirmed-5-die)
 
+Separately, BD News24: "This year, while IEDCR is grappling to check the spread in Joypurhat district's Sadarpara and Khetlal upazillas, where five persons died in this month's outbreak, the district civil surgeon says new suspects of infection are emerging from the area." 
+
 *** Coding to Joypurhat Paurashava union (paurashava is Bengali for 'municipality')
+*** Added second location, Khetlal Upazila, to 'possible adds' sheet
 
 ```{r}
 
