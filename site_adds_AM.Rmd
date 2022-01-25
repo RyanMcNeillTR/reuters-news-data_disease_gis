@@ -88,6 +88,20 @@ bgd_98 <- bgd_gadm_3 %>% filter(str_detect(name_3, "Khetlal")) %>%
   
 ```
 
+
+#phl_99
+
+This adds a second location to the incident described in phl_22, see notes there. 
+
+```{r}
+
+phl_99 <- phl_level_3 %>% filter(str_detect(name_3, "Midtungok")) %>%
+  rename(geom = geometry) %>%
+  grab_polygon(99) %>% 
+  mutate(country_iso = "PHL")
+
+```
+
 #bgd_101 / bgd_102 / bgd_103 / bgd_104
 
 All three of these are drawn from an archived WHO table which has been incorporated into for example Deka (CDC's) data but not Metabiota's database. One academic paper strongly suggests they are all connected to the well documented 2012 Joypurhat outbreak but it is not written by local experts and may be a simple misinterpretation of the WHO data: "The final outbreak was in 2012 in Joypurhat, Rajshshi, Natore, and Rajbari with a fatality rate of 83% (n=12)." (paper here)[https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6415930/]
@@ -107,7 +121,23 @@ Natore, Rajbari, Gopalganj:
 No indication of a case there in other sources.
 
 *** Not coding these
-  
+
+#bgd_105
+
+This is a potential cause in Pataukhali district, pulled from an archived news story. After discussion with Deb, excluding because time from sap drinking to death seems too short.
+
+"Source: The Daily Star, Staff Correspondent
+Date: 10 February 2012
+Nipah virus claimed the life of an SSC examinee at Patuakhali General Hospital yesterday. The victim,
+Nargis Akhter, 16, daughter of Hasan Sikder of Gabua village under Patuakhali Sadar upazila, was
+appearing in the ongoing SSC examinee from Gabua Janata High School. Family and hospital sources said
+Nargis fell sick after having date juice at around 8:00am. She was taken to the hospital where she died at
+around 1:30pm."
+[Archived story](https://web.archive.org/web/20120412182445/http://saarc-sdmc.nic.in/pdf/saarc_news/news227.pdf)
+
+
+
+
 
 
 
