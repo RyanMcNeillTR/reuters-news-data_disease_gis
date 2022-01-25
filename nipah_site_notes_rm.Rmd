@@ -233,14 +233,7 @@ bgd_76 <- bgd_gadm_4 %>%
   filter(name_4 == "Sreemantapur")
 ```
 
-
-Now let's visualize the Walsh point with our level 4 polygon. 
-
-```{r}
-ggplot() + 
-  geom_sf(data=bgd_76) +
-  geom_sf(data=bgd_76_point, color="red")
-```
+Final record.
 
 ```{r}
 bgd_76 <- bgd_gadm_4 %>%
@@ -253,50 +246,26 @@ bgd_76 <- bgd_gadm_4 %>%
 
 
 
+http://dspace.icddrb.org/jspui/bitstream/123456789/4816/1/2004-ICDDRBHealthScienceBulletin-Vol2%282%29-English.pdf
 
 
 ### bgd_73
 
-http://dspace.icddrb.org/jspui/bitstream/123456789/4816/1/2004-ICDDRBHealthScienceBulletin-Vol2%282%29-English.pdf
+The MetaBiota data identifies a 2004 outbreak in Fardipur.
 
-https://www.who.int/publications/i/item/WER7917
-
-"All cases lived in Guha Laksmipur village or were in contact with a spiritual leader living in this village who was
-himself a case." 
-
-Walsh placed this event at 23.609688, 89.825636, but I believe it's a centroid of a higher geography. 
-
-```{r}
-bgd_73_point <- tribble(
-  ~latitude, ~longitude,
-  23.609688, 89.825636
-) %>%
-  st_as_sf(coords=c("longitude", "latitude"), crs=4326) 
-```
-
-Faridpur Sadar Paurashava
+In this [WHO report](https://webcache.googleusercontent.com/search?q=cache:JHn6ZBsaUBQJ:https://apps.who.int/iris/rest/bitstreams/949669/retrieve+&cd=1&hl=en&ct=clnk&gl=uk), we learn the following:
 
 
-see page 34
+Cluster of Nipah cases in Faridpur district, March–April 2004
 
-http://203.112.218.65:8008/WebTestApplication/userfiles/Image/Atlas/Faridpur.pdf
+"On 19 April, the Bangladesh Ministry of Health reported one cluster of 30 Nipah cases, including 18 deaths from 13 March to 14 April in Faridpur district. Laboratory testing, performed by CDC, confirmed Nipah virus infection in 16 of the cases.
+The outbreak was investigated by a team comprising experts from the IEDCR, ICDDRB and the WHO country office. All cases lived in Guha Laksmipur village or were in contact with a spiritual leader living in this village who was himself a case. Direct contact with ill patients is suspected to have played a role in the transmission of the disease and the spread of this outbreak. The team organized infection control and safe clinical management workshops for local medical staff in different health care settings of the Faridpur district. Investigations are continuing."
 
+On page 34 of this [Bangladeshi government atlas](http://203.112.218.65:8008/WebTestApplication/userfiles/Image/Atlas/Faridpur.pdf), we can identify these villages in the admin level 4 area of Sadar Paurashava.
 
-```{r}
-bgd_73 <- bgd_gadm_4 %>%
-  filter(name_2 == "Faridpur") %>%
-  filter(name_4 == "Faridpur Paurashava")
-```
+This [clip seems to confirm](https://www.asianews.it/news-en/Faridpur:-Hindu-family-killed-by-bat-virus-17413.html) our placement
 
-Now let's see how they compare. 
-
-```{r}
-ggplot() + 
-  geom_sf(data=bgd_73) +
-  geom_sf(data=bgd_73_point, color="red")
-```
-
-Let's finalize it.
+"In 2004, a NiV outbreak killed 17 people in the village of Laxmipur, Sadar upazila."
 
 ```{r}
 bgd_73 <- bgd_gadm_4 %>%
@@ -306,14 +275,6 @@ bgd_73 <- bgd_gadm_4 %>%
   mutate(point_geom = st_centroid(poly_geom),
          precision = "centroid")    
 ```
-
-To check: Can we get the actual village? If not, check that the Lakshmipur we used is the same Guha Laksmipur mentioned in the paper. 
-
-
-
-COME BACK TO THIS (POSSIBLE VILLAGE IDENTIFICATION): https://www.asianews.it/news-en/Faridpur:-Hindu-family-killed-by-bat-virus-17413.html
-
-"In 2004, a NiV outbreak killed 17 people in the village of Laxmipur, Sadar upazila."
 
 
 ### bgd_72
@@ -338,63 +299,12 @@ bgd_72 <- bgd_gadm_4 %>%
   select(poly_geom = geom)
 ```
 
-Walsh placed Nipah at the following location: 23.748507, 89.655376. Let's see how it compared to the GADM polygon.
-
-```{r}
-bgd_72_point <- tribble(
-  ~latitude, ~longitude,
-  23.748507, 89.655376
-) %>%
-  st_as_sf(coords=c("longitude", "latitude"), crs=4326) 
-```
-
-Let's put 'em on a map.
-
-```{r}
-ggplot() +
-  geom_sf(data=bgd_72) +
-  geom_sf(data=bgd_72_point)
-```
-How far from the polygon to the point?
-
-```{r}
-bgd_72_8858 <- bgd_72 %>%
-  st_transform(8858)
-
-bgd_72_point_8858 <- bgd_72_point %>%
-  st_transform(8858)
-
-st_distance(bgd_72_point_8858, bgd_72_8858)
-```
-So there's about a half-kilometer distance between the point used by Walsh and the polygon in which Gurley said the outbreak occurred. 
-
-If we create a centroid, how far between Walsh and our centroid?
-
-```{r}
-bgd_72_8858_centroid <- bgd_72 %>%
-  st_transform(8858) %>%
-  st_centroid()
-
-st_distance(bgd_72_point_8858, bgd_72_8858_centroid)
-
-```
-So now there's about a 1km difference.
-
 We should try to nail down the location of Kazipara village.
 
 By using the [Rajbari small area atlas](http://203.112.218.65:8008/WebTestApplication/userfiles/Image/Atlas/Rajbari.pdf), we're able to figure out that Kazi Para, as its spelled in the document, is in GOALANDAGHAT PAURASHAVA. 
 
 If we go back to our map, we can see that is a level 4 geography. While we don't know the exact village location, we've now narrowed it down to a tiny area. The Goalandaghat Paurashava is in red. 
 
-```{r}
-test <- bgd_gadm_4 %>%
-  filter(name_3 == "Goalandaghat") %>%
-  filter(name_4 == "Goalandaghat Paurashava") 
-
-  ggplot() + 
-  geom_sf(data=bgd_72) +
-  geom_sf(data=test, color="red")
-```
 So we're now going to use that as our polygon and take the centroid of that. 
 
 ```{r}
@@ -413,38 +323,13 @@ Absent the exact location of the village, this is very accurate.
 
 ### bgd_68 
 
-http://dspace.icddrb.org/jspui/bitstream/123456789/4852/1/2005-ICDDRBHealthScienceBulletin-Vol3%284%29English.pdf
+MetaBiota identified this 2005 outbreak in Tangail, Bangladesh.
 
 The Deka data describes this outbreak as occuring at Bashail Upazilla, Tangail District, Bangladesh. 
 
-This bulletin indicates a location slightly more specific: "The study team defined a case of outbreak associated encephalitis as a person who lived or travelled in Habla Union, Basail Upazila, Tangail district, Bangladesh and developed fever with the new onset of seizures or altered mental status between 15 December 2004 and 31 January 2005."
+[This bulletin indicates](http://dspace.icddrb.org/jspui/bitstream/123456789/4852/1/2005-ICDDRBHealthScienceBulletin-Vol3%284%29English.pdf) a location slightly more specific: "The study team defined a case of outbreak associated encephalitis as a person who lived or travelled in Habla Union, Basail Upazila, Tangail district, Bangladesh and developed fever with the new onset of seizures or altered mental status between 15 December 2004 and 31 January 2005."
 
-So first let's create a point for the Walsh data, which places this at: 24.233753, 90.046539
-
-```{r}
-bgd_68_point <- tribble(
-  ~latitude, ~longitude,
-  24.233753, 90.046539
-) %>%
-  st_as_sf(coords=c("longitude", "latitude"), crs=4326) 
-```
-
-Now let's use GADM to try to identify the lowest-level polygon that matches our description.
-
-```{r}
-bgd_68 <- bgd_gadm_4 %>%
-  filter(name_1 == "Dhaka") %>%
-  filter(name_2 == "Tangail") %>%
-  filter(name_4 == "Habla")
-```
-
-Let's compare Walsh to our polygon.
-
-```{r}
-ggplot() + 
-  geom_sf(data=bgd_68) +
-  geom_sf(data=bgd_68_point, color="red")
-```
+Let's use GADM to try to identify the lowest-level polygon that matches our description.
 
 Absent finding the exact village location, this is the most accurate spot we're going to get. 
 
@@ -469,22 +354,13 @@ However, while investigating this event, I discovered we appear to be missing a 
 For now, I'm going to leave this alone and move onto the next record. I will ask Metabiota if they have any other cites. 
 
 
+
+
 ### bgd_61
 
 Metabiota lists this 2007 event as occuring in Thakurgaon.
 
 According to the Deka spreadsheet, this outbreak occured in Haripur Upazilla, Thakurgaon District, Bangladesh. 
-
-
-Walsh plotted this site at 25.872185, 88.179755.
-
-```{r}
-bgd_61_point <- tribble(
-  ~latitude, ~longitude,
-  25.872185, 88.179755
-) %>%
-  st_as_sf(coords=c("longitude", "latitude"), crs=4326) 
-```
 
 The closest we can get on this record is level 3. 
 
@@ -504,18 +380,6 @@ bgd_61 <- bgd_gadm_4 %>%
          precision = "centroid")
 ```
 
-
-Let's compare. 
-
-```{r}
-ggplot() + 
-  geom_sf(data=bgd_61) + 
-  geom_sf(data=bgd_61_point)
-```
-
-This makes me think that perhaps Walsh had specific information on this one. 
-
-COME BACK TO THIS ONE. 
 
 
 ### bgd_56
@@ -544,24 +408,7 @@ bgd_56 <- bgd_gadm_4 %>%
          precision = "centroid")
 ```
 
-Let's compare to the Walsh coordinates. 
-
-```{r}
-bgd_56_point <- tribble(
-  ~latitude, ~longitude,
-  23.748507, 89.655376
-) %>%
-  st_as_sf(coords=c("longitude", "latitude"), crs=4326) 
-```
-
-
-```{r}
-ggplot() + 
-  geom_sf(data=bgd_56) + 
-  geom_sf(data=bgd_56_point)
-```
-
-It appears we've been able to improve on this location. Absent a specific village coordinate, this appears to be the most accurate conclusion. 
+Absent a specific village coordinate, this appears to be the most accurate conclusion. 
 
 
 
@@ -586,19 +433,11 @@ bgd_55 <- bgd_gadm_4 %>%
   filter(name_1 == "Dhaka") %>%
   filter(name_2 == "Manikganj") %>%
   filter(name_3 == "Daulatpur") %>%
-  filter(name_4 == "Khalsi")
+  filter(name_4 == "Khalsi") %>%
+  select(poly_geom = geom) %>%
+  mutate(point_geom = st_centroid(poly_geom),
+         precision = "centroid")
 ```
-
-WRITE STUFF ON WALSH DATA HERE. IS A CENTROID....ETC
-
-```{r}
-bgd_55_point <- tribble(
-  ~latitude, ~longitude,
-  23.86524, 90.010491
-) %>%
-  st_as_sf(coords=c("longitude", "latitude"), crs=4326) 
-```
-
 
 
 
@@ -606,6 +445,9 @@ bgd_55_point <- tribble(
 
 This was a 2009 outbreak in Rangpur. 
 
+Deka did not cite this in his data. Can we access Walsh supplementary material to see if they had it in their original paper?
+
+For now, unfortunately, I'm going to leave this as-is. 
 
 ```{r}
 bgd_50 <- bgd_gadm_4 %>%
@@ -621,9 +463,7 @@ bgd_50 <- bgd_gadm_4 %>%
 ```
 
 
-Deka did not cite this in his data. Can we access Walsh supplementary material to see if they had it in their original paper?
 
-For now, unfortunately, I'm going to leave this as-is. 
 
 
 ### bgd_49
