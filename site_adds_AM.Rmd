@@ -5,7 +5,98 @@ output:
     toc: true
 ---
 
+Set working directory for Allison's Windows laptop
+
 ```{r}
+
+setwd("C:/Users/0146156/Documents/mb_checks/reuters-news-data_disease_gis")
+
+```
+
+Load libraries
+
+```{r}
+
 library(tidyverse)
 library(sf)
+
 ```
+
+Get GADM data. 
+
+```{r}
+
+st_layers("./input_data/Bangladesh/gadm/gadm36_BGD_gpkg/gadm36_BGD.gpkg")
+
+bgd_gadm_2 <- st_read("./input_data/Bangladesh/gadm/gadm36_BGD_gpkg/gadm36_BGD.gpkg",
+                      layer = "gadm36_BGD_2") %>%
+              janitor::clean_names()
+
+bgd_gadm_3 <- st_read("./input_data/Bangladesh/gadm/gadm36_BGD_gpkg/gadm36_BGD.gpkg",
+                      layer = "gadm36_BGD_3") %>%
+              janitor::clean_names()
+
+bgd_gadm_4 <- st_read("./input_data/Bangladesh/gadm/gadm36_BGD_gpkg/gadm36_BGD.gpkg",
+                      layer="gadm36_BGD_4") %>%
+              janitor::clean_names()
+
+st_layers("./input_data/India/gadm36_IND.gpkg")
+
+ind_gadm_3 <- st_read("./input_data/India/gadm36_IND.gpkg",
+                      layer = "gadm36_IND_3") %>%
+              janitor::clean_names()
+
+```
+
+Get other spatial data.
+
+```{r}
+
+st_layers("./input_data/India/Kerala")
+
+ind_taluks <- st_read("./input_data/India/Kerala", layer = "taluk") %>%
+  rename(geom = geometry, oid = OID_, taluk = TALUK, state = STATE, district = DISTRICT)
+
+st_layers("C:/Users/0146156/Documents/mb_checks/stanford_level_3")
+
+phl_level_3 <- st_read("C:/Users/0146156/Documents/mb_checks/stanford_level_3")
+
+```
+
+Setting up function that returns variables based on single GADM polygon.
+
+```{r}
+
+grab_polygon <-function(geom, id) {
+  geom %>% select(poly_geom = geom) %>% 
+           mutate(point_geom = st_centroid(poly_geom),
+                  precision = "centroid",
+                  reuters_id = id,
+                  country_iso = "BGD")
+}
+
+```
+
+
+#bgd_101
+
+Nipah 2012 in Rajshahi:
+
+A little concerned this is a coding error because one of the Joypurhat cases apparently died at a hospital in Rajshahi. See ProMED: "Of the 5 deaths, 2 are from Khetlal and the others from the municipality. They died in Ziaur Rahman Medical College Hospital in Bogra and Rajshahi Medical College Hospital. On 21 Jan [2012], a 5-member IECDR expert team went to Bogra and Rajshahi to collect blood and other samples." (source)[https://promedmail.org/promed-post/?id=1022056]
+
+There is a slightly better document Rajshani case for 2013, which we coded under bgd_34. 
+
+Then again it is clearly included in the WHO's reporting table, archived online (here)[http://web.archive.org/web/20190922101016/http://www.searo.who.int/entity/emerging_diseases/links/nipah_virus_outbreaks_sear/en/]
+
+*** Coding to district
+
+```{r}
+
+bgd_101 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Rajshahi")) %>%
+  grab_polygon(101)
+
+```
+
+
+
+
