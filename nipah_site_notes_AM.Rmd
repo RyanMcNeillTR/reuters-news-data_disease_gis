@@ -58,9 +58,11 @@ st_layers("./input_data/India/Kerala")
 ind_taluks <- st_read("./input_data/India/Kerala", layer = "taluk") %>%
   rename(geom = geometry, oid = OID_, taluk = TALUK, state = STATE, district = DISTRICT)
 
-st_layers("C:/Users/0146156/Documents/mb_checks/stanford_level_3")
+st_layers("./input_data/Philippines/stanford_level_3")
 
 phl_level_3 <- st_read("C:/Users/0146156/Documents/mb_checks/stanford_level_3")
+
+
 
 ```
 
