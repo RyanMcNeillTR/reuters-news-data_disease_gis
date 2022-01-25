@@ -78,9 +78,13 @@ grab_polygon <-function(geom, id) {
 ```
 
 
-#bgd_101
+#bgd_101 / bgd_102 / bgd_103 / bgd_104
 
-Nipah 2012 in Rajshahi:
+All three of these are drawn from an archived WHO table which has been incorporated into for example Deka (CDC's) data but not Metabiota's database. One academic paper strongly suggests they are all connected to the well documented 2012 Joypurhat outbreak but it is not written by local experts and may be a simple misinterpretation of the WHO data: "The final outbreak was in 2012 in Joypurhat, Rajshshi, Natore, and Rajbari with a fatality rate of 83% (n=12)." (paper here)[https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6415930/]
+
+Sought more details from IECDR website, ProMED, Daily STar, BDNews, FluTrackers, Factiva and general Google searches.
+
+Rajshahi:
 
 A little concerned this is a coding error because one of the Joypurhat cases apparently died at a hospital in Rajshahi. See ProMED: "Of the 5 deaths, 2 are from Khetlal and the others from the municipality. They died in Ziaur Rahman Medical College Hospital in Bogra and Rajshahi Medical College Hospital. On 21 Jan [2012], a 5-member IECDR expert team went to Bogra and Rajshahi to collect blood and other samples." (source)[https://promedmail.org/promed-post/?id=1022056]
 
@@ -88,15 +92,19 @@ There is a slightly better document Rajshani case for 2013, which we coded under
 
 Then again it is clearly included in the WHO's reporting table, archived online (here)[http://web.archive.org/web/20190922101016/http://www.searo.who.int/entity/emerging_diseases/links/nipah_virus_outbreaks_sear/en/]
 
-*** Coding to district
+Natore, Rajbari, Gopalganj: 
+
+No indication of a case there in other sources.
+
+*** Not coding
 
 ```{r}
 
-bgd_101 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Rajshahi")) %>%
-  grab_polygon(101)
+#bgd_101 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Rajshahi")) %>%
+#  grab_polygon(101)
 
 ```
-
+  
 
 
 
