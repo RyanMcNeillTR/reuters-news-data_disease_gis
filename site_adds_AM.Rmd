@@ -140,8 +140,22 @@ Nargis fell sick after having date juice at around 8:00am. She was taken to the 
 around 1:30pm."
 [Archived story](https://web.archive.org/web/20120412182445/http://saarc-sdmc.nic.in/pdf/saarc_news/news227.pdf)
 
+#bgd_106
+
+Viral sequence is listed as a primary case in a 7 year old male in Rayman et al 2021, [here](https://www.sciencedirect.com/science/article/pii/S1201971220322451#tbl0020). District is Kurigram and subdistrict Fulbari. 
+
+IECDR's list of 2013 cases lists a 7 year old male who died in Kurigram that year.
+
+*** Coding to Fulbari upazila, which in GADM is transliterated as 'Phulbari'
+
+```{r}
+
+bgd_105 <- bgd_gadm_3 %>% filter(str_detect(name_2, "Kurigram")) %>%
+  filter(str_detect(name_3, "Phulbari")) %>%
+  grab_polygon(105)
 
 
+```
 
 
 
