@@ -58,9 +58,11 @@ st_layers("./input_data/India/Kerala")
 ind_taluks <- st_read("./input_data/India/Kerala", layer = "taluk") %>%
   rename(geom = geometry, oid = OID_, taluk = TALUK, state = STATE, district = DISTRICT)
 
-st_layers("C:/Users/0146156/Documents/mb_checks/stanford_level_3")
+st_layers("./input_data/Philippines/stanford_level_3")
 
 phl_level_3 <- st_read("C:/Users/0146156/Documents/mb_checks/stanford_level_3")
+
+
 
 ```
 
@@ -70,7 +72,6 @@ Setting up function that returns variables based on single GADM polygon.
 
 grab_polygon <-function(geom, id) {
   geom %>% select(poly_geom = geom) %>% 
-           mutate(point_geom = st_centroid(poly_geom),
                   precision = "centroid",
                   reuters_id = id,
                   country_iso = "BGD")
@@ -492,7 +493,7 @@ BDNews24 quotes from the same IEDR bulletin: "The virus that killed five people 
 Separately, BD News24: "This year, while IEDCR is grappling to check the spread in Joypurhat district's Sadarpara and Khetlal upazillas, where five persons died in this month's outbreak, the district civil surgeon says new suspects of infection are emerging from the area." 
 
 *** Coding to Joypurhat Paurashava union (paurashava is Bengali for 'municipality')
-*** Added second location, Khetlal Upazila, to 'possible adds' sheet
+*** Added second location, Khetlal Upazila, in new adds sheet, under bgd_98
 
 ```{r}
 
