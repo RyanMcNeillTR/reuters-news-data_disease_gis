@@ -170,4 +170,19 @@ bgd_107 <- bgd_gadm_3 %>% filter(str_detect(name_3, "Palashbari")) %>%
 
 ```
 
+#bgd_108
 
+Viral sequence is listed as a primary case in a 43 year old male in Rahman et al 2021, [here](https://www.sciencedirect.com/science/article/pii/S1201971220322451#tbl0020). District is Pabna and subdistrict is Chatmohor. 
+
+IEDCR's list of 2013 cases includes a 43 year old male who died in Pabna that year, and a three year old in the same district who survived. 
+
+From BDNews24 via ProMED: "The new deaths were from Pabna and Rajshahi while one 8-month old boy is struggling for life in the Rajshahi Medical College Hospital." [link](https://promedmail.org/promed-post/?id=1518442)
+
+*** Coding to Chatmohar upazilla
+
+```{r}
+
+bgd_108 <- bgd_gadm_3 %>% filter(str_detect(name_3, "Chatmohar")) %>%
+  grab_polygon(108)
+
+```
