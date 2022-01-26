@@ -142,7 +142,7 @@ around 1:30pm."
 
 #bgd_106
 
-Viral sequence is listed as a primary case in a 7 year old male in Rayman et al 2021, [here](https://www.sciencedirect.com/science/article/pii/S1201971220322451#tbl0020). District is Kurigram and subdistrict Fulbari. 
+Viral sequence is listed as a primary case in a 7 year old male in Rahman et al 2021, [here](https://www.sciencedirect.com/science/article/pii/S1201971220322451#tbl0020). District is Kurigram and subdistrict Fulbari. 
 
 IECDR's list of 2013 cases lists a 7 year old male who died in Kurigram that year.
 
@@ -150,13 +150,24 @@ IECDR's list of 2013 cases lists a 7 year old male who died in Kurigram that yea
 
 ```{r}
 
-bgd_105 <- bgd_gadm_3 %>% filter(str_detect(name_2, "Kurigram")) %>%
+bgd_106 <- bgd_gadm_3 %>% filter(str_detect(name_2, "Kurigram")) %>%
   filter(str_detect(name_3, "Phulbari")) %>%
-  grab_polygon(105)
-
+  grab_polygon(106)
 
 ```
+#bgd_107
 
+Viral sequence is listed as a primary case in a 7 year old male in Rahman et al 2021, [here](https://www.sciencedirect.com/science/article/pii/S1201971220322451#tbl0020). District is Gaibandha and subdistrict Polashbari. 
 
+IEDCR's list of 2013 cases includes a 9 year old male who died in Gaibandha that year.
+
+*** Coding to Palashbari upazilla 
+
+```{r}
+
+bgd_107 <- bgd_gadm_3 %>% filter(str_detect(name_3, "Palashbari")) %>%
+  grab_polygon(107)
+
+```
 
 
