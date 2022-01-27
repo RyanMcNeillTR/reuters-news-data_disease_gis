@@ -186,3 +186,18 @@ bgd_108 <- bgd_gadm_3 %>% filter(str_detect(name_3, "Chatmohar")) %>%
   grab_polygon(108)
 
 ```
+
+#bgd_109
+
+Viral sequence is listed as a primary case in a 48 year old male in Rahman et al 2021, [here](https://www.sciencedirect.com/science/article/pii/S1201971220322451#tbl0020). District is Nilphamari and subdistrict is Sayedpur. 
+
+IEDCR's list of 2013 cases includes a 48 year old male who died in Nilphamari that year.
+
+*** Coding to Sayedpur upazilla, transliterated in GADM to Saidpur
+
+```{r}
+
+bgd_109 <- bgd_gadm_3 %>% filter(str_detect(name_3, "Saidpur")) %>%
+  grab_polygon(109)
+
+```
