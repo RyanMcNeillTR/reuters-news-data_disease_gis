@@ -201,3 +201,56 @@ bgd_109 <- bgd_gadm_3 %>% filter(str_detect(name_3, "Saidpur")) %>%
   grab_polygon(109)
 
 ```
+
+#bgd_110
+
+Viral sequence is listed as a primary case in a 22 year old male in Rahman et al 2021, [here](https://www.sciencedirect.com/science/article/pii/S1201971220322451#tbl0020). District is Rangpur and subdistrict is Sadar.
+
+IEDCR's list of 2014 case counts by district identifies four in Rangpur.
+
+*** Coding to the Sadar upazilla of Rangpur.
+
+```{r}
+
+bgd_110 <- bgd_gadm_3 %>% filter(str_detect(name_2, "Rangpur")) %>%
+filter(str_detect(name_3, "Sadar")) %>%
+  grab_polygon(110)
+
+```
+#bgd_111
+
+Viral sequence is listed as a primary case in a 22 year old male in Rahman et al 2021, [here](https://www.sciencedirect.com/science/article/pii/S1201971220322451#tbl0020). District is Faridpur and subdistrict is Saltha.
+
+IEDCR's list of 2014 case counts by district identifies five in Faridpur
+
+*** Coding to Saltha upazilla
+
+```{r}
+
+bgd_111 <- bgd_gadm_3 %>% filter(str_detect(name_3, "Saltha")) %>%
+  grab_polygon(111)
+
+
+```
+
+#bgd_112 / bgd_113
+
+From Dhaka Tribune, archived through the Wayback Machine: "Health specialists have expressed concerns about a potential fresh outbreak of the deadly Nipah virus (NiV), following the confirmation of two recent deaths from NiV infection and four more suspected fatalities.
+
+"Laboratory tests at the Institute of Epidemiology, Disease Control and Research (IEDCR) has confirmed that two boys – aged 13 and 14 – died from NiV infection at Shibaloy and Ghior of Manikganj district on the last week of December last year.Both of them died after being infected with the virus by drinking raw date-palm sap (Khejurer Rosh)."
+
+[link](https://web.archive.org/web/20140525203226/http://www.dhakatribune.com/safety/2014/jan/12/fears-nipah-virus-outbreak-following-2-confirmed-deaths)
+
+*** Coding to Shibalaya and Ghior upazillas
+
+```{r}
+
+bgd_112 <- bgd_gadm_3 %>% filter(str_detect(name_3, "Shibalaya")) %>%
+  grab_polygon(112)
+
+bgd_113 <- bgd_gadm_3 %>% filter(str_detect(name_3, "Ghior")) %>%
+  grab_polygon(113)
+
+```
+
+- See more at: http://www.dhakatribune.com/safety/2014/jan/12/fears-nipah-virus-outbreak-following-2-confirmed-deaths#sthash.pJ9l2W2A.dpuf
