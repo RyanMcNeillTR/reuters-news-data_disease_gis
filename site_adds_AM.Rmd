@@ -91,6 +91,21 @@ bgd_90 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Rajshahi")) %>%
 
 ```
 
+#bgd_91
+
+Viral sequence is listed as a primary case in a 26 year old male patient in February 2018 in Rahman et al 2021, [here](https://www.sciencedirect.com/science/article/pii/S1201971220322451#tbl0020). District is Faridpur, no upazilla mentioned.
+
+*** Coding to Faridpur district
+
+```{r}
+
+bgd_91 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Faridpur")) %>%
+  grab_polygon(91)
+
+
+```
+
+
 #bgd_98
 
 This adds a second location to the incident first described in bgd_41, see notes there.
