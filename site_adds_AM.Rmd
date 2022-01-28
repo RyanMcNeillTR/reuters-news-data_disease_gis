@@ -80,7 +80,16 @@ grab_polygon <-function(geom, id) {
 
 #bgd_90
 
+Viral sequence is listed as a primary case in a male patient in April 2018 Rahman et al 2021, [here](https://www.sciencedirect.com/science/article/pii/S1201971220322451#tbl0020). District is Rajshahi, no upazilla mentioned. 
 
+*** Coding to district
+
+```{r}
+
+bgd_90 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Rajshahi")) %>%
+  grab_polygon(90)
+
+```
 
 #bgd_98
 
