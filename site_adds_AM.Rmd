@@ -269,6 +269,7 @@ bgd_114 <- bgd_gadm_3 %>% filter(str_detect(name_3, "Magura Sadar")) %>%
   grab_polygon(114)
 
 ```
+#bgd_115 
 
 Viral sequence is listed as a primary case in a 7 year old male in Rahman et al 2021, [here](https://www.sciencedirect.com/science/article/pii/S1201971220322451#tbl0020). District is Gopalganj and subdistrict is Mokshedpur.
 
@@ -281,7 +282,21 @@ No further information in other sources, but have not located a comprehensive ca
 
 ```{r}
 
-bgd_114 <- bgd_gadm_3 %>% filter(str_detect(name_3, "Muksudpur")) %>%
-  grab_polygon(114)
+bgd_115 <- bgd_gadm_3 %>% filter(str_detect(name_3, "Muksudpur")) %>%
+  grab_polygon(115)
+
+```
+
+#bgd_116
+
+Viral sequence is listed as a primary case in a 36 year old male in Rahman et al 2021, [here](https://www.sciencedirect.com/science/article/pii/S1201971220322451#tbl0020). District is Madaripur and subdistrict Shibchar.
+
+*** Coding to upazilla Shib Char 
+* Check Factiva
+
+```{r}
+
+bgd_116 <- bgd_gadm_3 %>% filter(str_detect(name_3, "Shib Char")) %>%
+  grab_polygon(116)
 
 ```
