@@ -19,6 +19,9 @@ Load libraries
 
 library(tidyverse)
 library(sf)
+library(ggplot2)
+library(rnaturalearth)
+library(rnaturalearthdata)
 
 ```
 
@@ -102,8 +105,29 @@ Viral sequence is listed as a primary case in a 26 year old male patient in Febr
 bgd_91 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Faridpur")) %>%
   grab_polygon(91)
 
+```
+
+#bgd_92
+
+Viral sequence is listed as a primary case in a 13 year old male in 2017 in Rahman et al 2021, [here](https://www.sciencedirect.com/science/article/pii/S1201971220322451#tbl0020). Location given is Uttar Raghobpur in Pabna district.
+
+Uttar Raghobpur is not an upazilla or a union. [This website](https://www.thebangladesh.net/rajshahi-division/pabna-district/pabna-sadar-upazila-pabna/malanchi-union-pabna/uttar-raghabpur-mouza-pabna-sadar-pabna.html) suggests it is a lower administrative division called a 'mouza'. The site says it is in Malanchi union of Pabna Sadar, which is in GADM.
+
+The small area atlas [here](http://203.112.218.65:8008/WebTestApplication/userfiles/Image/Atlas/Pabna.pdf) confirms on page 40 that Uttar Raghabpur is part of Malanchi union.
+
+*** Coding to Malanchi for now, but could later code to the mouza 
+
+```{r}
+
+bgd_92 <- bgd_gadm_4 %>% filter(str_detect(name_2, "Pabna")) %>%
+  filter(str_detect(name_4, "Malanchi")) %>%
+  grab_polygon(92)
 
 ```
+#bgd_93
+
+
+
 
 
 #bgd_98
