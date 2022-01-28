@@ -328,7 +328,9 @@ Faridpur is not mentioned in EICDR's last 2013 report, though it was from May 20
 
 #bgd_27
 
-Data sais "Makikgank" which is not a district, but district Manikganj did have a documented outbreak that year:
+Note this spillover is early 2013; added spillover bgd_112 is a separate event reported in December, the next season.
+
+Data says "Makikgank" which is not a district, but district Manikganj did have a documented outbreak that year:
 
 "At Hafeznagar village in Shibalaya upazila of the district, 4 people, including a couple, died of an unknown disease in the last 2 weeks. The victims are a 40-year-old woman, her husband age 45 years, the woman's mother of 55 years, and a neighbour, a man 36-years-old. The neighbor and the woman died at Dhaka Community Hospital on 28 and 29 Mar [2013]. The mother died on way to Dhaka on 28 Mar [2013], while the husband died at Monno General Hospital in Manikganj on 14 Mar [2013], family sources said." [source](https://promedmail.org/promed-post/?id=20130401.1613261)
 
