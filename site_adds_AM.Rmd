@@ -226,6 +226,7 @@ IEDCR's list of 2014 case counts by district identifies five in Faridpur
 *** Coding to Saltha upazilla
 * Check Factiva
 
+
 ```{r}
 
 bgd_111 <- bgd_gadm_3 %>% filter(str_detect(name_3, "Saltha")) %>%
@@ -253,6 +254,7 @@ bgd_113 <- bgd_gadm_3 %>% filter(str_detect(name_3, "Ghior")) %>%
   grab_polygon(113)
 
 ```
+
 
 #bgd_114
 
