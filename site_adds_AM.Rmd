@@ -224,12 +224,13 @@ Viral sequence is listed as a primary case in a 22 year old male in Rahman et al
 IEDCR's list of 2014 case counts by district identifies five in Faridpur
 
 *** Coding to Saltha upazilla
+* Check Factiva
+
 
 ```{r}
 
 bgd_111 <- bgd_gadm_3 %>% filter(str_detect(name_3, "Saltha")) %>%
   grab_polygon(111)
-
 
 ```
 
@@ -242,6 +243,7 @@ From Dhaka Tribune, archived through the Wayback Machine: "Health specialists ha
 [link](https://web.archive.org/web/20140525203226/http://www.dhakatribune.com/safety/2014/jan/12/fears-nipah-virus-outbreak-following-2-confirmed-deaths)
 
 *** Coding to Shibalaya and Ghior upazillas
+* Check Factiva
 
 ```{r}
 
@@ -253,4 +255,50 @@ bgd_113 <- bgd_gadm_3 %>% filter(str_detect(name_3, "Ghior")) %>%
 
 ```
 
-- See more at: http://www.dhakatribune.com/safety/2014/jan/12/fears-nipah-virus-outbreak-following-2-confirmed-deaths#sthash.pJ9l2W2A.dpuf
+
+#bgd_114
+
+Viral sequence is listed as a primary case in a 14 year old male in Rahman et al 2021, [here](https://www.sciencedirect.com/science/article/pii/S1201971220322451#tbl0020). District is Magura and subdistrict Sadar.
+
+IEDCR's list of 2014 case counts by district identifies five in Magura
+
+** Coding to Magura Sadar upazilla
+* Check Factiva
+
+```{r}
+
+bgd_114 <- bgd_gadm_3 %>% filter(str_detect(name_3, "Magura Sadar")) %>%
+  grab_polygon(114)
+
+```
+#bgd_115 
+
+Viral sequence is listed as a primary case in a 7 year old male in Rahman et al 2021, [here](https://www.sciencedirect.com/science/article/pii/S1201971220322451#tbl0020). District is Gopalganj and subdistrict is Mokshedpur.
+
+GADM data transliterates as more standard Muksudpur, which data [here](https://moa.portal.gov.bd/sites/default/files/files/moa.portal.gov.bd/page/7bd6781d_6460_4531_8df7_84c90ed2c8b4/Gopalganj-12.03.2020.pdf) makes clear is equivalent. 
+
+No further information in other sources, but have not located a comprehensive case list for 2015 from IEDCR so this is perhaps not surprising.
+
+*** Coding to Muksudpur upazilla
+* Check Factiva
+
+```{r}
+
+bgd_115 <- bgd_gadm_3 %>% filter(str_detect(name_3, "Muksudpur")) %>%
+  grab_polygon(115)
+
+```
+
+#bgd_116
+
+Viral sequence is listed as a primary case in a 36 year old male in Rahman et al 2021, [here](https://www.sciencedirect.com/science/article/pii/S1201971220322451#tbl0020). District is Madaripur and subdistrict Shibchar.
+
+*** Coding to upazilla Shib Char 
+* Check Factiva
+
+```{r}
+
+bgd_116 <- bgd_gadm_3 %>% filter(str_detect(name_3, "Shib Char")) %>%
+  grab_polygon(116)
+
+```
