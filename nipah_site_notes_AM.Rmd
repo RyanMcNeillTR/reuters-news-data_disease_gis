@@ -223,7 +223,8 @@ Daily Star (article)[https://www.thedailystar.net/2-die-of-nipah-virus-in-naogao
 
 May 18, 2015: "Two people died of Nipah virus at Manda upazila in Naogaon last week, said the Institute of Epidemiology, Disease Control and Research today."
 
-@waiting IEDCR director
+Again for bgd_117, a viral sequence is listed as a primary case in a 25 year old male in Rahman et al 2021, [here](https://www.sciencedirect.com/science/article/pii/S1201971220322451#tbl0020). District is Naogaon and subdistrict Manda. But the sample is from January 2015, not May. 
+
 *** Coding bgd_17 to Manda Upazila, the rest at the district level
 
 ```{r}
