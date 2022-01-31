@@ -190,8 +190,7 @@ That is based on this chart from Bangladesh's Institute of Epidemiology, Disease
 
 No way to pinpoint potential spillover location based on this source. 
 
-@waiting AM emailed IEDCR director about location of cases from their statistics, Jan 11
-*** For now, leaving this data point out 
+*** Not coding 
 
 ### bgd_5
 
