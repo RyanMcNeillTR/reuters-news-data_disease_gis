@@ -81,6 +81,23 @@ grab_polygon <-function(geom, id) {
 
 # INDIA 
 
+#ind_2
+
+Metabiota lists Kerala, 2021. Deb has coordinate from original reporting.
+
+```{r}
+
+temp_point <- tribble(~latitude, ~longitude, 11.26178, 75.96031) %>%
+  st_as_sf(coords = c("longitude", "latitude"), crs = 4326)
+
+ind_2 <- data.frame(poly_geom = NA,
+                    point_geom = temp_point,
+                    precision = "point",
+                    reuters_id = 2,
+                    country_iso = "IND")
+
+```
+
 #ind_7
 
 Metabiota lists Kerala, 2019, no other details, but Deb has market coordinates from original reporting.
