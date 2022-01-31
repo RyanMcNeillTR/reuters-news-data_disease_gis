@@ -17,5 +17,25 @@ sources: https://figshare.com/articles/dataset/Human_index_cases_-_Ebola_virus_d
 
 Excluding because not enough preceding data. 
 
+
+## Gabon
+
+Load the Gabon GADM.
+
+```{r}
+st_layer("./input_data/Gabon/gadm36_GAB_gpkg/gadm36_GAB.gpkg")
+```
+
+
 ### gab_86
+
+The MetaBiota data does not have coordinates, but Shapiro cites Mylne for the location. 
+
+```{r}
+gab_86_point <- tribble(
+  ~latitude, ~longitude,
+  0.091, 14.218 
+) %>%
+  st_as_sf(coords=c("longitude", "latitude"), crs=4326) 
+```
 
