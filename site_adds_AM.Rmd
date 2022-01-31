@@ -1,8 +1,6 @@
 ---
 title: "Adding data - Allison's work"
-output:
-  github_document:
-    toc: true
+output: word_document
 ---
 
 Set working directory for Allison's Windows laptop
