@@ -19,6 +19,9 @@ Load libraries
 
 library(tidyverse)
 library(sf)
+library(ggplot2)
+library(rnaturalearth)
+library(rnaturalearthdata)
 
 ```
 
@@ -79,6 +82,51 @@ grab_polygon <-function(geom, id) {
 
 
 #bgd_90
+
+Viral sequence is listed as a primary case in a male patient in April 2018 Rahman et al 2021, [here](https://www.sciencedirect.com/science/article/pii/S1201971220322451#tbl0020). District is Rajshahi, no upazilla mentioned. 
+
+*** Coding to district
+
+```{r}
+
+bgd_90 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Rajshahi")) %>%
+  grab_polygon(90)
+
+```
+
+#bgd_91
+
+Viral sequence is listed as a primary case in a 26 year old male patient in February 2018 in Rahman et al 2021, [here](https://www.sciencedirect.com/science/article/pii/S1201971220322451#tbl0020). District is Faridpur, no upazilla mentioned.
+
+*** Coding to Faridpur district
+
+```{r}
+
+bgd_91 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Faridpur")) %>%
+  grab_polygon(91)
+
+```
+
+#bgd_92
+
+Viral sequence is listed as a primary case in a 13 year old male in 2017 in Rahman et al 2021, [here](https://www.sciencedirect.com/science/article/pii/S1201971220322451#tbl0020). Location given is Uttar Raghobpur in Pabna district.
+
+Uttar Raghobpur is not an upazilla or a union. [This website](https://www.thebangladesh.net/rajshahi-division/pabna-district/pabna-sadar-upazila-pabna/malanchi-union-pabna/uttar-raghabpur-mouza-pabna-sadar-pabna.html) suggests it is a lower administrative division called a 'mouza'. The site says it is in Malanchi union of Pabna Sadar, which is in GADM.
+
+The small area atlas [here](http://203.112.218.65:8008/WebTestApplication/userfiles/Image/Atlas/Pabna.pdf) confirms on page 40 that Uttar Raghabpur is part of Malanchi union.
+
+*** Coding to Malanchi for now, but could later code to the mouza 
+
+```{r}
+
+bgd_92 <- bgd_gadm_4 %>% filter(str_detect(name_2, "Pabna")) %>%
+  filter(str_detect(name_4, "Malanchi")) %>%
+  grab_polygon(92)
+
+```
+#bgd_93
+
+
 
 
 
@@ -277,8 +325,6 @@ Viral sequence is listed as a primary case in a 7 year old male in Rahman et al 
 
 GADM data transliterates as more standard Muksudpur, which data [here](https://moa.portal.gov.bd/sites/default/files/files/moa.portal.gov.bd/page/7bd6781d_6460_4531_8df7_84c90ed2c8b4/Gopalganj-12.03.2020.pdf) makes clear is equivalent. 
 
-No further information in other sources, but have not located a comprehensive case list for 2015 from IEDCR so this is perhaps not surprising.
-
 *** Coding to Muksudpur upazilla
 * Check Factiva
 
@@ -302,3 +348,21 @@ bgd_116 <- bgd_gadm_3 %>% filter(str_detect(name_3, "Shib Char")) %>%
   grab_polygon(116)
 
 ```
+
+#bgd_117
+
+Viral sequence is listed as a primary case in a 42 year old male in Rahman et al 2021, [here](https://www.sciencedirect.com/science/article/pii/S1201971220322451#tbl0020). District is Rajshahi and subdistrict Bagha.
+
+***Coding to Bagha upazilla
+* Check FActiva
+
+```{r}
+
+bgd_117 <- bgd_gadm_3 %>% filter(str_detect(name_2, "Rajshahi")) %>%
+  filter(str_detect(name_3, "Bagha")) %>%
+  grab_polygon(117)
+
+```
+
+
+
