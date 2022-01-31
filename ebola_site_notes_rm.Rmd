@@ -13,6 +13,11 @@ library(sf)
 sources: https://figshare.com/articles/dataset/Human_index_cases_-_Ebola_virus_disease/3423593?backTo=/collections/eLife_Advances_-_Updates_to_the_zoonotic_niche_map_of_Ebola_virus_disease_in_Africa/3267965
 
 
+
+
+
+
+
 ### uga_89
 
 Excluding because not enough preceding data. 
@@ -29,13 +34,25 @@ st_layer("./input_data/Gabon/gadm36_GAB_gpkg/gadm36_GAB.gpkg")
 
 ### gab_86
 
+This is a 2001 outbreak in Gabon. The Metabiota data cites it as Etakangaye. 
+
 The MetaBiota data does not have coordinates, but Shapiro cites Mylne for the location. 
+
+We can reference [Mylne's data here](https://doi.org/10.6084/m9.figshare.1168886). 
+
 
 ```{r}
 gab_86_point <- tribble(
   ~latitude, ~longitude,
-  0.091, 14.218 
+  1.07168, 14.10658
 ) %>%
   st_as_sf(coords=c("longitude", "latitude"), crs=4326) 
 ```
+
+
+
+
+
+
+
 
