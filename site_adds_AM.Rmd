@@ -126,9 +126,21 @@ bgd_92 <- bgd_gadm_4 %>% filter(str_detect(name_2, "Pabna")) %>%
 ```
 #bgd_93
 
+Viral sequence is listed as a primary case in a 12 year old male in 2017 in Rahman et al 2021, [here](https://www.sciencedirect.com/science/article/pii/S1201971220322451#tbl0020). Location given is Uttar Raghobpur in Pabna district. Location is apparently Joykalidangi, Faridpur, but "Joykalidangi" does not exist as written outside this academic paper.
 
+The given date is February 15, 2017. IEDCR's site says they investigated an encephalities cluster in Faridpur in late January, see [here](https://old.iedcr.gov.bd/website/index.php/outbreak/203-outbreak2017)
 
+```{r}
 
+bgd_gadm_4 %>% filter(str_detect(name_4, "Dangi"))
+
+```
+
+There is a Dangi union in Faridpur. 
+
+No information about this outbreak in other sources.
+
+*** Not coding for now.
 
 #bgd_98
 
