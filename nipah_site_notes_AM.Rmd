@@ -1,8 +1,6 @@
 ---
 title: "Nipah sites in Bangladesh"
-output:
-  github_document:
-    toc: true
+output: word_document
 ---
 
 ```{r}
@@ -72,6 +70,7 @@ Setting up function that returns variables based on single GADM polygon.
 
 grab_polygon <-function(geom, id) {
   geom %>% select(poly_geom = geom) %>% 
+           mutate(point_geom = st_centroid(poly_geom),
                   precision = "centroid",
                   reuters_id = id,
                   country_iso = "BGD")
@@ -80,6 +79,23 @@ grab_polygon <-function(geom, id) {
 ```
 
 # INDIA 
+
+#ind_2
+
+Metabiota lists Kerala, 2021. Deb has coordinate from original reporting.
+
+```{r}
+
+temp_point <- tribble(~latitude, ~longitude, 11.26178, 75.96031) %>%
+  st_as_sf(coords = c("longitude", "latitude"), crs = 4326)
+
+ind_2 <- data.frame(poly_geom = NA,
+                    point_geom = temp_point,
+                    precision = "point",
+                    reuters_id = 2,
+                    country_iso = "IND")
+
+```
 
 #ind_7
 
@@ -160,10 +176,9 @@ phl_22 <- phl_level_3 %>% filter(str_detect(name_3, "Tinalon")) %>%
 
 ```
 
-
 # BANGLADESH
 
-# bgd_3
+#bgd_3
 
 Unspecified number of Nipah cases in Bangladesh, 2021, no other details in data.
 
@@ -173,10 +188,9 @@ That is based on this chart from Bangladesh's Institute of Epidemiology, Disease
 
 No way to pinpoint potential spillover location based on this source. 
 
-@waiting AM emailed IEDCR director about location of cases from their statistics, Jan 11
-*** For now, leaving this data point out 
+*** Not coding 
 
-### bgd_5
+#bgd_5
 
 Unspecified number of Nipah cases in Bangladesh in 2020, no other details.
 
@@ -187,7 +201,7 @@ Searched ProMed
 @waiting IEDCR director
 *** For now, leaving this data point out 
 
-### bgd_6
+#bgd_6
 
 Unspecified number of Nipah cases in Thakurgaon District in 2019.
 
@@ -235,8 +249,11 @@ bgd_14 <- bgd_gadm_2 %>%
 
 bgd_15 <- bgd_gadm_2 %>% 
   filter(str_detect(name_2, "Rajbari")) %>%
- bgd_17 <- bgd_gadm_3 %>%
-  filter(str_detect(name_3, "Manda")) grab_polygon(15)
+  grab_polygon(15)
+  
+bgd_17 <- bgd_gadm_3 %>%
+  filter(str_detect(name_3, "Manda")) %>%
+  grab_polygon(17)
 
 bgd_16 <- bgd_gadm_2 %>% 
   filter(str_detect(name_2, "Magura")) %>%
@@ -253,7 +270,7 @@ bgd_19 <- bgd_gadm_2 %>%
 
 ```
 
-# BANGLADESH, 2013
+#Bangladesh 2013 general notes
 
 Full IECDR location list for 2013:
 [source](http://www.iedcr.org/index.php?option=com_content&view=article&id=135:23-rd-february-2013-nipah-outbreak&catid=11)
@@ -469,13 +486,13 @@ Dinajpur, 2013, no other details. Dinajpur is both a city and a district. It is 
 
 *** Not coding
 
-# bgd_36
+#bgd_36
 
 Ranpur, 2013, no other details. Rangpur is a city, district and division, and it is not on EICDR's 2013 outbreak list. Nothing furhter on ProMED, Factiva, DAily 
 
 *** Not coding
 
-# bgd_41
+#bgd_41
 
 Joypurhat, 2012, Metabiota data links to [this paper](https://onlinelibrary.wiley.com/doi/full/10.1002/rmv.2010)
 
