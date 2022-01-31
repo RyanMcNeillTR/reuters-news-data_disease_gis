@@ -192,7 +192,7 @@ No way to pinpoint potential spillover location based on this source.
 
 *** Not coding 
 
-### bgd_5
+# bgd_5
 
 Unspecified number of Nipah cases in Bangladesh in 2020, no other details.
 
@@ -203,7 +203,7 @@ Searched ProMed
 @waiting IEDCR director
 *** For now, leaving this data point out 
 
-### bgd_6
+# bgd_6
 
 Unspecified number of Nipah cases in Thakurgaon District in 2019.
 
@@ -251,8 +251,11 @@ bgd_14 <- bgd_gadm_2 %>%
 
 bgd_15 <- bgd_gadm_2 %>% 
   filter(str_detect(name_2, "Rajbari")) %>%
- bgd_17 <- bgd_gadm_3 %>%
-  filter(str_detect(name_3, "Manda")) grab_polygon(15)
+  grab_polygon(15)
+  
+bgd_17 <- bgd_gadm_3 %>%
+  filter(str_detect(name_3, "Manda")) %>%
+  grab_polygon(17)
 
 bgd_16 <- bgd_gadm_2 %>% 
   filter(str_detect(name_2, "Magura")) %>%
