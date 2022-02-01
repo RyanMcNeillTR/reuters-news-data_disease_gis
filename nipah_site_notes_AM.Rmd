@@ -314,7 +314,7 @@ Earlier report from January: "According to its Director, the family drank raw da
 
 Bhaluka is an upazila within the Mymensingh district, but Bhaluka is also a village in the upazila. 
 
-*** Coding to the upazila
+*** Coding to Bhaluka upazila
 
 ```{r}
 
@@ -332,7 +332,7 @@ Nothing on ProMED or online that I can find.
 
 Faridpur is not mentioned in EICDR's last 2013 report, though it was from May 2013 so possibly [incomplete](http://www.iedcr.org/index.php?option=com_content&view=article&id=135:23-rd-february-2013-nipah-outbreak&catid=11)
 
-*** Not coding yet
+*** Not coding
 
 #bgd_26
 
@@ -340,13 +340,13 @@ Data notes district Madaripur and 2013, no other details.
 
 Nothing on ProMED or online that I can find.
 
-Faridpur is not mentioned in EICDR's last 2013 report, though it was from May 2013 so possibly [incomplete](http://www.iedcr.org/index.php?option=com_content&view=article&id=135:23-rd-february-2013-nipah-outbreak&catid=11)
+Madaripur is not mentioned in EICDR's last 2013 report, though it was from May 2013 so possibly [incomplete](http://www.iedcr.org/index.php?option=com_content&view=article&id=135:23-rd-february-2013-nipah-outbreak&catid=11)
 
 *** Not coding
 
 #bgd_27
 
-Note this spillover is early 2013; added spillover bgd_112 is a separate event reported in December, the next season.
+Note this spillover is early 2013; added spillover bgd_112 in the same district is a separate event reported in December, the next season.
 
 Data says "Makikgank" which is not a district, but district Manikganj did have a documented outbreak that year:
 
@@ -377,15 +377,17 @@ Nothing in ProMED, Daily Star, general Google search, Factiva, IECDR report from
 
 Data notes district Kushtia and 2013, no other details.
 
-*** Coding to Kushtia district
+IEDCR bulletin for 2013 says a 5 year old girl died in Kushtia that year, see [here](http://www.iedcr.org/index.php?option=com_content&view=article&id=135:23-rd-february-2013-nipah-outbreak&catid=11))
+
+*** Coding to Kushtia
 
 ```{r}
 
-bgd_29 <- bgd_gadm_2 %>% 
-  filter(str_detect(name_2, "Kushtia")) %>%
+bgd_29 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Kushtia")) %>%
   grab_polygon(29)
 
 ```
+
 #bgd_30
 
 Magura district, 2013, no other details.
