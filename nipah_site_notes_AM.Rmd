@@ -419,7 +419,7 @@ The district is not on IECDR's 2013 case list but it is on the 2014 one, which a
 
 Nothing in the Daily Star, Factiva, ProMED.
 
-*** Not coding yet
+*** Not coding
 
 #bgd_32
 
@@ -434,7 +434,6 @@ Daily Star mentions a death in Naogaon in January in passing [here](https://www.
 Viral sequence is listed as a primary case in a 8 year old male in Rahman et al 2021, [here](https://www.sciencedirect.com/science/article/pii/S1201971220322451#tbl0020). Subdistrict is listed as Boldogachi. 
 
 *** Coding to Boldogachi upazilla, transliterated in GADM as Badalgachhi
-
 
 ```{r}
 
