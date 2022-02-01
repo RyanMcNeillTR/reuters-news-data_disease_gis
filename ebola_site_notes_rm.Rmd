@@ -13,9 +13,13 @@ library(sf)
 sources: https://figshare.com/articles/dataset/Human_index_cases_-_Ebola_virus_disease/3423593?backTo=/collections/eLife_Advances_-_Updates_to_the_zoonotic_niche_map_of_Ebola_virus_disease_in_Africa/3267965
 
 
+```{r}
+mylne_polys <- st_read("./input_data/Ebola/Mylne/09EboladatapaperGISpolygonshapefile/historical_spread_polygons.shp")
+mylne_points <- st_read("./input_data/Ebola/Mylne/08EboladatapaperGISpointsshapefile/historical_spread_points.shp") 
+```
 
 
-
+## Uganda
 
 
 ### uga_89
@@ -28,8 +32,14 @@ Excluding because not enough preceding data.
 Load the Gabon GADM.
 
 ```{r}
-st_layer("./input_data/Gabon/gadm36_GAB_gpkg/gadm36_GAB.gpkg")
+st_layers("./input_data/Gabon/gadm36_GAB_gpkg/gadm36_GAB.gpkg")
 ```
+
+```{r}
+gadm36_GAB_2 <- st_read("./input_data/Gabon/gadm36_GAB_gpkg/gadm36_GAB.gpkg", layer = "gadm36_GAB_2")
+```
+
+
 
 
 ### gab_86
@@ -40,18 +50,91 @@ The MetaBiota data does not have coordinates, but Shapiro cites Mylne for the lo
 
 We can reference [Mylne's data here](https://doi.org/10.6084/m9.figshare.1168886). 
 
+From the data notes:
+
+"GE and the digitized article map were used to geo-ref. Because we are not 100% sure where the village is, a polygon needs to be drawn around the excel coords. (1.07168, 14.10658)"
+
+We extract the polygon and add the centroid. 
 
 ```{r}
-gab_86_point <- tribble(
-  ~latitude, ~longitude,
-  1.07168, 14.10658
-) %>%
-  st_as_sf(coords=c("longitude", "latitude"), crs=4326) 
+gab_86_poly <- mylne_polys %>%
+  filter(uniq_id == 164) %>%
+  select(poly_geom = geometry) %>%
+  mutate(point_geom = st_centroid(poly_geom),
+         precision = "centroid")
+```
+
+### gab_85
+
+Another 2001 outbreak in Gabon, this time in Ekata.
+
+From the Mylne notes:
+
+"Digitized from Pourrut 2005." The link to [that paper is here](https://www.sciencedirect.com/science/article/abs/pii/S1286457905001437?via%3Dihub).
+
+Appears to be an exact site. Have asked Allison for Pourrut paper and will update when I know more. 
+
+0.67705	14.28902
+
+
+```{r}
+gab_85_point <- mylne_points %>%
+  filter(uniq_id == 162) %>%
+  select(point_geom = geometry) %>%
+  mutate(precision = "exact")
+```
+
+
+### gab_82
+
+One last 2001 outbreak in Gabon, this time in Memdemba. 
+
+From the Mylne notes: 
+
+"Pourrut 2005 used to locate actual site of index case."
+
+```{r}
+gab_82_point <- mylne_points %>%
+  filter(uniq_id == 160) %>%
+  select(point_geom = geometry) %>%
+  mutate(precision = "exact")
 ```
 
 
 
 
+## Republic of the Congo
+
+### cod_84
+
+
+This is a 2001 outbreak in the Republic of the Congo. Metabiota identified it as Entsiami, Abolo, Ambomi. 
+
+From the Mylne dataset: 
+
+"Entsiami' digitized from Pourrut 2005 and a 5km radius used to include the neibouring villages of Abolo & Ambomi (0.09141, 14.21818)"
+
+```{r}
+cod_84_poly <- mylne_polys %>%
+  filter(uniq_id == 161) %>%
+  select(poly_geom = geometry) %>%
+  mutate(point_geom = st_centroid(poly_geom),
+         precision = "centroid")
+```
+
+
+### cod_83
+
+This is another 2001 outbreak in the Republic of the Congo. Metabiota listed it as Oloba, Mbomo district. 
+
+From the Mylne dataset: "Pourrut 2005 used to locate actual site of index case."
+
+```{r}
+cod_83_point <- mylne_points %>%
+  filter(uniq_id == 163) %>%
+  select(point_geom = geometry) %>%
+  mutate(precision = "exact")
+```
 
 
 
