@@ -383,6 +383,16 @@ As there is no further reporting on spillovers in this district, not coding agai
 
 *** Not coding
 
+#bgd_119
 
+Nilphamari district appears on the IEDCR case list for 2013 [here](https://webcache.googleusercontent.com/search?q=cache:bjtu4Hc2QRQJ:www.iedcr.gov.bd/index.php/component/content/article/11/135-23-rd-february-2013-nipah-outbreak+&cd=1&hl=en&ct=clnk&gl=ca), and is repeated in an academic paper that cites IEDCR for districts with cases that year [here](http://ebaub.edu.bd/journal/ej/files/vol3/jc3_6.pdf).
 
+*** Coding to Nilphamari
 
+```{r}
+
+bgd_119 <- bgd_gadm_2 %>% 
+  filter(str_detect(name_2, "Nilphamari")) %>%
+  grab_polygon(119)
+
+```
