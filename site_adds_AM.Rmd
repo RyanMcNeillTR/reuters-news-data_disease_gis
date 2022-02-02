@@ -405,3 +405,20 @@ bgd_119 <- bgd_gadm_2 %>%
 
 ```
 
+#bgd_120
+
+Naogaon district appears on the IEDCR case list for 2013 [here](https://webcache.googleusercontent.com/search?q=cache:bjtu4Hc2QRQJ:www.iedcr.gov.bd/index.php/component/content/article/11/135-23-rd-february-2013-nipah-outbreak+&cd=1&hl=en&ct=clnk&gl=ca).
+
+Coding this separately from bgd_32, a specific spillover involving an 8 year old in the same district in 2013, because IEDCR lists additional patients later in thier table. 
+
+*** Coding to Naogaon
+
+```{r}
+
+bgd_120 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Naogaon")) %>%
+  grab_polygon(120)
+
+
+```
+
+
