@@ -35,6 +35,7 @@ Ebola sites notebook
     -   [cod_1](#cod_1)
 -   [Guinea](#guinea)
     -   [gin_23](#gin_23)
+-   [Final assembly](#final-assembly)
 
 ``` r
 library(tidyverse)
@@ -140,11 +141,12 @@ the excel coords. (1.07168, 14.10658)”
 We extract the polygon and add the centroid.
 
 ``` r
-gab_86_poly <- mylne_polys %>%
+gab_86 <- mylne_polys %>%
   filter(uniq_id == 164) %>%
   select(poly_geom = geometry) %>%
   mutate(point_geom = st_centroid(poly_geom),
-         precision = "centroid")
+         precision = "centroid",
+         id = "gab_86")
 ```
 
 ### gab_85
@@ -162,10 +164,11 @@ will update when I know more.
 0.67705 14.28902
 
 ``` r
-gab_85_point <- mylne_points %>%
+gab_85 <- mylne_points %>%
   filter(uniq_id == 162) %>%
   select(point_geom = geometry) %>%
-  mutate(precision = "exact")
+  mutate(precision = "exact",
+         id = "gab_85")
 ```
 
 ### gab_82
@@ -177,10 +180,11 @@ From the Mylne notes:
 “Pourrut 2005 used to locate actual site of index case.”
 
 ``` r
-gab_82_point <- mylne_points %>%
+gab_82 <- mylne_points %>%
   filter(uniq_id == 160) %>%
   select(point_geom = geometry) %>%
-  mutate(precision = "exact")
+  mutate(precision = "exact",
+         id = "gab_82")
 ```
 
 ### gab_78
@@ -205,11 +209,12 @@ review paper’s best guess as to its position and are likely to be
 representative of the coarse-scale ecologic conditions’.
 
 ``` r
-gab_78_poly <- mylne_polys %>%
+gab_78 <- mylne_polys %>%
   filter(uniq_id == 165) %>%
   select(poly_geom = geometry) %>%
   mutate(point_geom = st_centroid(poly_geom),
-         precision = "centroid")
+         precision = "centroid",
+         id = "gab_78")
 ```
 
 ## Republic of the Congo
@@ -225,11 +230,12 @@ From the Mylne dataset:
 the neibouring villages of Abolo & Ambomi (0.09141, 14.21818)”
 
 ``` r
-cog_84_poly <- mylne_polys %>%
+cog_84 <- mylne_polys %>%
   filter(uniq_id == 161) %>%
   select(poly_geom = geometry) %>%
   mutate(point_geom = st_centroid(poly_geom),
-         precision = "centroid")
+         precision = "centroid",
+         id = "cog_84")
 ```
 
 ### cog_83
@@ -241,10 +247,11 @@ From the Mylne dataset: “Pourrut 2005 used to locate actual site of
 index case.”
 
 ``` r
-cog_83_point <- mylne_points %>%
+cog_83 <- mylne_points %>%
   filter(uniq_id == 163) %>%
   select(point_geom = geometry) %>%
-  mutate(precision = "exact")
+  mutate(precision = "exact",
+         id = "cog_83")
 ```
 
 ### cog_80
@@ -259,11 +266,12 @@ around the Lossi Animal reserve. A polygon was drawn around the excel
 coords to represent the potential hunting range (0.14963 14.43731)”
 
 ``` r
-cog_80_poly <- mylne_polys %>%
+cog_80 <- mylne_polys %>%
   filter(uniq_id == 174) %>%
   select(poly_geom = geometry) %>%
   mutate(point_geom = st_centroid(poly_geom),
-         precision = "centroid")
+         precision = "centroid", 
+         id = "cog_80")
 ```
 
 ### cog_79
@@ -285,10 +293,11 @@ coords represent the GE marker for Yembelangoye village which is in the
 correct area as described by Ref 130.”
 
 ``` r
-cog_79_point <- mylne_points %>%
+cog_79 <- mylne_points %>%
   filter(uniq_id == 173) %>%
   select(point_geom = geometry) %>%
-  mutate(precision = "exact")
+  mutate(precision = "exact",
+         id = "cog_79")
 ```
 
 ### cog_75
@@ -307,11 +316,12 @@ recorded. Information regarding the index case came from Mbandza
 according to Ref 129
 
 ``` r
-cog_75_poly <- mylne_polys %>%
+cog_75 <- mylne_polys %>%
   filter(uniq_id == 180) %>%
   select(poly_geom = geometry) %>%
   mutate(point_geom = st_centroid(poly_geom),
-         precision = "centroid")
+         precision = "centroid",
+         id = "cog_75")
 ```
 
 ### cog_74
@@ -325,10 +335,11 @@ Mylne notes:
 Pourrut 2005.”
 
 ``` r
-cog_74_point <- mylne_points %>%
+cog_74 <- mylne_points %>%
   filter(uniq_id == 175) %>%
   select(point_geom = geometry) %>%
-  mutate(precision = "exact")
+  mutate(precision = "exact",
+         id = "cog_74")
 ```
 
 ### cog_67
@@ -351,11 +362,12 @@ Faune de la Lekoli-Pandaka’ and the ‘Domdine de Chasse de Mboko’ parks
 which should also be incluced in the polygon boundry.
 
 ``` r
-cog_67_poly <- mylne_polys %>%
+cog_67 <- mylne_polys %>%
   filter(uniq_id == 186) %>%
   select(poly_geom = geometry) %>%
   mutate(point_geom = st_centroid(poly_geom),
-         precision = "centroid")
+         precision = "centroid",
+         id = "cog_67")
 ```
 
 ## South Sudan
@@ -372,11 +384,12 @@ in DRC which was 40km away from Yambio was geo-referenced. A polygon was
 drawn around this forest area (4.43149 28.7054)
 
 ``` r
-ssd_69_poly <- mylne_polys %>%
+ssd_69 <- mylne_polys %>%
   filter(uniq_id == 183) %>%
   select(poly_geom = geometry) %>%
   mutate(point_geom = st_centroid(poly_geom),
-         precision = "centroid")
+         precision = "centroid",
+         id = "ssd_69")
 ```
 
 ## Uganda
@@ -404,10 +417,11 @@ then find the town’s coords across the road. The school appears to be
 within 1km of the village and therfore a point was chosen.
 
 ``` r
-uga_58_point <- mylne_points %>%
+uga_58 <- mylne_points %>%
   filter(uniq_id == 195) %>%
   select(point_geom = geometry) %>%
-  mutate(precision = "exact")
+  mutate(precision = "exact",
+         id = "uga_58")
 ```
 
 ### uga_43
@@ -431,10 +445,11 @@ around Busika needs to be drawn to reflect the index case location.
 Please see Ref 109 (Fig 1) for more information.
 
 ``` r
-uga_43_point <- mylne_points %>%
+uga_43 <- mylne_points %>%
   filter(uniq_id == 207) %>%
   select(point_geom = geometry) %>%
-  mutate(precision = "exact")
+  mutate(precision = "exact",
+         id = "uga_43")
 ```
 
 ### uga_39
@@ -453,10 +468,11 @@ District, Uganda’ to generate centroid coords. A polygon needs to be
 drawn matching the the geographic limits of ‘ Luwero District, Uganda’.
 
 ``` r
-uga_39_point <- mylne_polys %>%
+uga_39 <- mylne_polys %>%
   filter(uniq_id == 214) %>%
   select(point_geom = geometry) %>%
-  mutate(precision = "exact")
+  mutate(precision = "exact",
+         id = "uga_39")
 ```
 
 ### uga_38
@@ -476,11 +492,12 @@ district, Uganda’ to generate cenrtroid coords. A polygon need to be
 drawn matching the the geographic limits of ‘Kibale district, Uganda’
 
 ``` r
-uga_38_poly <- mylne_polys %>%
+uga_38 <- mylne_polys %>%
   filter(uniq_id == 211) %>%
   select(poly_geom = geometry) %>%
   mutate(point_geom = st_centroid(poly_geom),
-         precision = "centroid")
+         precision = "centroid",
+         id = "uga_38")
 ```
 
 ## Democratic Republic of the Congo
@@ -558,10 +575,11 @@ For accuracy a polygon need to be drawn with a radius of 3km from the
 excel coords.
 
 ``` r
-cod_57_point <- mylne_points %>%
+cod_57 <- mylne_points %>%
   filter(uniq_id == 189) %>%
   select(point_geom = geometry) %>%
-  mutate(precision = "exact")
+  mutate(precision = "exact",
+         id = "cod_57")
 ```
 
 ### cod_52
@@ -583,11 +601,12 @@ index case but the outbreak in general. Therefore a polygon needs to be
 drawn matching the the geographic limits of Luebo.
 
 ``` r
-cod_52_poly <- mylne_polys %>%
+cod_52 <- mylne_polys %>%
   filter(uniq_id == 204) %>%
   select(poly_geom = geometry) %>%
   mutate(point_geom = st_centroid(poly_geom),
-         precision = "centroid")
+         precision = "centroid", 
+         id = "cod_52")
 ```
 
 ### cod_37
@@ -605,11 +624,12 @@ Orientale, DRC’ to generate centroid coords. A polygon needs to be drawn
 matching the the geographic limits of ‘Province Orientale, DRC’.
 
 ``` r
-cod_37_poly <- mylne_polys %>%
+cod_37 <- mylne_polys %>%
   filter(uniq_id == 208) %>%
   select(poly_geom = geometry) %>%
   mutate(point_geom = st_centroid(poly_geom),
-         precision = "centroid")
+         precision = "centroid",
+         id = "cod_37")
 ```
 
 ### cod_12
@@ -645,11 +665,12 @@ So far, we have only been able to source it to this polygon of the
 Mabalako health zone.
 
 ``` r
-cod_10_poly <- drc_health_zones %>%
+cod_10 <- drc_health_zones %>%
   filter(Nom == "Mabalako") %>%
   select(poly_geom = geometry) %>%
   mutate(point_geom = st_centroid(poly_geom),
-         precision = "centroid")
+         precision = "centroid",
+         id = "cod_10")
 ```
 
 ### cod_9
@@ -673,11 +694,12 @@ the epicenter is Ikoko Impenge Health Area.
 HOWEVER, IT APPEARS AUTHOR MAY KNOW SPECIFIC VILLAGE. FOLLOW UP.
 
 ``` r
-cod_9_poly <- drc_health_areas %>%
+cod_9 <- drc_health_areas %>%
   filter(AS_ == "IKOKO IMPENGE") %>%
   select(poly_geom = geometry) %>%
   mutate(point_geom = st_centroid(poly_geom),
-         precision = "centroid")
+         precision = "centroid",
+         id = "cod_9")
 ```
 
 ### cod_4
@@ -704,13 +726,14 @@ quartier](https://www.google.com/maps/place/Air+Za%C3%AFre,+Mbandaka,+Democratic
 but I am not sure the source. I manually picked the middle.
 
 ``` r
-cod_4_point <- tribble(
+cod_4 <- tribble(
   ~latitude, ~longitude,
   0.03146801405368925, 18.2797784294778
 ) %>%
   st_as_sf(coords=c("longitude", "latitude"), crs=4326) %>%
   select(point_geom = geometry) %>%
-  mutate(precision = "manual village siting")
+  mutate(precision = "manual village siting") %>%
+  mutate(id = "cod_4")
 ```
 
 ### cod_1
@@ -737,13 +760,20 @@ Meliandou](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4309665/). That
 is where we’ll plot this.
 
 ``` r
-gin_23_point <- tribble(
+gin_23 <- tribble(
   ~latitude, ~longitude,
   8.622496517267711, -10.064200678863259
 ) %>%
   st_as_sf(coords=c("longitude", "latitude"), crs=4326) %>%
   select(point_geom = geometry) %>%
-  mutate(precision = "manual village siting")
+  mutate(precision = "manual village siting") %>%
+  mutate(id = "gin_23")
 ```
 
-<https://academic.oup.com/jid/article/221/5/701/5426903>
+# Final assembly
+
+awaiting results on cod_12
+
+``` r
+ebola_spatial <- bind_rows(gab_86, gab_85, gab_82, gab_78, cog_84, cog_83, cog_80, cog_79, cog_75, cog_74, cog_67, ssd_69, uga_58, uga_43, uga_39, uga_38, cod_57, cod_52, cod_37, cod_10, cod_9, cod_4, gin_23)
+```
