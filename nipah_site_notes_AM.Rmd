@@ -122,7 +122,7 @@ There is an index case for this outbreak: "An exhaustive study by the Kerala Hea
 
 Long feature confirms that Sabith lived in Perambra town, and first went to Perambra Taluk Hospital. [source](https://www.onmanorama.com/news/kerala/2018/10/02/nipah-virus-causing-bats-ate-fruits-probe-kozhikode.html)
 
-Perambra Taluk Hospital is at (11.569284, 75.755022). Wikipedia says Perambra is in the Koyilandy taluk of Kozhikode district, and Koyilandy can also be transliterated as Quilandy. Coding this case to Quilandy.
+Perambra Taluk Hospital is at (11.569284, 75.755022). Wikipedia says Perambra is in the Koyilandy taluk of Kozhikode district, and Koyilandy can also be transliterated as Quilandy. Coding this case's polygon to Quilandy.
 
 ```{r}
 
@@ -147,7 +147,6 @@ ggplot(world) +
 
 # Calculate distance between the hospital and the centroid of this taluk
 st_distance(hospital, ind_11$point_geom)
-
 
 # After discussion with Ryan, replacing centroid point geometry with hospital location and creating a new precision category
 ind_11 <- ind_11 %>% mutate(point_geom = hospital, precision = "hospital") %>% str
