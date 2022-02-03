@@ -301,14 +301,15 @@ From Dhaka Tribune, archived through the Wayback Machine: "Health specialists ha
 [link](https://web.archive.org/web/20140525203226/http://www.dhakatribune.com/safety/2014/jan/12/fears-nipah-virus-outbreak-following-2-confirmed-deaths)
 
 *** Coding to Shibalaya and Ghior upazillas
-* Check Factiva
 
 ```{r}
 
-bgd_112 <- bgd_gadm_3 %>% filter(str_detect(name_3, "Shibalaya")) %>%
+bgd_112 <- bgd_gadm_3 %>% 
+  filter(str_detect(name_3, "Shibalaya")) %>%
   grab_polygon(112)
 
-bgd_113 <- bgd_gadm_3 %>% filter(str_detect(name_3, "Ghior")) %>%
+bgd_113 <- bgd_gadm_3 %>% 
+  filter(str_detect(name_3, "Ghior")) %>%
   grab_polygon(113)
 
 ```
@@ -321,7 +322,6 @@ Viral sequence is listed as a primary case in a 14 year old male in Rahman et al
 IEDCR's list of 2014 case counts by district identifies five in Magura
 
 ** Coding to Magura Sadar upazilla
-* Check Factiva
 
 ```{r}
 
@@ -418,7 +418,59 @@ Coding this separately from bgd_32, a specific spillover involving an 8 year old
 bgd_120 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Naogaon")) %>%
   grab_polygon(120)
 
+```
+
+#bgd_121
+
+Rajbari district appears on the IEDCR case list for 2013 [here](https://webcache.googleusercontent.com/search?q=cache:bjtu4Hc2QRQJ:www.iedcr.gov.bd/index.php/component/content/article/11/135-23-rd-february-2013-nipah-outbreak+&cd=1&hl=en&ct=clnk&gl=ca) as a 24 year old male who died.
+
+* Coding to Rajbari district
+
+```{r}
+
+bgd_121 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Rajbari")) %>%
+  grab_polygon(121)
 
 ```
 
+#bgd_122
 
+Jhenaidah district appears on the IEDCR case list for 2013 [here](https://webcache.googleusercontent.com/search?q=cache:bjtu4Hc2QRQJ:www.iedcr.gov.bd/index.php/component/content/article/11/135-23-rd-february-2013-nipah-outbreak+&cd=1&hl=en&ct=clnk&gl=ca) as a 11 year old male who died.
+
+* Coding to Jhenaidah district
+
+```{r}
+
+bgd_122 <- bgd_gadm_2 %>% 
+  filter(str_detect(name_2, "Jhenaidah")) %>%
+  grab_polygon(122)
+
+```
+
+#bgd_123
+
+Faridpur district appears on the IEDCR case list for Dec 2013 - February 27, 2014, archived through Google's cache [here](https://webcache.googleusercontent.com/search?q=cache:lL29-kGy1uEJ:https://www.iedcr.gov.bd/pdf/files/nipah/Nipah%2520Infection_27.02.2014.pdf+&cd=3&hl=en&ct=clnk&gl=ca)
+
+* Coding to Faridpur district
+
+```{r}
+
+bgd_123 <- bgd_gadm_2 %>% 
+  filter(str_detect(name_2, "Faridpur")) %>%
+  grab_polygon(123)
+
+```
+
+#bgd_124
+
+Shariatpur district appears on the IEDCR case list for Dec 2013 - February 27, 2014, archived through Google's cache [here](https://webcache.googleusercontent.com/search?q=cache:lL29-kGy1uEJ:https://www.iedcr.gov.bd/pdf/files/nipah/Nipah%2520Infection_27.02.2014.pdf+&cd=3&hl=en&ct=clnk&gl=ca)
+
+* Coding to Shariatpur district
+
+```{r}
+
+bgd_124 <- bgd_gadm_2 %>%
+  filter(str_detect(name_2, "Shariatpur")) %>%
+  grab_polygon(124)
+
+```
