@@ -418,6 +418,18 @@ Coding this separately from bgd_32, a specific spillover involving an 8 year old
 bgd_120 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Naogaon")) %>%
   grab_polygon(120)
 
+```
+
+#bgd_121
+
+Rajbari district appears on the IEDCR case list for 2013 [here](https://webcache.googleusercontent.com/search?q=cache:bjtu4Hc2QRQJ:www.iedcr.gov.bd/index.php/component/content/article/11/135-23-rd-february-2013-nipah-outbreak+&cd=1&hl=en&ct=clnk&gl=ca) as a 24 year old male who died.
+
+* Coding to Rajbari district
+
+```{r}
+
+bgd_121 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Rajbari")) %>%
+  grab_polygon(121)
 
 ```
 
