@@ -433,4 +433,16 @@ bgd_121 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Rajbari")) %>%
 
 ```
 
+#bgd_122
 
+Jhenaidah district appears on the IEDCR case list for 2013 [here](https://webcache.googleusercontent.com/search?q=cache:bjtu4Hc2QRQJ:www.iedcr.gov.bd/index.php/component/content/article/11/135-23-rd-february-2013-nipah-outbreak+&cd=1&hl=en&ct=clnk&gl=ca) as a 11 year old male who died.
+
+* Coding to Jhenaidah district
+
+```{r}
+
+bgd_122 <- bgd_gadm_2 %>% 
+  filter(str_detect(name_2, "Jhenaidah")) %>%
+  grab_polygon(122)
+
+```
