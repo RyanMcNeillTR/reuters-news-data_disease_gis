@@ -1,0 +1,227 @@
+---
+title: "Other sites notebook"
+output:
+  github_document:
+    toc: true
+---
+
+
+```{r}
+library(tidyverse)
+library(sf)
+```
+
+
+
+notes for later: the chn_13 inclcudes references to 
+
+human australia 2001 ablv
+human netherlands 2007 duvv
+human russia 2007 irkv
+
+Only one confirmed spillover infection was reported in 2007, which led to a human fatality caused by a bat bite in the Russian Far East (Figure 1B)[3]. In China, two human rabies cases after bat exposures have been reported in Jilin province[4]. IRKV is the only bat lyssavirus isolated in China to date. Nevetheless, infection of IRKV in dogs has not been previously reported.
+
+https://www.sciencedirect.com/science/article/abs/pii/S1055790313002856?via%3Dihub
+
+
+
+## China
+
+
+
+
+```{r}
+st_layers("./input_data/China/gadm36_CHN_gpkg/gadm36_CHN.gpkg")
+```
+
+```{r}
+china_admin_3 <- st_read("./input_data/China/gadm36_CHN_gpkg/gadm36_CHN.gpkg", layer = "gadm36_CHN_3")
+```
+
+
+
+
+### chn_8
+
+This is SARS-CoV-2. We are excluding it for now. 
+
+### chn_13
+
+This is a 2017 case of Irkut virus. 
+
+From [this paper](https://www.sciencedirect.com/science/article/pii/S0895398818300321): 
+
+"Lyssaviruses, including Rabies virus, Duvenhage virus, European bat lyssavirus 1, European bat lyssavirus 2, Australian bat lyssavirus, and Irkut virus (IRKV), have caused human fatalities, but infection of IRKV in dogs has not been previously reported. In China, a dead dog that previously bit a human was determined to be infected with IRKV. Pathogenicity tests revealed that IRKVs can cause rabies-like disease in dogs and cats after laboratory infection. The close relationship between humans and pets, such as dogs and cats, may generate a new spillover-spreading route for IRKV infection. Therefore, additional attention should be paid to trans-species infection of IRKV between bats and dogs or dogs and humans through investigation of the prevalence and circulation patterns of IRKV in China."
+
+and
+
+"On July 1, 2017, in Zhangwu County, Fuxin City, Liaoning province, China (Figure 1B), a local farmer was bitten on his right heel by a free-roaming dog owned by his neighbor. He neglected the rabies vaccination at that time and later received the 2-1-1 program of post-exposure prophylaxis (PEP) on July 5. On July 10, the dog died of an unknown cause."
+
+```{r}
+chn_13 <- china_admin_3 %>%
+  filter(NAME_1 == "Liaoning") %>%
+  filter(NAME_2 == "Fuxin") %>%
+  filter(NAME_3 == "Zhangwu") %>%
+  select(poly_geom = geom) %>%
+  mutate(point_geom = st_centroid(poly_geom),
+         precision = "centroid",
+         id = "chn_13")
+```
+
+### chn_77
+
+This is SARS-CoV-1. 
+
+```{r}
+china_admin_3 %>%
+  filter(NAME_1 == "Guangdong") %>%
+  filter(NAME_2 == "Foshan")
+```
+
+
+
+
+## Malaysia
+
+```{r}
+st_layers("./input_data/Malaysia/gadm36_MYS_gpkg/gadm36_MYS.gpkg")
+```
+```{r}
+malaysia_level_3 <- st_read("./input_data/Malaysia/gadm36_MYS_gpkg/gadm36_MYS.gpkg", layer = "gadm36_MYS_2")
+```
+
+
+
+### mys_46
+
+This is a case of Sikamat Virus described [in this paper](https://journals.plos.org/plosone/article/file?id=10.1371/journal.pone.0025434&type=printable).
+
+"The patient and his family live in a double storey-linked house in Sikamat, a small town within the state of Negeri Sembilan, in
+the central western region of peninsular Malaysia."
+
+Because we have a specific village location, I was able to find it on Google Maps. I manually identified a rough centroid. 
+
+```{r}
+mys_46 <- tribble(
+  ~latitude, ~longitude,
+  2.7612355652873415, 101.99029423575628
+) %>%
+  st_as_sf(coords=c("longitude", "latitude"), crs=4326) %>%
+  select(point_geom = geometry) %>%
+  mutate(precision = "manual village siting") %>%
+  mutate(id = "mys_46")
+```
+
+
+## Indonesia
+
+### ind_47
+
+This is a 2010 outbreak of HK50842/10 in Indonesia. 
+
+come back to this, asked Deb for 
+
+
+
+
+
+
+## Australia 
+
+```{r}
+oz_lga <- st_read("./input_data/Australia/LGA_2021_AUST_GDA2020_SHP/LGA_2021_AUST_GDA2020.shp")
+oz_localities <- st_read("./input_data/Australia/SAL_2021_AUST_GDA2020_SHP/SAL_2021_AUST_GDA2020.SHP")
+```
+
+
+## aus_48
+
+This is a 2009 Hendra event in Rockhampton (Cawarral), Queensland, Australia. 
+
+Carwarral is a locality in Australia, [according to Wikipedia](https://en.wikipedia.org/wiki/Cawarral). So we'll use the localities boundary file from the [Australian census agency](https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs-edition-3/jul2021-jun2026/access-and-downloads/digital-boundary-files). 
+
+According to [this government report](https://www.ombudsman.qld.gov.au/ArticleDocuments/228/Hendra_Virus_Report.pdf.aspx?Embed=Y): 
+
+"On 8 August 2009, a horse died suddenly of a suspicious illness in Cawarral,
+near Rockhampton. The property was placed into quarantine under the Stock
+Act that afternoon. Two horses had previously died of unknown illnesses on 28
+July 2009 and 7 August 2009. It was identified that all three horses had died
+from Hendra virus. Another horse subsequently contracted the virus and
+recovered, but was destroyed by QPIF. A private veterinarian who attended the
+property also contracted the virus and later passed away in hospital. The
+quarantine was lifted on 12 October 2009."
+
+
+```{r}
+aus_48 <- oz_localities %>%
+  filter(SAL_NAME21 == "Cawarral") %>%
+  select(poly_geom = geometry) %>%
+  mutate(point_geom = st_centroid(poly_geom),
+         precision = "centroid",
+         id = "aus_48")
+```
+
+
+## aus_54
+
+This is a 2008 Hendra event in Brisbane (Redlands), Queensland, Australia.
+
+
+According to [this government report](https://www.ombudsman.qld.gov.au/ArticleDocuments/228/Hendra_Virus_Report.pdf.aspx?Embed=Y): 
+
+"On 7 July 2008, a veterinary clinic in the Redlands was placed into quarantine
+under the Stock Act on suspicion of equine herpes virus after the unexplained
+deaths of three horses. Further testing identified that Hendra virus was
+responsible for these deaths, and the clinic was quarantined under the Stock
+Act from 8 July 2008 for Hendra virus. A further horse was euthanased after
+becoming ill with the virus, while another horse recovered from the virus but
+was destroyed by QPIF. A private veterinarian and a veterinary nurse who both
+worked at the clinic were infected with the virus. The veterinarian later passed
+away in hospital. The quarantine was lifted on 25 August 2008"
+
+From [this news story](https://www.brisbanetimes.com.au/national/queensland/young-vet-killed-by-hendra-virus-20080822-gea9wo.html):
+
+"Ben Cunneen, 33, contracted the disease after treating horses at the Redlands Veterinary Clinic on Brisbane's bayside."
+
+So I am going to code this at the location of the veterinary clinic. 
+
+
+```{r}
+aus_54 <- tribble(
+  ~latitude, ~longitude,
+  -27.580656809613668, 153.27703325086964
+) %>%
+  st_as_sf(coords=c("longitude", "latitude"), crs=4326) %>%
+  select(point_geom = geometry) %>%
+  mutate(precision = "manual siting") %>%
+  mutate(id = "aus_54")
+```
+
+
+## aus_71 
+
+This is a 2004 Hendra outbreak. Site: Cairns (Gordonvale), Queensland, Australia
+
+A thorough background on the case [can be found in this paper](https://www.mja.com.au/journal/2006/185/10/hendra-virus-infection-veterinarian).
+
+According [to this doc](https://royalsocietypublishing.org/action/downloadSupplement?doi=10.1098%2Frspb.2011.0522&file=rspb20110522supp1.pdf), it occured at Cairns (Gordonvale).
+
+[Background](http://www.qldhorsecouncil.com/QHC%20Documents/Notifiable%20Diseases%20Information%20Sheets/Hendra%20Virus.pdf): 
+
+"Gordonvale, October 2004. A veterinarian tested
+positive for Hendra virus after performing a post mortem
+on a horse that died suddenly. While no samples were
+available from the horse for testing, the clinical and post
+mortem signs were consistent with Hendra virus
+infection."
+
+
+```{r}
+aus_71 <- oz_localities %>%
+  filter(SAL_NAME21 == "Gordonvale") %>%
+  select(poly_geom = geometry) %>%
+  mutate(point_geom = st_centroid(poly_geom),
+         precision = "centroid",
+         id = "aus_71")
+```
+
