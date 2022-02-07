@@ -311,8 +311,6 @@ Viral sequence is listed as a primary case in a 22 year old male in Rahman et al
 IEDCR's list of 2014 case counts by district identifies five in Faridpur
 
 *** Coding to Saltha upazilla
-* Check Factiva
-
 
 ```{r}
 
@@ -365,7 +363,6 @@ Viral sequence is listed as a primary case in a 7 year old male in Rahman et al 
 GADM data transliterates as more standard Muksudpur, which data [here](https://moa.portal.gov.bd/sites/default/files/files/moa.portal.gov.bd/page/7bd6781d_6460_4531_8df7_84c90ed2c8b4/Gopalganj-12.03.2020.pdf) makes clear is equivalent. 
 
 *** Coding to Muksudpur upazilla
-* Check Factiva
 
 ```{r}
 
@@ -379,7 +376,6 @@ bgd_115 <- bgd_gadm_3 %>% filter(str_detect(name_3, "Muksudpur")) %>%
 Viral sequence is listed as a primary case in a 36 year old male in Rahman et al 2021, [here](https://www.sciencedirect.com/science/article/pii/S1201971220322451#tbl0020). District is Madaripur and subdistrict Shibchar.
 
 *** Coding to upazilla Shib Char 
-* Check Factiva
 
 ```{r}
 
@@ -393,7 +389,6 @@ bgd_116 <- bgd_gadm_3 %>% filter(str_detect(name_3, "Shib Char")) %>%
 Viral sequence is listed as a primary case in a 42 year old male in Rahman et al 2021, [here](https://www.sciencedirect.com/science/article/pii/S1201971220322451#tbl0020). District is Rajshahi and subdistrict Bagha.
 
 ***Coding to Bagha upazilla
-* Check FActiva
 
 ```{r}
 
@@ -594,3 +589,17 @@ bgd_130 <- bgd_gadm_2 %>%
 
 ```
 
+#bgd_131
+
+Dhaka appears on the IEDCR case list for Dec 2013 - February 27, 2014, archived through Google's cache [here](https://webcache.googleusercontent.com/search?q=cache:lL29-kGy1uEJ:https://www.iedcr.gov.bd/pdf/files/nipah/Nipah%2520Infection_27.02.2014.pdf+&cd=3&hl=en&ct=clnk&gl=ca)
+
+Dhaka Tribune describes cases
+
+* Coding to Dhaka district
+
+```{r}
+
+bgd_gadm_2 %>% filter(str_detect(name_2, "Dhaka"))
+
+
+```

@@ -234,9 +234,13 @@ Local media paces a Naogaon cluster (bgd_17) in "Valain village under Manda Upaz
 
 Daily Star (article)[https://www.thedailystar.net/2-die-of-nipah-virus-in-naogaon-62907]
 
-May 18, 2015: "Two people died of Nipah virus at Manda upazila in Naogaon last week, said the Institute of Epidemiology, Disease Control and Research today."
+Feb 2, 2015: "Two people died of Nipah virus at Manda upazila in Naogaon last week, said the Institute of Epidemiology, Disease Control and Research today."
 
-Again for bgd_117, a viral sequence is listed as a primary case in a 25 year old male in Rahman et al 2021, [here](https://www.sciencedirect.com/science/article/pii/S1201971220322451#tbl0020). District is Naogaon and subdistrict Manda. But the sample is from January 2015, not May. 
+Again for bgd_117, a viral sequence is listed as a primary case in a 25 year old male in Rahman et al 2021, [here](https://www.sciencedirect.com/science/article/pii/S1201971220322451#tbl0020). District is Naogaon and subdistrict Manda.
+
+Victim names from New Nation, archived by Factiva: "Nipah virus has claimed the lives of three people, including two children, in Manda upazila of the district in nine days till Friday.The victims are Apple Mahmud, 11, son of Moklesur Rahman, and Kawser Ali, 13, son of Abdul Kasem of Bhalain village, and Hafizul Islam, 25, son of Alimuddin of Balubazar village in the upazila.Apple's mother Julekah Bibi said the boy was admitted to the upazila health complex on January 22 after he caught fever taking date on January 20. Later, he was shifted to Rajshahi Medical College Hospital (RMCH) where he died on January 23.Kawser was taken to the RMCH on January 24. However, his family took him back home on January 29. He died the following day.On the other hand, Hafizul who was admitted to the RMCH with fever on January 17 died on January 22 while undergoing treatment.Civil surgeon of Naogaon Dr Mozaharul Islam said nipah virus was detected in the samples of saliva and blood of the victims."
+
+Also from New Nation, detail on the spillover: "ACCORDING to data provided by the Institute of Epidemiology, Disease Control and Research (IEDCR), 18 cases of Nipah virus (NH1/NiV) infection had been reported in Bangladesh since the beginning of 2014 (of which 9 people died). Latest reports though show a grimmer picture in that at least three people, affected by Nipah virus, have already died in the past few days in Naogaon. Local English dailies confirmed that the deaths of two people were caused by Nipah virus (NH1/NiV) contamination after examining different samples, including their cough and blood, at IEDCR in Dhaka. One of the patients apparently fell sick after drinking date juice and was admitted to Rajshahi Medical College Hospital where he died and another fell sick after eating bat-eaten jujube and was admitted to RMCH where he also died. The Civil Surgeon in charge said they were keeping the people who came in contact with the dead under close observation."
 
 *** Coding bgd_17 to Manda Upazila, the rest at the district level
 
