@@ -599,7 +599,7 @@ Dhaka Tribune describes cases
 
 ```{r}
 
-bgd_gadm_2 %>% filter(str_detect(name_2, "Dhaka"))
-
+bgd_131 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Dhaka")) %>%
+  grab_polygon(131)
 
 ```
