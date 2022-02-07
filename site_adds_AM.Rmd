@@ -165,6 +165,35 @@ phl_99 <- phl_level_3 %>% filter(str_detect(name_3, "Midtungok")) %>%
 
 ```
 
+#bgd_100
+
+Walsh, 2015 lists a 2014 case in Naogaon district, Manda upazilla, but the reference is to an unrelated paper, so something has been lost in the data processing. 
+
+Naogaon district appears in IEDCR case list for Dec 2013 - February 27, 2014, archived through Google's cache [here](https://webcache.googleusercontent.com/search?q=cache:lL29-kGy1uEJ:https://www.iedcr.gov.bd/pdf/files/nipah/Nipah%2520Infection_27.02.2014.pdf+&cd=3&hl=en&ct=clnk&gl=ca)
+
+Walsh puts that case at February 2014, but perhaps that is because the IEDCR bulletin was released in that month and appeard in ProMED etc then? 
+
+There are local media reports of an unconfirmed case in Naogaon, published on and around January 12, 2014. See for example the Dhaka Tribune: "Sources said it was also suspected that the deaths of four more people [...] may also be linked to NiV infection. The deceased [include] Mojibur Rahman, 20, from Naogaon [...] Doctors at the RMCH said they suspected that the deaths may have been caused by Nipah infection as all four patients had the history of drinking raw date-palm sap."
+
+Story is archived online (here)[https://web.archive.org/web/20140424013844/http://www.dhakatribune.com/safety/2014/jan/12/fears-nipah-virus-outbreak-following-2-confirmed-deaths]
+
+Dhaka Tribune said lab confirmation was not available and in fact one of the four (not identified) had tested negative: "Prof Dr Mahmudur Rahman, director of the IEDCR, however, told the Dhaka Tribune yesterday [11 Jan 2014] that the Nipah virus was not found in the single sample of the deceased that had so far been tested at the lab. Samples from 2 other deceased would be tested by Monday [13 Jan 2014], he said, adding that sample from another patient had not yet arrived at the IEDCR." [here](https://promedmail.org/promed-post/?id=2181682)
+
+Financial Express, via ProMED pinpoints the village: "According to hospital sources, the deceased were identified as [...] an adult from Naogoan's Tentulia village" [here](https://promedmail.org/promed-post/?id=2168940)
+
+Tentulia is a Union in Manda, the upazilla named in Walsh, 2015. 
+
+*** Given that consistency, coding to Tentulia.
+
+```{r}
+
+bgd_100 <- bgd_gadm_4 %>% filter(str_detect(name_3, "Manda")) %>%
+  filter(str_detect(name_4, "Tentulia")) %>%
+  grab_polygon()
+
+```
+
+
 #bgd_101 / bgd_102 / bgd_103 / bgd_104
 
 All of these 2012 cases are drawn from an archived WHO table which has been incorporated into for example Deka (CDC's) data but not Metabiota's database. One academic paper strongly suggests they are all connected to the well documented 2012 Joypurhat outbreak but it is not written by local experts and may be a simple misinterpretation of the WHO data: "The final outbreak was in 2012 in Joypurhat, Rajshshi, Natore, and Rajbari with a fatality rate of 83% (n=12)." (paper here)[https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6415930/]
@@ -535,3 +564,33 @@ bgd_128 <- bgd_gadm_2 %>%
   grab_polygon(128)
 
 ```
+#bgd_129
+
+Chapi Nawabganj/Chapainawabganj appears on the IEDCR case list for Dec 2013 - February 27, 2014, archived through Google's cache [here](https://webcache.googleusercontent.com/search?q=cache:lL29-kGy1uEJ:https://www.iedcr.gov.bd/pdf/files/nipah/Nipah%2520Infection_27.02.2014.pdf+&cd=3&hl=en&ct=clnk&gl=ca)
+
+* Code to Chapi Nawabganj district
+
+This district name does not appear in GADM, but based on the associated upazillas, it appears under the name "Nawabganj". 
+
+```{r}
+
+bgd_129 <- bgd_gadm_2 %>% 
+  filter(str_detect(name_2, "Nawabganj")) %>%
+  grab_polygon(129)
+
+```
+
+#bgd_130
+
+Madaripur appears on the IEDCR case list for Dec 2013 - February 27, 2014, archived through Google's cache [here](https://webcache.googleusercontent.com/search?q=cache:lL29-kGy1uEJ:https://www.iedcr.gov.bd/pdf/files/nipah/Nipah%2520Infection_27.02.2014.pdf+&cd=3&hl=en&ct=clnk&gl=ca)
+
+* Code to Madarirpur district
+
+```{r}
+
+bgd_130 <- bgd_gadm_2 %>% 
+  filter(str_detect(name_2, "Madaripur")) %>%
+  grab_polygon(130)
+
+```
+
