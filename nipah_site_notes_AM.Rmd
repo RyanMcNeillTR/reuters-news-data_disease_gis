@@ -86,7 +86,7 @@ Metabiota lists Kerala, 2021. Deb has coordinate from original reporting.
 
 ```{r}
 
-temp_point <- tribble(~latitude, ~longitude, 11.26178, 75.96031) %>%
+temp_point <- tribble(~latitude, ~longitude, 11.284451, 75.977595) %>%
   st_as_sf(coords = c("longitude", "latitude"), crs = 4326)
 
 ind_2 <- data.frame(poly_geom = NA,
@@ -124,6 +124,8 @@ Long feature confirms that Sabith lived in Perambra town, and first went to Pera
 
 Perambra Taluk Hospital is at (11.569284, 75.755022). Wikipedia says Perambra is in the Koyilandy taluk of Kozhikode district, and Koyilandy can also be transliterated as Quilandy. Coding this case's polygon to Quilandy.
 
+Deb has a point from original reporting: 11.59878, 75.78154.
+
 ```{r}
 
 # code to Quilandy taluk polygon
@@ -134,7 +136,7 @@ ind_11 <- ind_taluks %>% filter(str_detect(taluk, "Quilandy")) %>%
 world <- ne_countries(scale = "medium", returnclass = "sf")
 
 # create shapefile with point for hospital where index patient went first
-hospital <- tribble(~latitude, ~longitude, 11.569284, 75.755022) %>%
+house <- tribble(~latitude, ~longitude, 11.59878, 75.78154) %>%
   st_as_sf(coords = c("longitude", "latitude"), crs = 4326)
 
 # map taluk and hospital location to make sure hospital is within the taluk
@@ -146,10 +148,10 @@ ggplot(world) +
            ylim = c(11, 13))
 
 # Calculate distance between the hospital and the centroid of this taluk
-st_distance(hospital, ind_11$point_geom)
+st_distance(house, ind_11$point_geom)
 
-# After discussion with Ryan, replacing centroid point geometry with hospital location and creating a new precision category
-ind_11 <- ind_11 %>% mutate(point_geom = hospital, precision = "hospital") %>% str
+# replacing centroid with more precise point
+ind_11 <- ind_11 %>% mutate(point_geom = house, precision = "home")
 
 ```
 # PHILIPPINES
@@ -197,8 +199,7 @@ Likely the same source as above but unclear.
 
 Searched ProMed
 
-@waiting IEDCR director
-*** For now, leaving this data point out 
+*** Not coding
 
 #bgd_6
 
@@ -211,8 +212,6 @@ Primary case: "He was a traditional healer, had no history of taking RDPS, occas
 No additional information about location here. 
 
 Mention in this local press report of Baliadangi Upazila Health Complex, in relation to March cases, but paper also notes "In February, five members of a family died mysteriously in Baliadanga upazila" [here](https://www.newagebd.net/article/67534/3-of-a-family-suspected-to-be-infected-with-nipah-virus)
-
-Seems likely that IEDCR can also sort this out. 
 
 *** Coding to Baliadangi Upazila
 
@@ -530,3 +529,21 @@ bgd_41 <- bgd_gadm_4 %>% filter(str_detect(name_4, "Joypurhat")) %>%
   grab_polygon(41)
 
 ```
+
+#bgd_132
+
+Local media report from January 17, 2020: "The patient was identified as Rashida, 20, daughter of Md Babul Hossain of Gopalganj district." [link](https://en.prothomalo.com/bangladesh/Nipah-case-confirmed-in-Khulna)
+
+Confirmation from Dhaka Tribune: "“A medical board has confirmed her infection by Nipah virus. As Rashida’s infection is a risk to other patients, she is being treated separately at the hospital’s Medicine unit 1,” said SM Kamal Hossain, chief of KMCH Medicine Department." [link](https://archive.dhakatribune.com/bangladesh/nation/2020/01/17/fresh-nipah-infected-patient-at-kmch)
+
+* Coding to Gopalganj district
+
+```{r}
+
+bgd_132 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Gopalganj")) %>%
+  grab_polygon(132)
+
+```
+
+
+
