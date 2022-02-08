@@ -419,6 +419,8 @@ bgd_118 <- bgd_gadm_2 %>%
 
 Nilphamari district appears on the IEDCR case list for 2013 [here](https://webcache.googleusercontent.com/search?q=cache:bjtu4Hc2QRQJ:www.iedcr.gov.bd/index.php/component/content/article/11/135-23-rd-february-2013-nipah-outbreak+&cd=1&hl=en&ct=clnk&gl=ca), and is repeated in an academic paper that cites IEDCR for districts with cases that year [here](http://ebaub.edu.bd/journal/ej/files/vol3/jc3_6.pdf).
 
+In #bgd_109 we coded a 48 year old who appears in the 2013 list and was sequenced. But IEDCR lists two other cases in the district later in the table, in a 55-year-old male and 45-year-old female, so coding this as a separate spillover.
+
 *** Coding to Nilphamari
 
 ```{r}
