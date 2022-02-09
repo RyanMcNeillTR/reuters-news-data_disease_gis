@@ -99,7 +99,9 @@ ind_2 <- data.frame(poly_geom = NA,
 
 #ind_7
 
-Metabiota lists Kerala, 2019, no other details, but Deb has market coordinates from original reporting.
+Metabiota lists Kerala, 2019, no other details, but Deb has two points from original reporting, for the index patient's home and college. Need to code these as a multipoint object. 
+
+* COME BACK TO THIS
 
 ```{r}
 
@@ -527,21 +529,6 @@ Rahman et al 2021 (IECDR/CDC/EcoHealth paper on genetic diversity) includes sequ
 
 bgd_41 <- bgd_gadm_4 %>% filter(str_detect(name_4, "Joypurhat")) %>%
   grab_polygon(41)
-
-```
-
-#bgd_132
-
-Local media report from January 17, 2020: "The patient was identified as Rashida, 20, daughter of Md Babul Hossain of Gopalganj district." [link](https://en.prothomalo.com/bangladesh/Nipah-case-confirmed-in-Khulna)
-
-Confirmation from Dhaka Tribune: "“A medical board has confirmed her infection by Nipah virus. As Rashida’s infection is a risk to other patients, she is being treated separately at the hospital’s Medicine unit 1,” said SM Kamal Hossain, chief of KMCH Medicine Department." [link](https://archive.dhakatribune.com/bangladesh/nation/2020/01/17/fresh-nipah-infected-patient-at-kmch)
-
-* Coding to Gopalganj district
-
-```{r}
-
-bgd_132 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Gopalganj")) %>%
-  grab_polygon(132)
 
 ```
 
