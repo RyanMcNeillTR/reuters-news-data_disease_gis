@@ -99,7 +99,9 @@ ind_2 <- data.frame(poly_geom = NA,
 
 #ind_7
 
-Metabiota lists Kerala, 2019, no other details, but Deb has market coordinates from original reporting.
+Metabiota lists Kerala, 2019, no other details, but Deb has two points from original reporting, for the index patient's home and college. Need to code these as a multipoint object. 
+
+* COME BACK TO THIS
 
 ```{r}
 
