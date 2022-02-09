@@ -523,10 +523,13 @@ Metabiota identified this 2011 outbreak in Comilla, Dinajpur, Faridpur, Lalmohir
 
 Deka's data identifies an outbreak at Hatibandha, Lalmonirhat, Bangladesh. This is confirmed via a [Nipah update published by IEDCR](http://www.iedcr.org/pdf/files/nipah/Nipah-Update.pdf). 
 
-However, it appears we may actually have multiple outbreaks, [according to this paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4675679/).
+We may actually have multiple outbreaks, [according to this paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4675679/).
+
+We will focus on Lalmonirhat outbreak here and code other districts in the add table. 
+
+From that paper, covering a period from December 23, 2010 to March 1, 2011: "There were 37 cases in four clusters: three clusters occurred in three northern districts, Lalmonirhat (22 cases), Rangpur (eight cases), and Dinajpur (five cases), and the fourth cluster was in Rajbari District (two cases), in central Bangladesh (Fig. 1). All four clusters were detected through hospital-based Nipah surveillance. The remaining six cases were isolated, five of which were detected through hospital-based surveillance."
 
 It describes the Lalmonirhat outbreak as one cluster: 
-
 "Of the 22 cases in the Lalmonirhat cluster, 21 lived in five adjacent villages and the other case was a healthcare worker in a referral hospital where cases from this cluster were admitted for treatment."
 
 [This news clip](https://www.thedailystar.net/news-detail-172896) describes the situation thusly: 
@@ -534,7 +537,9 @@ It describes the Lalmonirhat outbreak as one cluster:
 "The dead were identified as Bachchu Miah, 56, of Baraipara village; Joynal, 42, of South Goddimari; and Asadul Islam, 18, of Gendukuri village in Hatibandha upazila of Lalmonirhat and Lubna, 14, of South Kolkan village in Gangachara upazila of Rangpur.
 Of them, Bachchu and Joynal died at Hatibandha Upazila Health Complex at about 11:30pm on Thursday and Asadul died at Rangpur Medical College Hospital early hours yesterday and Lubna at her residence around 12:00noon."
 
-However, based on this description, it's tough to determine the index case and the best we can do for now is level 3. 
+However, based on this description, it's tough to determine the index case and the best we can do for now is level 3.
+
+Some good colour on public health measures [here](https://arrkhan.blogspot.com/2011/02/schools-closed-to-contain-nipah.html): "Authorities in Lalmonirhat have closed down schools, madrasahs and other educational institutions in a bid to prevent the spread of the disease."
 
 
 ```{r}
