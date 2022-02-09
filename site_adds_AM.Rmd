@@ -140,6 +140,42 @@ No information about this outbreak in other sources.
 
 *** Not coding for now.
 
+
+#bgd_97
+
+IEDCR narrative lists early outbreaks: "In the last 10 years we have identified another eight Nipah outbreaks, all occurring between December and May. The Nipah outbreaks have been identified in Noagoan (2003), Rajbari (2004), Faridpur (2004), Tangail (2005), Thakurgaon (2007) Kushtia (2007), Manikgonj and Rajbari ( 2008), Faridpur ( 2010)." [source](https://webcache.googleusercontent.com/search?q=cache:NZKNrjYhTzgJ:iedcr.gov.bd/pdf/files/nipah/Nipah-for-web.pdf+&cd=1&hl=en&ct=clnk&gl=ca)
+
+IEDCR outbreak investigation list includes an April 2007 Nipah outbreak in Kushtia [here](https://old.iedcr.gov.bd/website/index.php/outbreak/85-outbreak-list-of-2007)
+
+Deka, 2018 includes this outbreak and codes it to the polygon for Sadar upazilla, Kushtia, citing Walsh.
+
+Walsh in turn cites two sources:
+1. ProMED 20050125.0267. Undiagnosed disease-Bangladesh (Tangail)(02): Nipah confirmed. 
+2. International Society for Infectious Diseases; 2005.
+Bangladesh Institute of Epidemiology Disease Control and Research. Nipah Virus Outbreak from Date Palm Juice. Heal Sci Bull 2005;3:1–5.
+
+As both of these papers predate the outbreak (!) it seems more likely that the table should have referred to this reference:
+Homaira N, Rahman M, Hossain MJ et al. Cluster of Nipah virus
+infection, Kushtia District, Bangladesh, 2007. PLoS One
+2010;5:e13570.
+
+The paper says the outbreak was in a village within the sadar upazilla, and more specifically that: "The grave of a Muslim religious leader, who died in 2001, is in the outbreak village and his followers from different villages gather annually for an anniversary ceremony. On the third day of the
+index case’s illness, on March 19, 2007, this religious ceremony
+was in the courtyard adjacent to the grave of the religious leader."
+
+ProMED bulletin from April 12, 2007: "According to the hospital and Civil Surgeon's office, the disease 1st broke out in Khajanagar and Kaburhat villages in Kushtia district a week ago."
+
+* Coding to Sadar upazilla
+
+```{r}
+
+bgd_97 <- bgd_gadm_3 %>% filter(str_detect(name_2, "Kushtia")) %>%
+  filter(str_detect(name_3, "Sadar")) %>%
+  grab_polygon(97)
+
+```
+
+
 #bgd_98
 
 This adds a second location to the incident first described in bgd_41, see notes there.
@@ -620,3 +656,4 @@ bgd_132 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Gopalganj")) %>%
   grab_polygon(132)
 
 ```
+
