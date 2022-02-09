@@ -605,3 +605,18 @@ bgd_131 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Dhaka")) %>%
   grab_polygon(131)
 
 ```
+
+#bgd_132
+
+Local media report from January 17, 2020: "The patient was identified as Rashida, 20, daughter of Md Babul Hossain of Gopalganj district." [link](https://en.prothomalo.com/bangladesh/Nipah-case-confirmed-in-Khulna)
+
+Confirmation from Dhaka Tribune: "“A medical board has confirmed her infection by Nipah virus. As Rashida’s infection is a risk to other patients, she is being treated separately at the hospital’s Medicine unit 1,” said SM Kamal Hossain, chief of KMCH Medicine Department." [link](https://archive.dhakatribune.com/bangladesh/nation/2020/01/17/fresh-nipah-infected-patient-at-kmch)
+
+* Coding to Gopalganj district
+
+```{r}
+
+bgd_132 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Gopalganj")) %>%
+  grab_polygon(132)
+
+```
