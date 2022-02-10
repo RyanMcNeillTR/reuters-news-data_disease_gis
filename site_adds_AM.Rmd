@@ -715,7 +715,21 @@ The spillover is described in [this paper](https://www.ncbi.nlm.nih.gov/pmc/arti
 
 ```{r}
 
-bgd_136 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Comilla")) %>%
-  grab_polygon(136)
+bgd_135 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Comilla")) %>%
+  grab_polygon(135)
 
 ```
+
+#bgd_136
+
+Adding a small 2011 cluster in Rajbari described in [this paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4675679/)
+
+"Both cases in the Rajbari cluster had drunk raw date palm sap within 3 weeks prior to their illness onset, but the second case (daughter of the first case) also came in contact with her mother after her onset of illness, which was 4 days prior to her onset of illness."
+
+The Daily Star reported on Feb 11, 2011: "Meantime, three people from Rajbari were admitted to Dhaka Medical College Hospital last night with symptoms of Nipah virus, DMCH sources said.
+The three are Abul Kalam, 55, his son Rusel, 18, and his nephew Abul Kalam, 18. Kalam's wife Asma Begum told this correspondent that five members of her family fell sick after taking some date juice on Monday. Two of them, however, recovered by taking some medicines at home." [source](https://www.thedailystar.net/news-detail-173755)
+
+Not clear this is the same case.
+
+Dhaka Mirror, via ProMED, reported on Jan 24, 2011: "The director of the Institute of Epidemiology, Disease Control and Research [IEDCR], Mahmudur Rahman, on Sunday [23 Jan 2011] said that 5 people were infected with the Nipah virus in Faridpur and Rajbari districts and 4 of them died this month [January 2011]."
+
