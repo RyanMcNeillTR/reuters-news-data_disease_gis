@@ -733,3 +733,11 @@ Not clear this is the same case.
 
 Dhaka Mirror, via ProMED, reported on Jan 24, 2011: "The director of the Institute of Epidemiology, Disease Control and Research [IEDCR], Mahmudur Rahman, on Sunday [23 Jan 2011] said that 5 people were infected with the Nipah virus in Faridpur and Rajbari districts and 4 of them died this month [January 2011]."
 
+```{r}
+
+bgd_136 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Rajbari")) %>%
+  grab_polygon(136)
+
+
+```
+
