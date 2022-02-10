@@ -665,7 +665,9 @@ The paper posits an independent spillover in Dinajpur: "Of the five cases in the
 
 The paper gives a date range from Dec 2010 to 2011, but The Daily Star, archived by ProMED, said in Feb 2011 that people had died in Dinajpur from Nipah since January 31, 2011, see [here](https://promedmail.org/promed-post/?id=653198) and [here](https://web.archive.org/web/20110214192935/http://www.thedailystar.net/newDesign/latest_news.php?nid=28442).
 
-The Daiy Star reported on Feb 11, 2011 that someone had died of Nipah in Dinajpur: "Masuma Akhter Moni, 11, of Belaichandi village in Parbatipur upazila of Dinajpur [...] Moni was admitted to the hospital with high fever on Tuesday."
+United News of Bangladesh, archvied by Factiva, reported on Feb 10, 2011: "A minor died of encephalitis caused by Nipah virus at Belaichandi village in Parbatpur upazla this (Thursday) morning. The deceased was identified as Masuma Akhter, 11, daughter of Arif Hossain of the village. Hospital and family surces said Masuma fell sick after taking pais (an appetizer prepared with fine rice, milk and molasses) and raw date juice on Saturday (Feb 5)."
+
+The Daily Star reported on Feb 11, 2011 that someone had died of Nipah in Dinajpur: "Masuma Akhter Moni, 11, of Belaichandi village in Parbatipur upazila of Dinajpur [...] Moni was admitted to the hospital with high fever on Tuesday."
 
 According to a FluTrackers thread the paper later reported this case: "Monoranjan, 4, son of Dhirendra Nath of Kaharol upazila of Dinajpur, was admitted to the RMCH with high fever on Friday. He died at about 9:00am Saturday, reports our Rangpur correspondent."
 
@@ -756,3 +758,39 @@ bgd_137 <- bgd_gadm_3 %>% filter(str_detect(name_3, "Bhanga")) %>%
   grab_polygon(137)
 
 ```
+#bgd_138
+
+Nilphamari outbreak in 2011 - this district was listed in Metabiota's data under bgd_44 in 2011; breaking it out here. It is briefly listed in the WHO's reporting table, archived online (here)[http://web.archive.org/web/20190922101016/http://www.searo.who.int/entity/emerging_diseases/links/nipah_virus_outbreaks_sear/en/]
+
+The Daily Star, archived by ProMED, reported on Feb 11, 2011: "Since 31 Jan [2011], Nipah claimed the lives in 7 districts --
+Rangpur, Kurigram, Lalmonirhat, Nilphamari, Gaibandha, Dinajpur and
+Kushtia."
+
+* Coding to Nilphamari
+
+```{r}
+
+bgd_138 <- bgd_gadm_2 %>% 
+  filter(str_detect(name_2, "Nilphamari")) %>%
+  grab_polygon(138)
+  
+
+```
+
+#bgd_139
+
+IEDCR's list of outbreak investigations for 2008 lists a "suspected nipah cases" with conclusion listed as "isolated nipah cases" in Bowalmari, Faridpur, in March.
+
+
+```{r}
+
+bgd_139 <- bgd_gadm_3 %>% 
+  filter(str_detect(name_3, "Boalmari")) %>%
+  grab_polygon(139)
+
+
+```
+
+
+
+
