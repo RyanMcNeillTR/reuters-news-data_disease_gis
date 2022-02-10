@@ -657,3 +657,28 @@ bgd_132 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Gopalganj")) %>%
 
 ```
 
+#bgd_133
+
+Coding the 2011 Dinajpur cluster identified in [this paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4675679/) here. In the Metabiota data it was included in bgd_44 but we are breaking out separate clusters.
+
+The paper posits an independent spillover in Dinajpur: "Of the five cases in the Dinajpur cluster, two probable cases had drunk raw date palm sap prior to illness onset. Two cases, one confirmed and one probable, came in contact with these probable cases."
+
+The paper gives a date range from Dec 2010 to 2011, but The Daily Star, archived by ProMED, said in Feb 2011 that people had died in Dinajpur from Nipah since January 31, 2011, see [here](https://promedmail.org/promed-post/?id=653198) and [here](https://web.archive.org/web/20110214192935/http://www.thedailystar.net/newDesign/latest_news.php?nid=28442).
+
+The Daiy Star reported on Feb 11, 2011 that someone had died of Nipah in Dinajpur: "Masuma Akhter Moni, 11, of Belaichandi village in Parbatipur upazila of Dinajpur [...] Moni was admitted to the hospital with high fever on Tuesday."
+
+According to a FluTrackers thread the paper later reported this case: "Monoranjan, 4, son of Dhirendra Nath of Kaharol upazila of Dinajpur, was admitted to the RMCH with high fever on Friday. He died at about 9:00am Saturday, reports our Rangpur correspondent."
+
+And on February 14: "Nipah encephalitis claimed two more lives at Rangpur medical College Hospital (RMCH) on Monday, raising the death toll to 33. Anis, 8, son of Alam Miah of Atowari, Dinajpur died at about 2:30am" [source](https://web.archive.org/web/20110215145629/http://www.thedailystar.net/newDesign/latest_news.php?nid=28463)
+
+FluTrackers quotes another local media story taht is no longer online on Feb 24: "Maloti Rani, 35, wife of Manoranjan of village Shahapur under Kaharol upazila in Dinajpur, was admitted at 11am" [here](https://flutrackers.com/forum/forum/emerging-diseases-other-health-threats-alphabetical-i-thru-z/nipah-virus/100720-bangladesh-36-dead-from-nipah-virus/page7)
+
+Even with all that, it's not clear which upazilla the initial spillover was in, so coding to Dinajpur.
+
+```{r}
+bgd_133 <- bgd_gdam_2 %>% 
+  filter(str_detect(name_2, "Dinajpur")) %>%
+  grab_polygon(133)
+
+```
+
