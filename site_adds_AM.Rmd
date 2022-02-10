@@ -741,3 +741,18 @@ bgd_136 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Rajbari")) %>%
 
 ```
 
+#bgd_137
+
+IEDCR outbreak investigation list for 2011 includes a Nipah outbreak in "Bhanga, Faridpur" in January 2011, see [here](https://webcache.googleusercontent.com/search?q=cache:DYC_Xr9rLx0J:https://old.iedcr.gov.bd/website/index.php/outbreak/90-list-of-outbreak-investigations-in-2011-updated-07-may-2012+&cd=4&hl=en&ct=clnk&gl=ca)
+
+Dhaka Mirror reported on Jan 24, 2011, as archvied by ProMED: "The director of the Institute of Epidemiology, Disease Control and
+Research [IEDCR], Mahmudur Rahman, on Sunday [23 Jan 2011] said that 5 people were infected with the Nipah virus in Faridpur and Rajbari districts and 4 of them died this month [January 2011]." [source](https://promedmail.org/promed-post/?id=644995)
+
+* Coding to Bhanga upazilla
+
+```{r}
+
+bgd_137 <- bgd_gadm_3 %>% filter(str_detect(name_3, "Bhanga")) %>%
+  grab_polygon(137)
+
+```
