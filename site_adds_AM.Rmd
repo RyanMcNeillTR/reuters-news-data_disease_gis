@@ -659,7 +659,7 @@ bgd_132 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Gopalganj")) %>%
 
 #bgd_133
 
-Coding the 2011 Dinajpur cluster identified in [this paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4675679/) here. In the Metabiota data it was included in bgd_44 but we are breaking out separate clusters.
+Coding the 2011 Dinajpur cluster identified in [this paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4675679/). In the Metabiota data it was included in bgd_44 but we are breaking out separate clusters.
 
 The paper posits an independent spillover in Dinajpur: "Of the five cases in the Dinajpur cluster, two probable cases had drunk raw date palm sap prior to illness onset. Two cases, one confirmed and one probable, came in contact with these probable cases."
 
@@ -681,4 +681,41 @@ bgd_133 <- bgd_gdam_2 %>%
   grab_polygon(133)
 
 ```
+#bgd_134
 
+A Rangpur district cluster is described in [this paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4675679/). It does not appear in the Metabiota data. Media reports were mixed in with the lage outbreak in Lalmonirhat around the same time but the paper describes them as separate spillovers: "Of the eight cases in the Rangpur cluster, proxies of three probable cases reported that the cases regularly drank fermented date palm sap, a traditional liquor known locally as tari, from a common source. They consumed the drink daily during the 30 days prior to their illness onset. These probable cases did not have any history of drinking raw sap or of having contact with a Nipah case. Three confirmed cases became ill following close contact with one of these probable cases. Two other cases from this cluster, one confirmed and one probable, had no reported history of consuming raw or fermented date palm sap or contact with a Nipah case."
+
+Can we make this location any more precise? 
+
+The Daily Star via ProMED reported on Feb 3, 2011: "The dead were identified as [individuals whose ages and locations are], 10 and 40, of South Goddimari village; 23 of West Bejpur; 50 of Tongbhanga; and another 8, of local bus terminal area in Hatibandha
+upazila [sub-district] of Lalmonirhat." [source](https://promedmail.org/promed-post/?id=644637)
+
+The DAily Star via ProMED reported on Feb 4, 2011: "The government on Friday [4 Feb 2011] confirmed the disease as Nipah
+virus encephalitis that claimed at least 21 people over the last few days in Lalmonirhat and Rangpur."
+
+Skipping detailed notes on villages with cases, but there is an upazilla mention: "The residents of Hatibandha and Gangachara upazilas have been terrified with the outbreak of the virus and many of them left their houses." - Gangachara is in Rangpur [source](https://promedmail.org/promed-post/?id=648343)
+
+* Coding to Rangpur district based on academic paper
+
+```{r}
+
+bgd_134 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Rangpur")) %>%
+  grab_polygon(134)
+
+```
+#bgd_135
+
+This district was listed in Metabiota's data under bgd_44 in 2011; breaking it out here. 
+
+The spillover is described in [this paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4675679/)
+
+"The case reported by a private hospital in Dhaka, was a patient from Comilla District, in the eastern part of the country, who was admitted to that hospital with encephalitis. Her physicians suspected NiV as a possible cause of her illness since she had consumed raw date palm sap and sent her sera to IEDCR for testing. She was confirmed as a case of Nipah encephalitis. She drank raw date palm sap harvested from a tree in the courtyard of her house within 2 weeks prior to her illness onset, and other members from her family and neighbours also drank from the same pot during that time. However, no one else who had shared the sap with her reported any illness. Five of the six isolated cases reported a history of consuming raw date palm sap. None of the isolated cases had contact with any encephalitis cases prior to illness onset."
+
+* Coding to district 
+
+```{r}
+
+bgd_136 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Comilla")) %>%
+  grab_polygon(136)
+
+```
