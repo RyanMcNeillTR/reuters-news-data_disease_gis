@@ -201,7 +201,6 @@ But they never actually tell us where the index case lived.
 
 In this case, we're once again left with a large area and unable to narrow it down. This needs additional reporting. 
 
-
 In [this report from ICDDR,B](http://dspace.icddrb.org/jspui/bitstream/123456789/4811/1/2003-ICDDRBHealthScienceBulletin-Vol1%285%29-English.pdf), we learn:
 
 "Between 11 and 28 January 2003, another outbreak of severe illness including
@@ -279,7 +278,7 @@ bgd_73 <- bgd_gadm_4 %>%
 
 ### bgd_72
 
-This is an outbreak in Rajbari District, Bangladesh during January and February 2004. It occurred at the same time as another outbreak in Manikganj District, Bangladesh, which isn't in the Metabiota data, so we'll probably need to add it. I have labeled it as record x7 in the potential adds tab of the spreadsheet. 
+This is an outbreak in Rajbari District, Bangladesh during January and February 2004. It occurred at the same time as another outbreak in Manikganj District, Bangladesh, which isn't in the Metabiota data, now discussed in the adds file at bgd_96. 
 
 According to this paper:
 
@@ -358,13 +357,17 @@ For now, I'm going to leave this alone and move onto the next record. I will ask
 
 Metabiota lists this 2007 event as occuring in Thakurgaon.
 
+IEDCR's list of 2007 outbreaks [lists](https://webcache.googleusercontent.com/search?q=cache:jJqzeuQUN48J:https://old.iedcr.gov.bd/website/index.php/outbreak/85-outbreak-list-of-2007+&cd=1&hl=en&ct=clnk&gl=ca) a Nipah outbreak in February in Thakurgaon, with no other details. 
+
 According to the Deka spreadsheet, this outbreak occured in Haripur Upazilla, Thakurgaon District, Bangladesh. 
 
-The closest we can get on this record is level 3. 
+[This paper](https://www.cambridge.org/core/journals/epidemiology-and-infection/article/nipah-virus-outbreak-with-persontoperson-transmission-in-a-district-of-bangladesh-2007/7C468D7713F68FD41E7706B9AB0AA034) looks to describe the outbreak:
+"On 9 February 2007, a physician at Rangpur Medical College Hospital, one of 10 hospitals involved in active NiV encephalitis surveillance in Bangladesh, reported a cluster of fatal encephalitis involving a husband and a wife residing in the Haripur Upazila (subdistrict) of Thakurgaon District."
 
-[This paper](https://www.cambridge.org/core/journals/epidemiology-and-infection/article/nipah-virus-outbreak-with-persontoperson-transmission-in-a-district-of-bangladesh-2007/7C468D7713F68FD41E7706B9AB0AA034) visited the village but never names it, instead calling it simply "the outbreak village." 
+Later there is a reference to "the outbreak village." And it says the index patient and some others "consumed raw date palm juice bought ... from a vendor in the local village market."
 
-So for now, let's extract what we know.
+The researchers also sampled bat roots 1km and 15km from teh village: "The NiV neutralizing antibody prevalence was >50% in the bats sampled from the outbreak area which suggests that NiV has circulated in this population of bats."
+
 
 ```{r}
 bgd_61 <- bgd_gadm_4 %>%
@@ -539,7 +542,16 @@ Of them, Bachchu and Joynal died at Hatibandha Upazila Health Complex at about 1
 
 However, based on this description, it's tough to determine the index case and the best we can do for now is level 3.
 
-Some good colour on public health measures [here](https://arrkhan.blogspot.com/2011/02/schools-closed-to-contain-nipah.html): "Authorities in Lalmonirhat have closed down schools, madrasahs and other educational institutions in a bid to prevent the spread of the disease."
+Some good color on public health measures [here](https://arrkhan.blogspot.com/2011/02/schools-closed-to-contain-nipah.html): "Authorities in Lalmonirhat have closed down schools, madrasahs and other educational institutions in a bid to prevent the spread of the disease."
+
+More color from a New Nation piece from Feb 5, 2011 archived by Factiva: "People are still deserting their homes in panic while the local authorities shut down all primary schools at Hatiabandha upazila, which has witnessed the recent outbreak.
+"Even ambulance drivers fled the village. We are trying to convince people aking them not to panic and stop drinking raw palm or date sap," said Dr Farhana Haque, an investigator of the government's team despatched to the upazila on February 2 soon after the outbreak.
+[...]
+Anthropologists say people generally believe that evil spirit has entered their community causing the illness.
+They interpreted the illness as 'asmani bala' (divine burden). Some people of the community even have the perception that bats cannot contaminate raw date or palm sap. And do not believe it could be transmitted from person to person.
+"We have to develop a rapport and earn their trust. We let them to talk first and give them space to express their emotions or complaints," said ICDDR,B anthropologist Shahana Parveen.
+"With the respect of cultural norms and local practice, we make people understand what it actually is and what they should do."
+"We held a courtyard meeting today to sensitise the idea that germs were responsible for the illness and deaths, using local terms and familiar examples," Farhana Haque said, adding that the participants responded positively after being given an explanation with evidence."
 
 
 ```{r}

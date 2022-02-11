@@ -128,18 +128,28 @@ Viral sequence is listed as a primary case in a 12 year old male in 2017 in Rahm
 
 The given date is February 15, 2017. IEDCR's site says they investigated an encephalities cluster in Faridpur in late January, see [here](https://old.iedcr.gov.bd/website/index.php/outbreak/203-outbreak2017)
 
-```{r}
-
-bgd_gadm_4 %>% filter(str_detect(name_4, "Dangi"))
-
-```
-
 There is a Dangi union in Faridpur. 
 
 No information about this outbreak in other sources.
 
 *** Not coding for now.
 
+#bgd_96 
+
+Deka 2018 lists a 2004 spillover in Manikganj district between January and February. The data cites Walsh. 
+
+[This WHO bulletin](https://www.who.int/emergencies/disease-outbreak-news/item/2004_02_12-en) says there were seven cases of "Nipah-like virus infections" in Manikganj in this period, and 35 cases in Rajbari. It says the CDC confirmed Nipah in 9 cases but does not specify which ones were confirmed.
+
+The WHO's chronology does not include this cluster.
+
+Walsh cites an irrelevant paper but a later footnote points to [this paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3323384/#:~:text=From%20January%20through%20April%202004,virus%20and%20clarifying%20transmission%20patterns) which says in passing that "From January through April 2004, two new clusters of fatal Nipah virus encephalitis have been reported in Bangladesh" without specifying location.
+
+Walsh's footnotes also poiunt to a ProMED bulletin: ProMed 20040212.0472. Henipavirus-Bangladesh (Manikganj,
+Rajbari). International Society for Infectious Diseases; 2004.
+
+That ProMED post is just the WHO bulletin. 
+
+* Not coding for now, as WHO bulletin is ambiguous and the cluster does not appear in their later data 
 
 #bgd_97
 
@@ -438,7 +448,7 @@ bgd_117 <- bgd_gadm_3 %>% filter(str_detect(name_2, "Rajshahi")) %>%
 
 Mymensingh district appears on the IEDCR case list for 2013 [here](https://webcache.googleusercontent.com/search?q=cache:bjtu4Hc2QRQJ:www.iedcr.gov.bd/index.php/component/content/article/11/135-23-rd-february-2013-nipah-outbreak+&cd=1&hl=en&ct=clnk&gl=ca), and is repeated in an academic paper that cites IEDCR for districts with cases that year [here](http://ebaub.edu.bd/journal/ej/files/vol3/jc3_6.pdf).
 
-[This](https://www.thenewhumanitarian.org/news/2013/02/05/fresh-outbreak-nipah-virus-bangladesh) news story notes that the Dhaka cases coded earlier, bgd_24, came from sap coillected in from Mymensingh. But there are several cases in teh bulletin, suggesting another spillover
+[This](https://www.thenewhumanitarian.org/news/2013/02/05/fresh-outbreak-nipah-virus-bangladesh) news story notes that the Dhaka cases coded earlier, bgd_24, came from sap collected in from Mymensingh. But there are several cases in the bulletin, suggesting another spillover
 
 *** Coding to Mymensingh district
 
@@ -659,13 +669,15 @@ bgd_132 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Gopalganj")) %>%
 
 #bgd_133
 
-Coding the 2011 Dinajpur cluster identified in [this paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4675679/) here. In the Metabiota data it was included in bgd_44 but we are breaking out separate clusters.
+Coding the 2011 Dinajpur cluster identified in [this paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4675679/). In the Metabiota data it was included in bgd_44 but we are breaking out separate clusters.
 
 The paper posits an independent spillover in Dinajpur: "Of the five cases in the Dinajpur cluster, two probable cases had drunk raw date palm sap prior to illness onset. Two cases, one confirmed and one probable, came in contact with these probable cases."
 
 The paper gives a date range from Dec 2010 to 2011, but The Daily Star, archived by ProMED, said in Feb 2011 that people had died in Dinajpur from Nipah since January 31, 2011, see [here](https://promedmail.org/promed-post/?id=653198) and [here](https://web.archive.org/web/20110214192935/http://www.thedailystar.net/newDesign/latest_news.php?nid=28442).
 
-The Daiy Star reported on Feb 11, 2011 that someone had died of Nipah in Dinajpur: "Masuma Akhter Moni, 11, of Belaichandi village in Parbatipur upazila of Dinajpur [...] Moni was admitted to the hospital with high fever on Tuesday."
+United News of Bangladesh, archvied by Factiva, reported on Feb 10, 2011: "A minor died of encephalitis caused by Nipah virus at Belaichandi village in Parbatpur upazla this (Thursday) morning. The deceased was identified as Masuma Akhter, 11, daughter of Arif Hossain of the village. Hospital and family surces said Masuma fell sick after taking pais (an appetizer prepared with fine rice, milk and molasses) and raw date juice on Saturday (Feb 5)."
+
+The Daily Star reported on Feb 11, 2011 that someone had died of Nipah in Dinajpur: "Masuma Akhter Moni, 11, of Belaichandi village in Parbatipur upazila of Dinajpur [...] Moni was admitted to the hospital with high fever on Tuesday."
 
 According to a FluTrackers thread the paper later reported this case: "Monoranjan, 4, son of Dhirendra Nath of Kaharol upazila of Dinajpur, was admitted to the RMCH with high fever on Friday. He died at about 9:00am Saturday, reports our Rangpur correspondent."
 
@@ -681,4 +693,146 @@ bgd_133 <- bgd_gdam_2 %>%
   grab_polygon(133)
 
 ```
+#bgd_134
 
+A Rangpur district cluster is described in [this paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4675679/). It does not appear in the Metabiota data. Media reports were mixed in with the lage outbreak in Lalmonirhat around the same time but the paper describes them as separate spillovers: "Of the eight cases in the Rangpur cluster, proxies of three probable cases reported that the cases regularly drank fermented date palm sap, a traditional liquor known locally as tari, from a common source. They consumed the drink daily during the 30 days prior to their illness onset. These probable cases did not have any history of drinking raw sap or of having contact with a Nipah case. Three confirmed cases became ill following close contact with one of these probable cases. Two other cases from this cluster, one confirmed and one probable, had no reported history of consuming raw or fermented date palm sap or contact with a Nipah case."
+
+Can we make this location any more precise? 
+
+The Daily Star via ProMED reported on Feb 3, 2011: "The dead were identified as [individuals whose ages and locations are], 10 and 40, of South Goddimari village; 23 of West Bejpur; 50 of Tongbhanga; and another 8, of local bus terminal area in Hatibandha
+upazila [sub-district] of Lalmonirhat." [source](https://promedmail.org/promed-post/?id=644637)
+
+The DAily Star via ProMED reported on Feb 4, 2011: "The government on Friday [4 Feb 2011] confirmed the disease as Nipah
+virus encephalitis that claimed at least 21 people over the last few days in Lalmonirhat and Rangpur."
+
+Skipping detailed notes on villages with cases, but there is an upazilla mention: "The residents of Hatibandha and Gangachara upazilas have been terrified with the outbreak of the virus and many of them left their houses." - Gangachara is in Rangpur [source](https://promedmail.org/promed-post/?id=648343)
+
+* Coding to Rangpur district based on academic paper
+
+```{r}
+
+bgd_134 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Rangpur")) %>%
+  grab_polygon(134)
+
+```
+#bgd_135
+
+This district was listed in Metabiota's data under bgd_44 in 2011; breaking it out here. 
+
+The spillover is described in [this paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4675679/)
+
+"The case reported by a private hospital in Dhaka, was a patient from Comilla District, in the eastern part of the country, who was admitted to that hospital with encephalitis. Her physicians suspected NiV as a possible cause of her illness since she had consumed raw date palm sap and sent her sera to IEDCR for testing. She was confirmed as a case of Nipah encephalitis. She drank raw date palm sap harvested from a tree in the courtyard of her house within 2 weeks prior to her illness onset, and other members from her family and neighbours also drank from the same pot during that time. However, no one else who had shared the sap with her reported any illness. Five of the six isolated cases reported a history of consuming raw date palm sap. None of the isolated cases had contact with any encephalitis cases prior to illness onset."
+
+* Coding to district 
+
+```{r}
+
+bgd_135 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Comilla")) %>%
+  grab_polygon(135)
+
+```
+
+#bgd_136
+
+Adding a small 2011 cluster in Rajbari described in [this paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4675679/)
+
+"Both cases in the Rajbari cluster had drunk raw date palm sap within 3 weeks prior to their illness onset, but the second case (daughter of the first case) also came in contact with her mother after her onset of illness, which was 4 days prior to her onset of illness."
+
+The Daily Star reported on Feb 11, 2011: "Meantime, three people from Rajbari were admitted to Dhaka Medical College Hospital last night with symptoms of Nipah virus, DMCH sources said.
+The three are Abul Kalam, 55, his son Rusel, 18, and his nephew Abul Kalam, 18. Kalam's wife Asma Begum told this correspondent that five members of her family fell sick after taking some date juice on Monday. Two of them, however, recovered by taking some medicines at home." [source](https://www.thedailystar.net/news-detail-173755)
+
+Not clear this is the same case.
+
+Dhaka Mirror, via ProMED, reported on Jan 24, 2011: "The director of the Institute of Epidemiology, Disease Control and Research [IEDCR], Mahmudur Rahman, on Sunday [23 Jan 2011] said that 5 people were infected with the Nipah virus in Faridpur and Rajbari districts and 4 of them died this month [January 2011]."
+
+```{r}
+
+bgd_136 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Rajbari")) %>%
+  grab_polygon(136)
+
+
+```
+
+#bgd_137
+
+IEDCR outbreak investigation list for 2011 includes a Nipah outbreak in "Bhanga, Faridpur" in January 2011, see [here](https://webcache.googleusercontent.com/search?q=cache:DYC_Xr9rLx0J:https://old.iedcr.gov.bd/website/index.php/outbreak/90-list-of-outbreak-investigations-in-2011-updated-07-may-2012+&cd=4&hl=en&ct=clnk&gl=ca)
+
+Dhaka Mirror reported on Jan 24, 2011, as archvied by ProMED: "The director of the Institute of Epidemiology, Disease Control and
+Research [IEDCR], Mahmudur Rahman, on Sunday [23 Jan 2011] said that 5 people were infected with the Nipah virus in Faridpur and Rajbari districts and 4 of them died this month [January 2011]." [source](https://promedmail.org/promed-post/?id=644995)
+
+* Coding to Bhanga upazilla
+
+```{r}
+
+bgd_137 <- bgd_gadm_3 %>% filter(str_detect(name_3, "Bhanga")) %>%
+  grab_polygon(137)
+
+```
+#bgd_138
+
+Nilphamari outbreak in 2011 - this district was listed in Metabiota's data under bgd_44 in 2011; breaking it out here. It is briefly listed in the WHO's reporting table, archived online (here)[http://web.archive.org/web/20190922101016/http://www.searo.who.int/entity/emerging_diseases/links/nipah_virus_outbreaks_sear/en/]
+
+The Daily Star, archived by ProMED, reported on Feb 11, 2011: "Since 31 Jan [2011], Nipah claimed the lives in 7 districts --
+Rangpur, Kurigram, Lalmonirhat, Nilphamari, Gaibandha, Dinajpur and
+Kushtia."
+
+* Coding to Nilphamari
+
+```{r}
+
+bgd_138 <- bgd_gadm_2 %>% 
+  filter(str_detect(name_2, "Nilphamari")) %>%
+  grab_polygon(138)
+  
+
+```
+
+#bgd_139
+
+IEDCR's list of outbreak investigations for 2008 lists a "suspected nipah cases" with conclusion listed as "isolated nipah cases" in Bowalmari, Faridpur, in March.
+
+
+```{r}
+
+bgd_139 <- bgd_gadm_3 %>% 
+  filter(str_detect(name_3, "Boalmari")) %>%
+  grab_polygon(139)
+
+
+```
+
+#bgd_140
+
+Deka lists a case in April 2008 in Satkhire, Bangladesh. They cite [this](https://iijls.com/currentissue/Nipah_Virus_Infectious_Agent_An_Overview.pdf) 2018 paper, but the paper itself cites a broken WHO link.
+
+Other WHO documents do mention the location, though for example [this pamphlet](https://afrohun.org/wp-content/uploads/2021/01/WHO-Nipah-Fact-Sheet.pdf)
+
+Note Satkhire can also be transliterated as Satkhira. 
+
+* Coding to Satkhire 
+
+```{r}
+
+bgd_140 <- bgd_gadm_2 %>% 
+  filter(str_detect(name_2, "Satkhira")) %>%
+  grab_polygon(140)
+
+```
+
+#bgd_141
+
+Deka lists a case in April 2008 in Jessore, Bangladesh. They cite [this](https://iijls.com/currentissue/Nipah_Virus_Infectious_Agent_An_Overview.pdf) 2018 paper, but the paper itself cites a broken WHO link.
+
+Other WHO documents do mention the location, though for example [this pamphlet](https://afrohun.org/wp-content/uploads/2021/01/WHO-Nipah-Fact-Sheet.pdf)
+
+Note Satkhire can also be transliterated as Satkhira. 
+
+* Coding to Jessore 
+
+```{r}
+
+bgd_140 <- bgd_gadm_2 %>% 
+  filter(str_detect(name_2, "Jessore")) %>%
+  grab_polygon(140)
+
+```
