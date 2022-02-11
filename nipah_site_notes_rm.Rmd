@@ -56,6 +56,8 @@ india_gadm_3 <- st_read("./input_data/India/gadm36_IND.gpkg", layer="gadm36_IND_
 
 ### ind_88
 
+This is a 2001 outbreak.
+
 According to [this 2006 paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3373078/): “No definitive information about the possible index case exists.”
 
 So, for now, let’s use the GADM layer to at least find the Siliguri area polygon.
@@ -72,17 +74,8 @@ ind_88 <- india_gadm_3 %>%
   select(poly_geom = geom) %>% # this right here is where we start building the end dataset
   mutate(point_geom = st_centroid(poly_geom),
          precision = "centroid") %>%
-  mutate(reuters_id = 88,
-         country_iso = "IND")
-```
-
-
-```{r}
-ind_88_point <- tribble(
-  ~latitude, ~longitude,
-  26.755302, 88.407176
-) %>%
-  st_as_sf(coords=c("longitude", "latitude"), crs=4326) 
+  mutate(id = "ind_88",
+         the_year = 2001)
 ```
 
 
@@ -97,13 +90,15 @@ According to [this paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3321761/)
 It appears the Walsh coordinates are exact for this record. 
 
 ```{r}
-ind_63_point <- tribble(
+ind_63 <- tribble(
   ~latitude, ~longitude,
   23.812481, 88.570558
 ) %>%
   st_as_sf(coords=c("longitude", "latitude"), crs=4326) %>%
   select(point_geom = geometry) %>%
-  mutate(precision = "precise")
+  mutate(precision = "precise",
+         id = "ind_63",
+         the_year = 2007)
 ```
 
 
@@ -180,7 +175,9 @@ bgd_87 <- bgd_gadm_4 %>%
   filter(name_4 == "Pirojpur") %>%
   select(poly_geom = geom) %>%
   mutate(point_geom = st_centroid(poly_geom),
-         precision = "centroid")  
+         precision = "centroid") %>%
+  mutate(the_year = 2001, 
+         id = "bgd_87")
 ```
 
 
@@ -240,7 +237,9 @@ bgd_76 <- bgd_gadm_4 %>%
   filter(name_4 == "Sreemantapur") %>%
   select(poly_geom = geom) %>%
   mutate(point_geom = st_centroid(poly_geom),
-         precision = "centroid")  
+         precision = "centroid") %>%
+  mutate(the_year = 2003,
+         id = "bgd_76")
 ```
 
 
@@ -272,7 +271,9 @@ bgd_73 <- bgd_gadm_4 %>%
   filter(name_4 == "Faridpur Paurashava") %>%
   select(poly_geom = geom) %>%
   mutate(point_geom = st_centroid(poly_geom),
-         precision = "centroid")    
+         precision = "centroid") %>%
+  mutate(the_year = 2004,
+         id = "bgd_73")
 ```
 
 
@@ -295,7 +296,7 @@ bgd_72 <- bgd_gadm_4 %>%
   select(name_3) %>%
   group_by(name_3) %>%
   summarise(geom = st_union(geom)) %>%
-  select(poly_geom = geom)
+  select(poly_geom = geom) 
 ```
 
 We should try to nail down the location of Kazipara village.
@@ -312,7 +313,9 @@ bgd_72 <- bgd_gadm_4 %>%
   filter(name_4 == "Goalandaghat Paurashava") %>%
   select(poly_geom = geom) %>%
   mutate(point_geom = st_centroid(poly_geom),
-         precision = "centroid")
+         precision = "centroid") %>%
+    mutate(the_year = 2004,
+         id = "bgd_72")
   
 ```
 
@@ -339,7 +342,9 @@ bgd_68 <- bgd_gadm_4 %>%
   filter(name_4 == "Habla") %>%
   select(poly_geom = geom) %>%
   mutate(point_geom = st_centroid(poly_geom),
-         precision = "centroid")
+         precision = "centroid") %>%
+  mutate(the_year = 2005,
+         id = "bgd_68")
 ```
 
 
@@ -378,7 +383,9 @@ bgd_61 <- bgd_gadm_4 %>%
   summarise(geom = st_union(geom)) %>%
   select(poly_geom = geom) %>%
   mutate(point_geom = st_centroid(poly_geom),
-         precision = "centroid")
+         precision = "centroid") %>%
+  mutate(the_year = 2007,
+         id = "bgd_61")
 ```
 
 
@@ -406,7 +413,10 @@ bgd_56 <- bgd_gadm_4 %>%
   filter(name_4 == "Nawabpur") %>%
   select(poly_geom = geom) %>%
   mutate(point_geom = st_centroid(poly_geom),
-         precision = "centroid")
+         precision = "centroid") %>%
+    mutate(the_year = 2008,
+         id = "bgd_56")
+  
 ```
 
 Absent a specific village coordinate, this appears to be the most accurate conclusion. 
@@ -437,7 +447,9 @@ bgd_55 <- bgd_gadm_4 %>%
   filter(name_4 == "Khalsi") %>%
   select(poly_geom = geom) %>%
   mutate(point_geom = st_centroid(poly_geom),
-         precision = "centroid")
+         precision = "centroid") %>%
+    mutate(the_year = 2008,
+         id = "bgd_55")
 ```
 
 
@@ -459,7 +471,9 @@ bgd_50 <- bgd_gadm_4 %>%
   summarise(geom = st_union(geom)) %>%
   select(poly_geom = geom) %>%
   mutate(point_geom = st_centroid(poly_geom),
-         precision = "centroid")
+         precision = "centroid") %>%
+  mutate(the_year = 2009,
+         id = "bgd_50")
   
 ```
 
@@ -520,6 +534,21 @@ ggplot() +
   geom_sf(data=bgd_45_point)
 ```
 
+
+```{r}
+bgd_45 <- tribble(
+  ~latitude, ~longitude,
+  23.381598, 90.016138
+) %>%
+  st_as_sf(coords=c("longitude", "latitude"), crs=4326) %>%
+  select(point_geom = geometry) %>%
+  mutate(the_year = 2010,
+         id = "bgd_45")
+```
+
+
+
+
 ### bgd_44
 
 Metabiota identified this 2011 outbreak in Comilla, Dinajpur, Faridpur, Lalmohirhat, Nilphamari. 
@@ -575,3 +604,18 @@ bgd_44 <- bgd_gadm_4 %>%
 "Of the eight cases in the Rangpur cluster, proxies of three probable cases reported that the cases regularly drank fermented date palm sap, a traditional liquor known locally as tari, from a common source. They consumed the drink daily during the 30 days prior to their illness onset. These probable cases did not have any history of drinking raw sap or of having contact with a Nipah case. Three confirmed cases became ill following close contact with one of these probable cases. Two other cases from this cluster, one confirmed and one probable, had no reported history of consuming raw or fermented date palm sap or contact with a Nipah case."
 
 
+
+# Assembly 
+
+```{r}
+ryan_nipah_unfinished <- bind_rows(ind_88, ind_63, bgd_87, bgd_76, bgd_73, bgd_72, bgd_68, bgd_61, bgd_56, bgd_55, bgd_50, bgd_45)
+```
+
+```{r}
+st_geometry(ryan_nipah_unfinished) <- "point_geom"
+```
+
+
+```{r}
+st_write(ryan_nipah_unfinished, "./spatial_outputs/ryan_nipah_unfinished.gpkg", append=FALSE)
+```

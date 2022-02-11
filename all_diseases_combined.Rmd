@@ -9,12 +9,13 @@ output: html_notebook
 ebola <- st_read("./spatial_outputs/ebola.gpkg")
 marburg <- st_read("./spatial_outputs/marburg.gpkg")
 other <- st_read("./spatial_outputs/other_spillovers.gpkg")
+nipah_ryan_unfinished <- st_read("./spatial_outputs/ryan_nipah_unfinished.gpkg")
 ```
 ```{r}
-all_combined <- bind_rows(ebola, marburg, other)
+all_combined <- bind_rows(ebola, marburg, other, nipah_ryan_unfinished)
 ```
 
 ```{r}
-st_write(all_combined, "./spatial_outputs/all_combined.gpkg")
+st_write(all_combined, "./spatial_outputs/all_combined.gpkg", append = FALSE)
 ```
 
