@@ -531,6 +531,3 @@ bgd_41 <- bgd_gadm_4 %>% filter(str_detect(name_4, "Joypurhat")) %>%
   grab_polygon(41)
 
 ```
-
-
-

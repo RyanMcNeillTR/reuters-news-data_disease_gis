@@ -278,7 +278,7 @@ bgd_73 <- bgd_gadm_4 %>%
 
 ### bgd_72
 
-This is an outbreak in Rajbari District, Bangladesh during January and February 2004. It occurred at the same time as another outbreak in Manikganj District, Bangladesh, which isn't in the Metabiota data, so we'll probably need to add it. I have labeled it as record x7 in the potential adds tab of the spreadsheet. 
+This is an outbreak in Rajbari District, Bangladesh during January and February 2004. It occurred at the same time as another outbreak in Manikganj District, Bangladesh, which isn't in the Metabiota data, now discussed in the adds file at bgd_96. 
 
 According to this paper:
 

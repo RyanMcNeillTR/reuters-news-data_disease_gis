@@ -448,7 +448,7 @@ bgd_117 <- bgd_gadm_3 %>% filter(str_detect(name_2, "Rajshahi")) %>%
 
 Mymensingh district appears on the IEDCR case list for 2013 [here](https://webcache.googleusercontent.com/search?q=cache:bjtu4Hc2QRQJ:www.iedcr.gov.bd/index.php/component/content/article/11/135-23-rd-february-2013-nipah-outbreak+&cd=1&hl=en&ct=clnk&gl=ca), and is repeated in an academic paper that cites IEDCR for districts with cases that year [here](http://ebaub.edu.bd/journal/ej/files/vol3/jc3_6.pdf).
 
-[This](https://www.thenewhumanitarian.org/news/2013/02/05/fresh-outbreak-nipah-virus-bangladesh) news story notes that the Dhaka cases coded earlier, bgd_24, came from sap coillected in from Mymensingh. But there are several cases in teh bulletin, suggesting another spillover
+[This](https://www.thenewhumanitarian.org/news/2013/02/05/fresh-outbreak-nipah-virus-bangladesh) news story notes that the Dhaka cases coded earlier, bgd_24, came from sap collected in from Mymensingh. But there are several cases in the bulletin, suggesting another spillover
 
 *** Coding to Mymensingh district
 
