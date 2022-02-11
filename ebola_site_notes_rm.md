@@ -146,7 +146,8 @@ gab_86 <- mylne_polys %>%
   select(poly_geom = geometry) %>%
   mutate(point_geom = st_centroid(poly_geom),
          precision = "centroid",
-         id = "gab_86")
+         id = "gab_86",
+         the_year = 2001)
 ```
 
 ### gab_85
@@ -168,7 +169,8 @@ gab_85 <- mylne_points %>%
   filter(uniq_id == 162) %>%
   select(point_geom = geometry) %>%
   mutate(precision = "exact",
-         id = "gab_85")
+         id = "gab_85",
+         the_year = 2001)
 ```
 
 ### gab_82
@@ -184,7 +186,8 @@ gab_82 <- mylne_points %>%
   filter(uniq_id == 160) %>%
   select(point_geom = geometry) %>%
   mutate(precision = "exact",
-         id = "gab_82")
+         id = "gab_82",
+         the_year = 2001)
 ```
 
 ### gab_78
@@ -214,7 +217,8 @@ gab_78 <- mylne_polys %>%
   select(poly_geom = geometry) %>%
   mutate(point_geom = st_centroid(poly_geom),
          precision = "centroid",
-         id = "gab_78")
+         id = "gab_78",
+         the_year = 2002)
 ```
 
 ## Republic of the Congo
@@ -235,7 +239,8 @@ cog_84 <- mylne_polys %>%
   select(poly_geom = geometry) %>%
   mutate(point_geom = st_centroid(poly_geom),
          precision = "centroid",
-         id = "cog_84")
+         id = "cog_84",
+         the_year = 2001)
 ```
 
 ### cog_83
@@ -251,7 +256,8 @@ cog_83 <- mylne_points %>%
   filter(uniq_id == 163) %>%
   select(point_geom = geometry) %>%
   mutate(precision = "exact",
-         id = "cog_83")
+         id = "cog_83",
+         the_year = 2001)
 ```
 
 ### cog_80
@@ -271,7 +277,8 @@ cog_80 <- mylne_polys %>%
   select(poly_geom = geometry) %>%
   mutate(point_geom = st_centroid(poly_geom),
          precision = "centroid", 
-         id = "cog_80")
+         id = "cog_80",
+         the_year = 2002)
 ```
 
 ### cog_79
@@ -297,7 +304,8 @@ cog_79 <- mylne_points %>%
   filter(uniq_id == 173) %>%
   select(point_geom = geometry) %>%
   mutate(precision = "exact",
-         id = "cog_79")
+         id = "cog_79",
+         the_year = 2002)
 ```
 
 ### cog_75
@@ -321,7 +329,8 @@ cog_75 <- mylne_polys %>%
   select(poly_geom = geometry) %>%
   mutate(point_geom = st_centroid(poly_geom),
          precision = "centroid",
-         id = "cog_75")
+         id = "cog_75",
+         the_year = 2003)
 ```
 
 ### cog_74
@@ -339,7 +348,8 @@ cog_74 <- mylne_points %>%
   filter(uniq_id == 175) %>%
   select(point_geom = geometry) %>%
   mutate(precision = "exact",
-         id = "cog_74")
+         id = "cog_74",
+         the_year = 2003)
 ```
 
 ### cog_67
@@ -367,7 +377,8 @@ cog_67 <- mylne_polys %>%
   select(poly_geom = geometry) %>%
   mutate(point_geom = st_centroid(poly_geom),
          precision = "centroid",
-         id = "cog_67")
+         id = "cog_67",
+         the_year = 2005)
 ```
 
 ## South Sudan
@@ -389,7 +400,8 @@ ssd_69 <- mylne_polys %>%
   select(poly_geom = geometry) %>%
   mutate(point_geom = st_centroid(poly_geom),
          precision = "centroid",
-         id = "ssd_69")
+         id = "ssd_69",
+         the_year = 2004)
 ```
 
 ## Uganda
@@ -421,7 +433,8 @@ uga_58 <- mylne_points %>%
   filter(uniq_id == 195) %>%
   select(point_geom = geometry) %>%
   mutate(precision = "exact",
-         id = "uga_58")
+         id = "uga_58",
+         the_year = 2007)
 ```
 
 ### uga_43
@@ -449,7 +462,8 @@ uga_43 <- mylne_points %>%
   filter(uniq_id == 207) %>%
   select(point_geom = geometry) %>%
   mutate(precision = "exact",
-         id = "uga_43")
+         id = "uga_43",
+         the_year = 2011)
 ```
 
 ### uga_39
@@ -472,7 +486,8 @@ uga_39 <- mylne_polys %>%
   filter(uniq_id == 214) %>%
   select(point_geom = geometry) %>%
   mutate(precision = "exact",
-         id = "uga_39")
+         id = "uga_39",
+         the_year = 2012)
 ```
 
 ### uga_38
@@ -497,7 +512,8 @@ uga_38 <- mylne_polys %>%
   select(poly_geom = geometry) %>%
   mutate(point_geom = st_centroid(poly_geom),
          precision = "centroid",
-         id = "uga_38")
+         id = "uga_38",
+         the_year = 2012)
 ```
 
 ## Democratic Republic of the Congo
@@ -579,7 +595,8 @@ cod_57 <- mylne_points %>%
   filter(uniq_id == 189) %>%
   select(point_geom = geometry) %>%
   mutate(precision = "exact",
-         id = "cod_57")
+         id = "cod_57",
+         the_year = 2007)
 ```
 
 ### cod_52
@@ -606,7 +623,8 @@ cod_52 <- mylne_polys %>%
   select(poly_geom = geometry) %>%
   mutate(point_geom = st_centroid(poly_geom),
          precision = "centroid", 
-         id = "cod_52")
+         id = "cod_52",
+         the_year = 2008)
 ```
 
 ### cod_37
@@ -629,7 +647,8 @@ cod_37 <- mylne_polys %>%
   select(poly_geom = geometry) %>%
   mutate(point_geom = st_centroid(poly_geom),
          precision = "centroid",
-         id = "cod_37")
+         id = "cod_37",
+         the_year = 2012)
 ```
 
 ### cod_12
@@ -670,7 +689,8 @@ cod_10 <- drc_health_zones %>%
   select(poly_geom = geometry) %>%
   mutate(point_geom = st_centroid(poly_geom),
          precision = "centroid",
-         id = "cod_10")
+         id = "cod_10",
+         the_year = 2018)
 ```
 
 ### cod_9
@@ -699,7 +719,8 @@ cod_9 <- drc_health_areas %>%
   select(poly_geom = geometry) %>%
   mutate(point_geom = st_centroid(poly_geom),
          precision = "centroid",
-         id = "cod_9")
+         id = "cod_9",
+         the_year = 2018)
 ```
 
 ### cod_4
@@ -733,7 +754,8 @@ cod_4 <- tribble(
   st_as_sf(coords=c("longitude", "latitude"), crs=4326) %>%
   select(point_geom = geometry) %>%
   mutate(precision = "manual village siting") %>%
-  mutate(id = "cod_4")
+  mutate(id = "cod_4",
+         the_year = 2020)
 ```
 
 ### cod_1
@@ -753,6 +775,8 @@ virus.”
 
 ### gin_23
 
+This started in 2013.
+
 In past, the site of the index case has been plotted at Gueckendou.
 However, it is not believed that the index case was a boy [from the
 village of
@@ -767,7 +791,8 @@ gin_23 <- tribble(
   st_as_sf(coords=c("longitude", "latitude"), crs=4326) %>%
   select(point_geom = geometry) %>%
   mutate(precision = "manual village siting") %>%
-  mutate(id = "gin_23")
+  mutate(id = "gin_23",
+         the_year = 2013)
 ```
 
 # Final assembly
