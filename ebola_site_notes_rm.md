@@ -802,3 +802,7 @@ awaiting results on cod_12
 ``` r
 ebola_spatial <- bind_rows(gab_86, gab_85, gab_82, gab_78, cog_84, cog_83, cog_80, cog_79, cog_75, cog_74, cog_67, ssd_69, uga_58, uga_43, uga_39, uga_38, cod_57, cod_52, cod_37, cod_10, cod_9, cod_4, gin_23)
 ```
+
+``` r
+#st_write(ebola_spatial, "./spatial_outputs/ebola.gpkg")
+```
