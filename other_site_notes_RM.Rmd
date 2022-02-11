@@ -65,17 +65,29 @@ chn_13 <- china_admin_3 %>%
   select(poly_geom = geom) %>%
   mutate(point_geom = st_centroid(poly_geom),
          precision = "centroid",
-         id = "chn_13")
+         id = "chn_13",
+         the_year = 2017)
 ```
 
 ### chn_77
 
 This is SARS-CoV-1. 
 
+Seems like we could improve the location, but this will have to do for now. 
+
 ```{r}
-china_admin_3 %>%
+chn_77 <- china_admin_3 %>%
   filter(NAME_1 == "Guangdong") %>%
-  filter(NAME_2 == "Foshan")
+  filter(NAME_2 == "Foshan") %>%
+  select(NAME_2, geom) %>%
+  group_by(NAME_2) %>%
+  summarise(poly_geom = st_union(geom)) %>%
+  select(!NAME_2) %>%
+  mutate(point_geom = st_centroid(poly_geom),
+         precision = "centroid",
+         id = "chn_77",
+         the_year = 2002)
+  
 ```
 
 
@@ -109,7 +121,8 @@ mys_46 <- tribble(
   st_as_sf(coords=c("longitude", "latitude"), crs=4326) %>%
   select(point_geom = geometry) %>%
   mutate(precision = "manual village siting") %>%
-  mutate(id = "mys_46")
+  mutate(id = "mys_46",
+         the_year = 2010)
 ```
 
 
@@ -120,9 +133,6 @@ mys_46 <- tribble(
 This is a 2010 outbreak of HK50842/10 in Indonesia. 
 
 come back to this, asked Deb for 
-
-
-
 
 
 
@@ -158,7 +168,8 @@ aus_48 <- oz_localities %>%
   select(poly_geom = geometry) %>%
   mutate(point_geom = st_centroid(poly_geom),
          precision = "centroid",
-         id = "aus_48")
+         id = "aus_48",
+         the_year = 2009)
 ```
 
 
@@ -194,7 +205,8 @@ aus_54 <- tribble(
   st_as_sf(coords=c("longitude", "latitude"), crs=4326) %>%
   select(point_geom = geometry) %>%
   mutate(precision = "manual siting") %>%
-  mutate(id = "aus_54")
+  mutate(id = "aus_54",
+         the_year = 2008)
 ```
 
 
@@ -222,6 +234,27 @@ aus_71 <- oz_localities %>%
   select(poly_geom = geometry) %>%
   mutate(point_geom = st_centroid(poly_geom),
          precision = "centroid",
-         id = "aus_71")
+         id = "aus_71",
+         the_year = 2004)
+```
+
+
+
+# assemble it
+
+```{r}
+other_combined <- bind_rows(chn_13, chn_77, mys_46, aus_48, aus_54, aus_71)
+```
+
+
+```{r}
+st_geometry(other_combined) <- "point_geom"
+```
+
+
+
+
+```{r}
+st_write(other_combined, "./spatial_outputs/other_spillovers.gpkg", append=FALSE)
 ```
 

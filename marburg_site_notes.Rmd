@@ -42,7 +42,9 @@ uga_x6 <- uga_gadm_4 %>%
   filter(str_detect(name_4, "Kamwam")) %>%
   select(poly_geom = geom) %>%
   mutate(point_geom = st_centroid(poly_geom),
-         precision = "centroid")
+         precision = "centroid",
+         the_year = 2017,
+         id = "uga_x6")
   
 ```
 
@@ -65,7 +67,9 @@ uga_21 <- uga_gadm_4 %>%
   summarise(geom = st_union(geom)) %>%
   select(poly_geom = geom) %>%
   mutate(point_geom = st_centroid(poly_geom),
-         precision = "centroid")
+         precision = "centroid",
+         the_year = 2014,
+         id = "uga_21")
 
 ```
 
@@ -74,6 +78,8 @@ uga_21 <- uga_gadm_4 %>%
 
 
 ### uga_40
+
+This is a 2012 outbreak.
 
 https://pubmed.ncbi.nlm.nih.gov/26209681/
 
@@ -87,12 +93,16 @@ uga_40 <- uga_gadm_4 %>%
   summarise(geom = st_union(geom)) %>%
   select(poly_geom = geom) %>%
   mutate(point_geom = st_centroid(poly_geom),
-         precision = "centroid")
+         precision = "centroid",
+         the_year = 2012,
+         id = "uga_40")
 
 ```
 
 
 ### uga_53
+
+This is from 2008. 
 
 This should be one of two spillover events linked to Python cave. One is an American, the other involved Dutch travelers. This one is for the Dutch travelers. 
 
@@ -131,10 +141,14 @@ uga_53 <- hits %>%
   select(geometry) %>%
   distinct() %>%
   select(point_geom = geometry) %>%
-  mutate(precision = "exact")
+  mutate(precision = "exact",
+         the_year = 2008,
+         id = "uga_53")
 ```
 
 ### uga_59
+
+This outbreak occured in June 2007, [acccording to this document](https://academic.oup.com/trstmh/article/109/6/366/2461644?login=true#supplementary-data).
 
 Based on this article, it sounds like a company called Simba has the rights for the location of the Kitka mine. 
 
@@ -152,7 +166,9 @@ uga_59 <- uganda_active_mining %>%
   filter(str_detect(parties, "Simba")) %>%
   select(poly_geom = geoms) %>%
   mutate(point_geom = st_centroid(poly_geom),
-         precision = "centroid")
+         precision = "centroid",
+         the_year = 2007,
+         id = "uga_59")
 
 ```
 
@@ -160,6 +176,8 @@ uga_59 <- uganda_active_mining %>%
 
 
 ### uga_60
+
+This is the first spillover involving Python cave. It occured in 2007. 
 
 We can just repeat the data we extracted earlier from uga_53. 
 
@@ -169,7 +187,9 @@ uga_60 <- hits %>%
   select(geometry) %>%
   distinct() %>%
   select(point_geom = geometry) %>%
-  mutate(precision = "exact")
+  mutate(precision = "exact",
+         the_year = 2007,
+         id = "uga_60")
 ```
 
 
@@ -178,6 +198,8 @@ uga_60 <- hits %>%
 We only have one known Marburg event in Angola. 
 
 ### ago_70
+
+This occurred in 2004. 
 
 According to [this paper](https://journals.asm.org/doi/10.1128/JVI.00069-06), the index case was never determined. For now, we'll use the centroid of the province where the outbreak occurred. 
 
@@ -201,7 +223,9 @@ uige_province <- angola_gadm %>%
 ago_70 <- uige_province %>%
   select(poly_geom = geom) %>%
   mutate(point_geom = st_centroid(poly_geom),
-         precision = "centroid")
+         precision = "centroid",
+         the_year = 2004,
+         id = "ago_70")
 ```
 
 # Put it all together
@@ -222,7 +246,7 @@ Export the data.
 
 ```{r}
 marburg_points %>%
-  st_write("./testing/marburg_dots.gpkg", append=FALSE)
+  st_write("./spatial_outputs/marburg.gpkg", append=FALSE)
 ```
 
 

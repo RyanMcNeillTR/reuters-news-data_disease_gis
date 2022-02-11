@@ -356,8 +356,10 @@ No geographical information on index case. GE search term 'Luwero District, Ugan
 
 ```{r}
 uga_39 <- mylne_polys %>%
+  select(uniq_id, geometry) %>%
   filter(uniq_id == 214) %>%
-  select(point_geom = geometry) %>%
+  select(geometry) %>%
+  mutate(point_geom = st_centroid(geometry)) %>%
   mutate(precision = "exact",
          id = "uga_39",
          the_year = 2012)
@@ -610,7 +612,12 @@ ebola_spatial <- bind_rows(gab_86, gab_85, gab_82, gab_78, cog_84, cog_83, cog_8
 
 
 ```{r}
-#st_write(ebola_spatial, "./spatial_outputs/ebola.gpkg")
+st_geometry(ebola_spatial) <- "point_geom"
+```
+
+
+```{r}
+st_write(ebola_spatial, "./spatial_outputs/ebola.gpkg", append=FALSE)
 ```
 
 
