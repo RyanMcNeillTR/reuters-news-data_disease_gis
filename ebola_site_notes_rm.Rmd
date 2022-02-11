@@ -610,7 +610,7 @@ ebola_spatial <- bind_rows(gab_86, gab_85, gab_82, gab_78, cog_84, cog_83, cog_8
 
 
 ```{r}
-st_write(ebola_spatial, "./spatial_outputs/ebola.gpkg")
+#st_write(ebola_spatial, "./spatial_outputs/ebola.gpkg")
 ```
 
 
