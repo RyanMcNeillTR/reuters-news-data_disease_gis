@@ -256,27 +256,41 @@ Dimension:     XY
 Bounding box:  xmin: 101.9903 ymin: -27.58066 xmax: 153.277 ymax: 42.51566
 Geodetic CRS:  WGS 84</code></pre>
 <!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubmlwYWhfcnlhbl91bmZpbmlzaGVkIDwtIHN0X3JlYWQoXCIuL3NwYXRpYWxfb3V0cHV0cy9yeWFuX25pcGFoX3VuZmluaXNoZWQuZ3BrZ1wiKVxuYGBgIn0= -->
+<pre class="r"><code>nipah_ryan_unfinished &lt;- st_read(&quot;./spatial_outputs/ryan_nipah_unfinished.gpkg&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiUmVhZGluZyBsYXllciBgcnlhbl9uaXBhaF91bmZpbmlzaGVkJyBmcm9tIGRhdGEgc291cmNlIFxuICBgQzpcXFVzZXJzXFx1MDE2MTc3NlxcT25lRHJpdmUgLSBUaG9tc29uIFJldXRlcnMgSW5jb3Jwb3JhdGVkXFxuZXdfcHJvamVjdHNcXHJfd29ya1xccmV1dGVycy1uZXdzLWRhdGFfZGlzZWFzZV9naXNcXHNwYXRpYWxfb3V0cHV0c1xccnlhbl9uaXBhaF91bmZpbmlzaGVkLmdwa2cnIFxuICB1c2luZyBkcml2ZXIgYEdQS0cnXG5TaW1wbGUgZmVhdHVyZSBjb2xsZWN0aW9uIHdpdGggMTIgZmVhdHVyZXMgYW5kIDMgZmllbGRzICh3aXRoIDIgZ2VvbWV0cmllcyBlbXB0eSlcbkdlb21ldHJ5IHR5cGU6IEdFT01FVFJZXG5EaW1lbnNpb246ICAgICBYWVxuQm91bmRpbmcgYm94OiAgeG1pbjogODguMDg3MDYgeW1pbjogMjMuNTc3MzkgeG1heDogOTAuMDQzOTggeW1heDogMjYuOTYxMDZcbkdlb2RldGljIENSUzogIFdHUyA4NFxuIn0= -->
+<pre><code>Reading layer `ryan_nipah_unfinished&#39; from data source 
+  `C:\Users\u0161776\OneDrive - Thomson Reuters Incorporated\new_projects\r_work\reuters-news-data_disease_gis\spatial_outputs\ryan_nipah_unfinished.gpkg&#39; 
+  using driver `GPKG&#39;
+Simple feature collection with 12 features and 3 fields (with 2 geometries empty)
+Geometry type: GEOMETRY
+Dimension:     XY
+Bounding box:  xmin: 88.08706 ymin: 23.57739 xmax: 90.04398 ymax: 26.96106
+Geodetic CRS:  WGS 84</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYWxsX2NvbWJpbmVkIDwtIGJpbmRfcm93cyhlYm9sYSwgbWFyYnVyZywgb3RoZXIpXG5gYGAifQ== -->
-<pre class="r"><code>all_combined &lt;- bind_rows(ebola, marburg, other)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYWxsX2NvbWJpbmVkIDwtIGJpbmRfcm93cyhlYm9sYSwgbWFyYnVyZywgb3RoZXIsIG5pcGFoX3J5YW5fdW5maW5pc2hlZClcbmBgYCJ9 -->
+<pre class="r"><code>all_combined &lt;- bind_rows(ebola, marburg, other, nipah_ryan_unfinished)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3Rfd3JpdGUoYWxsX2NvbWJpbmVkLCBcIi4vc3BhdGlhbF9vdXRwdXRzL2FsbF9jb21iaW5lZC5ncGtnXCIpXG5gYGAifQ== -->
-<pre class="r"><code>st_write(all_combined, &quot;./spatial_outputs/all_combined.gpkg&quot;)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3Rfd3JpdGUoYWxsX2NvbWJpbmVkLCBcIi4vc3BhdGlhbF9vdXRwdXRzL2FsbF9jb21iaW5lZC5ncGtnXCIsIGFwcGVuZCA9IEZBTFNFKVxuYGBgIn0= -->
+<pre class="r"><code>st_write(all_combined, &quot;./spatial_outputs/all_combined.gpkg&quot;, append = FALSE)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiV3JpdGluZyBsYXllciBgYWxsX2NvbWJpbmVkJyB0byBkYXRhIHNvdXJjZSBgLi9zcGF0aWFsX291dHB1dHMvYWxsX2NvbWJpbmVkLmdwa2cnIHVzaW5nIGRyaXZlciBgR1BLRydcbldyaXRpbmcgMzYgZmVhdHVyZXMgd2l0aCAzIGZpZWxkcyBhbmQgZ2VvbWV0cnkgdHlwZSBQb2ludC5cbiJ9 -->
-<pre><code>Writing layer `all_combined&#39; to data source `./spatial_outputs/all_combined.gpkg&#39; using driver `GPKG&#39;
-Writing 36 features with 3 fields and geometry type Point.</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiRGVsZXRpbmcgbGF5ZXIgYGFsbF9jb21iaW5lZCcgdXNpbmcgZHJpdmVyIGBHUEtHJ1xuV3JpdGluZyBsYXllciBgYWxsX2NvbWJpbmVkJyB0byBkYXRhIHNvdXJjZSBgLi9zcGF0aWFsX291dHB1dHMvYWxsX2NvbWJpbmVkLmdwa2cnIHVzaW5nIGRyaXZlciBgR1BLRydcbldyaXRpbmcgNDggZmVhdHVyZXMgd2l0aCAzIGZpZWxkcyBhbmQgZ2VvbWV0cnkgdHlwZSBVbmtub3duIChhbnkpLlxuIn0= -->
+<pre><code>Deleting layer `all_combined&#39; using driver `GPKG&#39;
+Writing layer `all_combined&#39; to data source `./spatial_outputs/all_combined.gpkg&#39; using driver `GPKG&#39;
+Writing 48 features with 3 fields and geometry type Unknown (any).</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQoNCg0KYGBge3J9DQplYm9sYSA8LSBzdF9yZWFkKCIuL3NwYXRpYWxfb3V0cHV0cy9lYm9sYS5ncGtnIikNCm1hcmJ1cmcgPC0gc3RfcmVhZCgiLi9zcGF0aWFsX291dHB1dHMvbWFyYnVyZy5ncGtnIikNCm90aGVyIDwtIHN0X3JlYWQoIi4vc3BhdGlhbF9vdXRwdXRzL290aGVyX3NwaWxsb3ZlcnMuZ3BrZyIpDQpgYGANCmBgYHtyfQ0KYWxsX2NvbWJpbmVkIDwtIGJpbmRfcm93cyhlYm9sYSwgbWFyYnVyZywgb3RoZXIpDQpgYGANCg0KYGBge3J9DQpzdF93cml0ZShhbGxfY29tYmluZWQsICIuL3NwYXRpYWxfb3V0cHV0cy9hbGxfY29tYmluZWQuZ3BrZyIpDQpgYGANCg0K</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQoNCg0KYGBge3J9DQplYm9sYSA8LSBzdF9yZWFkKCIuL3NwYXRpYWxfb3V0cHV0cy9lYm9sYS5ncGtnIikNCm1hcmJ1cmcgPC0gc3RfcmVhZCgiLi9zcGF0aWFsX291dHB1dHMvbWFyYnVyZy5ncGtnIikNCm90aGVyIDwtIHN0X3JlYWQoIi4vc3BhdGlhbF9vdXRwdXRzL290aGVyX3NwaWxsb3ZlcnMuZ3BrZyIpDQpuaXBhaF9yeWFuX3VuZmluaXNoZWQgPC0gc3RfcmVhZCgiLi9zcGF0aWFsX291dHB1dHMvcnlhbl9uaXBhaF91bmZpbmlzaGVkLmdwa2ciKQ0KYGBgDQpgYGB7cn0NCmFsbF9jb21iaW5lZCA8LSBiaW5kX3Jvd3MoZWJvbGEsIG1hcmJ1cmcsIG90aGVyLCBuaXBhaF9yeWFuX3VuZmluaXNoZWQpDQpgYGANCg0KYGBge3J9DQpzdF93cml0ZShhbGxfY29tYmluZWQsICIuL3NwYXRpYWxfb3V0cHV0cy9hbGxfY29tYmluZWQuZ3BrZyIsIGFwcGVuZCA9IEZBTFNFKQ0KYGBgDQoNCg==</div>
 
 
 
