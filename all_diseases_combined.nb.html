@@ -259,14 +259,14 @@ Geodetic CRS:  WGS 84</code></pre>
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubmlwYWhfcnlhbl91bmZpbmlzaGVkIDwtIHN0X3JlYWQoXCIuL3NwYXRpYWxfb3V0cHV0cy9yeWFuX25pcGFoX3VuZmluaXNoZWQuZ3BrZ1wiKVxuYGBgIn0= -->
 <pre class="r"><code>nipah_ryan_unfinished &lt;- st_read(&quot;./spatial_outputs/ryan_nipah_unfinished.gpkg&quot;)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiUmVhZGluZyBsYXllciBgcnlhbl9uaXBhaF91bmZpbmlzaGVkJyBmcm9tIGRhdGEgc291cmNlIFxuICBgQzpcXFVzZXJzXFx1MDE2MTc3NlxcT25lRHJpdmUgLSBUaG9tc29uIFJldXRlcnMgSW5jb3Jwb3JhdGVkXFxuZXdfcHJvamVjdHNcXHJfd29ya1xccmV1dGVycy1uZXdzLWRhdGFfZGlzZWFzZV9naXNcXHNwYXRpYWxfb3V0cHV0c1xccnlhbl9uaXBhaF91bmZpbmlzaGVkLmdwa2cnIFxuICB1c2luZyBkcml2ZXIgYEdQS0cnXG5TaW1wbGUgZmVhdHVyZSBjb2xsZWN0aW9uIHdpdGggMTIgZmVhdHVyZXMgYW5kIDMgZmllbGRzICh3aXRoIDIgZ2VvbWV0cmllcyBlbXB0eSlcbkdlb21ldHJ5IHR5cGU6IEdFT01FVFJZXG5EaW1lbnNpb246ICAgICBYWVxuQm91bmRpbmcgYm94OiAgeG1pbjogODguMDg3MDYgeW1pbjogMjMuNTc3MzkgeG1heDogOTAuMDQzOTggeW1heDogMjYuOTYxMDZcbkdlb2RldGljIENSUzogIFdHUyA4NFxuIn0= -->
+<!-- rnb-output-begin eyJkYXRhIjoiUmVhZGluZyBsYXllciBgcnlhbl9uaXBhaF91bmZpbmlzaGVkJyBmcm9tIGRhdGEgc291cmNlIFxuICBgQzpcXFVzZXJzXFx1MDE2MTc3NlxcT25lRHJpdmUgLSBUaG9tc29uIFJldXRlcnMgSW5jb3Jwb3JhdGVkXFxuZXdfcHJvamVjdHNcXHJfd29ya1xccmV1dGVycy1uZXdzLWRhdGFfZGlzZWFzZV9naXNcXHNwYXRpYWxfb3V0cHV0c1xccnlhbl9uaXBhaF91bmZpbmlzaGVkLmdwa2cnIFxuICB1c2luZyBkcml2ZXIgYEdQS0cnXG5TaW1wbGUgZmVhdHVyZSBjb2xsZWN0aW9uIHdpdGggMTIgZmVhdHVyZXMgYW5kIDMgZmllbGRzXG5HZW9tZXRyeSB0eXBlOiBQT0lOVFxuRGltZW5zaW9uOiAgICAgWFlcbkJvdW5kaW5nIGJveDogIHhtaW46IDg4LjE1NTM1IHltaW46IDIzLjM4MTYgeG1heDogOTAuMDE2MTQgeW1heDogMjYuNjU4MTlcbkdlb2RldGljIENSUzogIFdHUyA4NFxuIn0= -->
 <pre><code>Reading layer `ryan_nipah_unfinished&#39; from data source 
   `C:\Users\u0161776\OneDrive - Thomson Reuters Incorporated\new_projects\r_work\reuters-news-data_disease_gis\spatial_outputs\ryan_nipah_unfinished.gpkg&#39; 
   using driver `GPKG&#39;
-Simple feature collection with 12 features and 3 fields (with 2 geometries empty)
-Geometry type: GEOMETRY
+Simple feature collection with 12 features and 3 fields
+Geometry type: POINT
 Dimension:     XY
-Bounding box:  xmin: 88.08706 ymin: 23.57739 xmax: 90.04398 ymax: 26.96106
+Bounding box:  xmin: 88.15535 ymin: 23.3816 xmax: 90.01614 ymax: 26.65819
 Geodetic CRS:  WGS 84</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
@@ -281,10 +281,10 @@ Geodetic CRS:  WGS 84</code></pre>
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3Rfd3JpdGUoYWxsX2NvbWJpbmVkLCBcIi4vc3BhdGlhbF9vdXRwdXRzL2FsbF9jb21iaW5lZC5ncGtnXCIsIGFwcGVuZCA9IEZBTFNFKVxuYGBgIn0= -->
 <pre class="r"><code>st_write(all_combined, &quot;./spatial_outputs/all_combined.gpkg&quot;, append = FALSE)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiRGVsZXRpbmcgbGF5ZXIgYGFsbF9jb21iaW5lZCcgdXNpbmcgZHJpdmVyIGBHUEtHJ1xuV3JpdGluZyBsYXllciBgYWxsX2NvbWJpbmVkJyB0byBkYXRhIHNvdXJjZSBgLi9zcGF0aWFsX291dHB1dHMvYWxsX2NvbWJpbmVkLmdwa2cnIHVzaW5nIGRyaXZlciBgR1BLRydcbldyaXRpbmcgNDggZmVhdHVyZXMgd2l0aCAzIGZpZWxkcyBhbmQgZ2VvbWV0cnkgdHlwZSBVbmtub3duIChhbnkpLlxuIn0= -->
+<!-- rnb-output-begin eyJkYXRhIjoiRGVsZXRpbmcgbGF5ZXIgYGFsbF9jb21iaW5lZCcgdXNpbmcgZHJpdmVyIGBHUEtHJ1xuV3JpdGluZyBsYXllciBgYWxsX2NvbWJpbmVkJyB0byBkYXRhIHNvdXJjZSBgLi9zcGF0aWFsX291dHB1dHMvYWxsX2NvbWJpbmVkLmdwa2cnIHVzaW5nIGRyaXZlciBgR1BLRydcbldyaXRpbmcgNDggZmVhdHVyZXMgd2l0aCAzIGZpZWxkcyBhbmQgZ2VvbWV0cnkgdHlwZSBQb2ludC5cbiJ9 -->
 <pre><code>Deleting layer `all_combined&#39; using driver `GPKG&#39;
 Writing layer `all_combined&#39; to data source `./spatial_outputs/all_combined.gpkg&#39; using driver `GPKG&#39;
-Writing 48 features with 3 fields and geometry type Unknown (any).</code></pre>
+Writing 48 features with 3 fields and geometry type Point.</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
