@@ -608,7 +608,8 @@ bgd_44 <- bgd_gadm_4 %>%
 # Assembly 
 
 ```{r}
-ryan_nipah_unfinished <- bind_rows(ind_88, ind_63, bgd_87, bgd_76, bgd_73, bgd_72, bgd_68, bgd_61, bgd_56, bgd_55, bgd_50, bgd_45)
+ryan_nipah_unfinished <- bind_rows(ind_88, ind_63, bgd_87, bgd_76, bgd_73, bgd_72, bgd_68, bgd_61, bgd_56, bgd_55, bgd_50, bgd_45) %>%
+  st_drop_geometry() 
 ```
 
 ```{r}

@@ -242,6 +242,13 @@ This command effectively tells R which geometry column is the operative one.
 st_geometry(marburg_points) <- "point_geom"
 ```
 
+```{r}
+marburg_points <- marburg_points %>%
+  select(!poly_geom)
+```
+
+
+
 Export the data.
 
 ```{r}
