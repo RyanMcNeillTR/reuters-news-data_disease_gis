@@ -251,6 +251,10 @@ other_combined <- bind_rows(chn_13, chn_77, mys_46, aus_48, aus_54, aus_71)
 st_geometry(other_combined) <- "point_geom"
 ```
 
+```{r}
+other_combined <- other_combined %>%
+  rename(point_geom = geom)
+```
 
 
 
