@@ -1,0 +1,86 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This notebook tests some code to iterate over the area of polygons where spillover occurrence location is approximate, as it is in most of our data to one degree or another.
+
+This is modelled on Pigott et al's Ebola risk map.
+
+This test file uses a synthetic data set where all but one data point is a point, and a single occurrence has a large polygon associated with it.
+
+For speed, this file uses the 'hits' and 'controls' dataFRAMES from analysis_1.Rmd as a starting point.
+
+rough outline:
+Load shp with shapefile(s)
+Flag occurrence data as point or polygon
+
+
+Remove full covariate data set loaded in analysis_1.Rmd, if it is stil present.
+
+```{r}
+
+rm(long_data_joined_read)
+
+```
+
+For now, we are going to create our shapefile dataframe 'shp' by associating the first two Bangladesh hits in the database to the shapefiles for Baliadangi and Rajshashi. THIS IS COMPLETE FICTION, FOR THE PURPOSES OF CODE DEVELOPMENT.
+
+Note the structure of the shapefile dataframe here: first column rowid, second is poly_geom.
+
+```{r}
+
+grab_polygon <-function(geom, id) {
+  geom %>% dplyr::select(poly_geom = geom) %>% 
+           mutate(point_geom = st_centroid(poly_geom),
+                  precision = "centroid",
+                  reuters_id = id,
+                  country_iso = "BGD")
+}
+
+bgd_gadm_2 <- st_read("./input_data/Bangladesh/gadm/gadm36_BGD_gpkg/gadm36_BGD.gpkg",
+                      layer = "gadm36_BGD_2") %>%
+              janitor::clean_names()
+
+bgd_gadm_3 <- st_read("./input_data/Bangladesh/gadm/gadm36_BGD_gpkg/gadm36_BGD.gpkg",
+                      layer = "gadm36_BGD_3") %>%
+              janitor::clean_names()
+
+bgd_6 <- bgd_gadm_3 %>%
+  filter(str_detect(name_3, "Baliadangi")) %>%
+  grab_polygon(6) %>%
+  dplyr::select(poly_geom) %>%
+  mutate(rowid = "4435529") %>%
+  dplyr::select(rowid, poly_geom)
+
+bgd_90 <- bgd_gadm_2 %>% 
+  filter(str_detect(name_2, "Rajshahi")) %>%
+  grab_polygon(90) %>%
+  dplyr::select(poly_geom) %>%
+  mutate(rowid = "4448154") %>%
+  dplyr::select(rowid, poly_geom)
+
+shp <- rbind(bgd_6, bgd_90)
+
+rm(bgd_6, bgd_90, bgd_gadm_2, bgd_gadm_3)
+
+shp
+
+```
+
+Flag our two fictional poly occurrence as poly = TRUE and create a data frames of polygon occurrences only and point occurrences only. 
+
+```{r}
+
+dat <- hits %>% 
+  mutate(poly = ifelse(rowid == "4435529" | rowid == "4448154", TRUE, FALSE)) 
+
+dat_poly <- dat %>% filter(poly)
+dat_pt <- dat %>% filter(!poly)
+
+```
+
+
+bgd_90$poly_geom
+
+
