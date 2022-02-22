@@ -1,0 +1,604 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r, echo = FALSE}
+library(tidymodels)
+library(tidyverse)
+library(data.table)
+
+library(baguette)
+
+library(seegSDM)
+
+#library(multidplyr)
+#library(parallel)
+#library(doParallel)
+
+```
+
+Read in data.
+
+```{r}
+
+long_data_joined_read <- fread("regression_ready.csv")
+
+```
+
+Create 'hits' and 'controls' data frames.
+
+```{r}
+
+set.seed(123)
+
+controls <- long_data_joined_read %>% 
+  filter(is_spillover_fixed == "No") %>%
+  sample_n(10000)
+
+hits <- long_data_joined_read %>%
+  filter(is_spillover_fixed == "Yes")
+
+```
+
+Create working data and drop unnecessary dataframes.
+
+```{r}
+
+working <- rbind(controls, hits)
+
+rm(long_data_joined_read, hits, controls)
+gc()
+
+```
+
+```{r}
+
+help(subsamplePolys)
+
+help(replicate)
+
+
+```
+
+
+Split data into testing and training sets, stratified by spillover status.
+
+```{r}
+
+set.seed(456)
+
+data_split <- working %>% 
+  select(!population) %>% 
+  initial_split(strata = is_spillover_fixed)
+
+data_train <- training(data_split)
+data_test <- testing(data_split)
+
+rm(data_split)
+
+```
+
+Set up validation folds.
+
+```{r}
+
+set.seed(789)
+
+val_set <- vfold_cv(data_train, strata = is_spillover_fixed)
+
+#val_set <- validation_split(data_train, strata = is_spillover_fixed, prop = 0.80)
+
+```
+
+Set up for parallel processing.
+
+```{r}
+
+#cores <- parallel::detectCores()
+#cores
+#> [1] 
+
+```
+
+Simple recipe for bagged tree
+
+```{r}
+
+tree_rec <- recipe(is_spillover_fixed ~ ., data = data_train) %>%
+  update_role(rowid, new_role ="ID") %>%
+  step_string2factor(is_bangladesh) %>%
+  themis::step_downsample(is_spillover_fixed)
+
+```
+
+Set up bagged tree specification and workflow.
+
+```{r}
+
+bag_spec <- bag_tree(min_n = 10) %>%
+  set_engine("rpart", times = 25) %>%
+  set_mode("classification")
+
+bag_wf <- workflow() %>%
+  add_recipe(tree_rec) %>%
+  add_model(bag_spec)
+
+bag_wf
+
+```
+Fit model to cross-validation resamples.
+
+```{r}
+
+bag_res <- fit_resamples(
+  bag_wf,
+  val_set,
+  control = control_resamples(save_pred = TRUE)
+)
+
+```
+
+Look at results.
+
+```{r}
+
+collect_metrics(bag_res)
+
+bag_res %>%
+  collect_predictions() %>%
+  roc_curve(is_spillover_fixed, .pred_No) %>%
+  ggplot(aes(1 - specificity, sensitivity)) +
+  geom_abline(lty = 2, color = "gray80", size = 1.5) +
+  geom_path(show.legend = FALSE, alpha = 0.6, size = 1.2) +
+  coord_equal()
+
+
+```
+
+
+
+
+
+
+*** RANDOM FOREST
+
+Set up model specification and workflow.
+
+```{r}
+
+tune_spec <- rand_forest(
+  mtry =tune(),
+  trees =1000,
+  min_n =tune()
+) %>%
+set_mode("classification") %>%
+set_engine("ranger")
+
+tune_wf <- workflow() %>%
+  add_recipe(tree_rec) %>%
+  add_model(tune_spec)
+
+```
+
+Train hyperparameters mtry and min_n.
+
+```{r}
+
+set.seed(456)
+
+tune_res <- tune_grid(
+  tune_wf,
+  resamples = val_set,
+  grid = 30)
+
+tune_res %>% collect_metrics()
+
+```
+
+Let's look at the grid so we can start to narrow down the best values for these hyperparameters.
+
+```{r}
+
+tune_res %>%
+  collect_metrics() %>%
+  filter(.metric == "roc_auc") %>%
+  select(mean, min_n, mtry) %>%
+  pivot_longer(min_n:mtry,
+    values_to = "value",
+    names_to = "parameter"
+  ) %>%
+  ggplot(aes(value, mean, color = parameter)) +
+  geom_point(show.legend = FALSE) +
+  facet_wrap(~parameter, scales = "free_x") +
+  labs(x = NULL, y = "AUC")
+
+
+```
+From the above, different values of min_n and mtry make little difference in area under the curve - mtry around 2 might be best but the range of values is very small. 
+
+Let's look at accuracy. 
+
+
+```{r}
+
+tune_res %>%
+  collect_metrics() %>%
+  filter(.metric == "accuracy") %>%
+  select(mean, min_n, mtry) %>%
+  pivot_longer(min_n:mtry,
+    values_to = "value",
+    names_to = "parameter"
+  ) %>%
+  ggplot(aes(value, mean, color = parameter)) +
+  geom_point(show.legend = FALSE) +
+  facet_wrap(~parameter, scales = "free_x") +
+  labs(x = NULL, y = "Accuracy")
+
+
+
+```
+Ok, more is going on here. It looks like we want min_n < 15 and mtry > 6. 
+
+```{r}
+
+rf_grid <-grid_regular(
+  mtry(range = c(3, 10)),
+  min_n(range = c(3, 8)),
+  levels = 5)
+
+rf_grid
+
+set.seed(456)
+
+regular_res <- tune_grid(
+  tune_wf,
+  resamples = val_set,
+  grid = rf_grid
+)
+
+regular_res
+
+```
+Let's look at these results, AUC first.
+
+```{r}
+
+regular_res %>%
+  collect_metrics() %>%
+  filter(.metric == "roc_auc") %>%
+  mutate(min_n = factor(min_n)) %>%
+  ggplot(aes(mtry, mean, color = min_n)) +
+  geom_line(alpha = 0.5, size = 1.5) +
+  geom_point() +
+  labs(y = "AUC")
+
+```
+
+And now for accuracy
+
+
+```{r}
+
+regular_res %>%
+  collect_metrics() %>%
+  filter(.metric == "accuracy") %>%
+  mutate(min_n = factor(min_n)) %>%
+  ggplot(aes(mtry, mean, color = min_n)) +
+  geom_line(alpha = 0.5, size = 1.5) +
+  geom_point() +
+  labs(y = "Accuracy")
+
+
+```
+
+
+Set up recipe we will use with the random forest model. 
+
+```{r}
+
+best_accuracy <- select_best(regular_res, "accuracy")
+
+final_rf <- finalize_model(
+  tune_spec,
+  best_accuracy
+)
+
+```
+
+Let's peek at variable importance.
+
+```{r}
+
+library(vip)
+
+tree_prep <- prep(tree_rec)
+juiced <- juice(tree_prep)
+
+final_rf %>%
+  set_engine("ranger", importance = "permutation") %>%
+  fit(is_spillover_fixed ~ .,
+    data = juice(tree_prep) %>% select(-rowid)
+  ) %>%
+  vip(geom = "point")
+
+```
+
+
+
+*** Do we actually need to normalize the skewed variables for a random forest?
+
+```{r}
+
+rf_rec <- recipe(is_spillover_fixed ~ ., data = data_train) %>%
+  update_role(rowid, new_role ="ID") %>%
+  step_string2factor(is_spillover_fixed) %>%
+  step_relevel(is_spillover_fixed, ref_level = "Yes") %>%
+  themis::step_downsample(is_spillover_fixed, under_ratio = 1) %>%
+  step_sqrt(bat_species_richness) %>%
+  step_sqrt(tree_canopy_2000 ) %>%
+  step_sqrt(tree_loss) %>%
+  step_sqrt(three_year_tree_loss) %>%
+#  step_log(population) %>%
+  step_string2factor(is_bangladesh) 
+#  step_dummy(continent) %>%
+#  step_dummy(biome_factor) 
+
+```
+
+LOGISTIC REGRESSION MODEL
+
+Build recipe for our logistic model. More pre-processing is required for a linear model. 
+
+We can't put factor variables into a linear model, which is a lot of what is going on below. Note the biome_factor data is currently only available as a number which cannot be turned into dummies easily. Once levels information is available, add something like : 
+  step_num2factor(biome_factor) %>%
+  step_dummy(biome_factor, is_spillover_fixed)
+  
+Year should probably be a dummy variable, here and elsewhere.
+
+*Need to discuss log transformation because I'm not familiar with it really. 
+
+```{r}
+
+linear_rec <- recipe(is_spillover_fixed ~ ., data = data_train) %>%
+  update_role(rowid, new_role = "ID") %>%
+  step_rm(biome_factor) %>%
+  themis::step_downsample(is_spillover_fixed) %>%
+  step_dummy(continent, is_bangladesh) %>%
+  step_sqrt(bat_species_richness, tree_canopy_2000, tree_loss, three_year_tree_loss)
+  
+
+```
+
+Set up the model specification.
+
+```{r}
+
+linear_spec <- logistic_reg() %>%
+  set_engine("glm")
+
+linear_wf <- workflow() %>%
+  add_model(linear_spec) %>%
+  add_recipe(linear_rec)
+
+```
+Fit resamples.
+
+```{r}
+
+linear_rs <- fit_resamples(linear_wf, resamples = val_set,
+    control = control_resamples(save_pred = TRUE))
+
+collect_metrics(linear_rs)
+
+```
+
+
+
+
+
+```
+
+
+
+
+
+RANDOM FOREST TUNING STARTS HERE
+
+Set up our random forest model tuning specification, specifying which parameters we plan to tune and our engine for the random forest, ranger.
+
+```{r}
+
+rf_tune_spec <- rand_forest(mtry = tune(), 
+              min_n = tune(), 
+              trees = 1000) %>% 
+  set_engine("ranger", num.threads = cores) %>% 
+  set_engine("ranger") %>%
+  set_mode("classification")
+
+```
+
+Create workflow for convenience in tuning.
+
+```{r}
+
+tune_spec <- 
+  workflow() %>% 
+  add_model(rf_tune_spec) %>% 
+  add_recipe(rf_rec)
+
+```
+
+Fit the model using a grid of hyperparameters, which will help us narrow in on which levels are appropriate for this data.
+
+*** This command specifies that our metric will be roc_auc - later lets use accuracy as well/instead of this. 
+
+```{r}
+
+set.seed(345)
+
+rf_res <- 
+  tune_spec %>% 
+  tune_grid(val_set,
+            grid = 25,
+            control = control_grid(save_pred = TRUE),
+            metrics = metric_set(roc_auc))
+
+#> i Creating pre-processing data to finalize unknown parameter: mtry
+```
+
+
+
+```{r}
+rf_res %>% 
+  show_best(metric = "roc_auc")
+```
+
+
+```{r}
+rf_best <- 
+  rf_res %>% 
+  select_best(metric = "roc_auc")
+```
+
+
+```{r}
+rf_res %>% 
+  collect_predictions()
+```
+
+
+```{r}
+rf_auc <- 
+  rf_res %>% 
+  collect_predictions(parameters = rf_best) %>% 
+  roc_curve(is_spillover_fixed, .pred_Yes) %>% 
+  mutate(model = "Random Forest")
+```
+
+
+```{r}
+# the last model
+last_rf_mod <- 
+  rand_forest(mtry = 8, min_n = 7, trees = 1000) %>% 
+  set_engine("ranger", num.threads = cores, importance = "impurity") %>% 
+  set_mode("classification")
+# the last workflow
+last_rf_workflow <- 
+  rf_workflow %>% 
+  update_model(last_rf_mod)
+# the last fit
+set.seed(345)
+last_rf_fit <- 
+  last_rf_workflow %>% 
+  last_fit(data_split)
+last_rf_fit
+```
+
+
+
+
+
+
+
+
+Rewriting join section to be less memory intensive - leaving mutate() sections for later. Also breaking the data set up by year, noting that the original range is 2001 to 2020
+
+```{r}
+
+long_data_all_years <- long_data_raw %>% 
+  mutate(is_spillover_fixed = case_when(
+    is_spillover == "Yes" ~ "Yes",
+    is.na(is_spillover) ~ "No",
+    TRUE ~ "Other")) %>%
+  select(!is_spillover:bangla_hit)
+
+rm(long_data_raw)
+
+long_data_joined %>% group_by(the_year) %>% count
+  
+long_data_joined %>% filter(the_year < 2010)
+
+filter(the_year > 2002)
+
+```
+  %>%
+  filter(!the_year %in% c("2000", "2001", "2002"))
+ 
+ %>%
+  drop_na() 
+
+%>%
+  mutate(biome_factor = as.factor(biome)) 
+  
+  %>%
+  mutate(tree_loss = (tree_loss * 0.000001) +1,
+         three_year_tree_loss = (three_year_tree_loss * 0.000001) + 1,
+         tree_canopy_2000 = tree_canopy_2000 * 0.000001 + 1) 
+  
+  
+
+long_data_joined %>% select(!is_spillover:bangla_hit) %>% str
+
+```
+
+Not sure what most of this does.
+
+```{r}
+long_data_joined <- long_data_raw %>%
+  mutate(is_spillover_fixed = case_when(
+    is_spillover == "Yes" ~ "Yes",
+    is.na(is_spillover) ~ "No",
+    TRUE ~ "Other"
+  )) %>%
+  select(!is_spillover:bangla_hit) %>%
+  mutate(biome_factor = as.factor(biome)) %>%
+  select(!biome) %>%
+  filter(!the_year %in% c("2000", "2001", "2002")) %>%
+  drop_na() %>%
+  mutate(tree_loss = (tree_loss * 0.000001) +1,
+         three_year_tree_loss = (three_year_tree_loss * 0.000001) + 1,
+         tree_canopy_2000 = tree_canopy_2000 * 0.000001 + 1) 
+```
+
+```{r}
+hits <- long_data_joined  %>%
+  filter(is_spillover_fixed == "Yes")
+```
+
+```{r}
+control_hits <- long_data_joined %>%
+  filter(is_spillover_fixed == "No") %>%
+  sample_frac(0.1)
+```
+
+```{r}
+analysis_set <- bind_rows(hits, control_hits) %>%
+  select(is_spillover_fixed, bat_species_richness, elevation, the_year, tmmn, tmmx, tree_loss, precip, evapo, is_bangladesh, continent)
+```
+setting aside population for now
+
+```{r}
+the_recipe <- recipe(is_spillover_fixed ~ ., data = analysis_set) %>%
+  step_string2factor(is_spillover_fixed) %>%
+  step_relevel(is_spillover_fixed, ref_level = "Yes") %>%
+  step_sqrt(tree_loss)
+  #update_role(rowid, new_role = "id variable") %>% 
+  #step_normalize(tree_loss)
+  #step_string2factor(is_bangladesh) %>%
+  #step_dummy(continent) %>%
+  #step_dummy(biome_factor) 
+```
+
+```{r}
+analysis_set_juiced <- the_recipe %>% prep() %>% juice()
+```
+```{r}
+fitted_logistic_model<- logistic_reg() %>%
+        # Set the engine
+        set_engine("glm") %>%
+        # Set the mode
+        set_mode("classification") %>%
+        # Fit the model
+        fit(is_spillover_fixed ~ ., data = analysis_set_juiced)
+```
