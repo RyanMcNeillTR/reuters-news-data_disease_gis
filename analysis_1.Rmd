@@ -3,20 +3,18 @@ title: "R Notebook"
 output: html_notebook
 ---
 
-```{r}
+```{r, echo = FALSE}
 library(tidymodels)
 library(tidyverse)
 library(data.table)
 
-library(doParallel)
+library(baguette)
 
-```
+library(seegSDM)
 
-Set up parallel processing.
-
-```{r}
-
-doParallel::registerDoParallel()
+#library(multidplyr)
+#library(parallel)
+#library(doParallel)
 
 ```
 
@@ -27,13 +25,50 @@ Read in data.
 long_data_joined_read <- fread("regression_ready.csv")
 
 ```
-Split data into testing and training sets, stratified by spillover status.
+
+Create 'hits' and 'controls' data frames.
 
 ```{r}
 
 set.seed(123)
 
-data_split <- long_data_joined_read %>% 
+controls <- long_data_joined_read %>% 
+  filter(is_spillover_fixed == "No") %>%
+  sample_n(10000)
+
+hits <- long_data_joined_read %>%
+  filter(is_spillover_fixed == "Yes")
+
+```
+
+Create working data and drop unnecessary dataframes.
+
+```{r}
+
+working <- rbind(controls, hits)
+
+rm(long_data_joined_read, hits, controls)
+gc()
+
+```
+
+```{r}
+
+help(subsamplePolys)
+
+help(replicate)
+
+
+```
+
+
+Split data into testing and training sets, stratified by spillover status.
+
+```{r}
+
+set.seed(456)
+
+data_split <- working %>% 
   select(!population) %>% 
   initial_split(strata = is_spillover_fixed)
 
@@ -41,7 +76,6 @@ data_train <- training(data_split)
 data_test <- testing(data_split)
 
 rm(data_split)
-rm(long_data_joined_read)
 
 ```
 
@@ -49,35 +83,248 @@ Set up validation folds.
 
 ```{r}
 
-set.seed(234)
+set.seed(789)
 
-val_set <- validation_split(data_train, 
-                            strata = is_spillover_fixed, 
-                            prop = 0.80)
+val_set <- vfold_cv(data_train, strata = is_spillover_fixed)
+
+#val_set <- validation_split(data_train, strata = is_spillover_fixed, prop = 0.80)
 
 ```
 
-Set up? check for? parallel processing.
+Set up for parallel processing.
 
 ```{r}
-cores <- parallel::detectCores()
-cores
-#> [1] 8
+
+#cores <- parallel::detectCores()
+#cores
+#> [1] 
+
 ```
 
-Set up our random forest model tuning specification, specifying which parameters we plan to tune and our engine for the random forest, ranger.
+Simple recipe for bagged tree
 
 ```{r}
 
-rf_tune_spec <- rand_forest(mtry = tune(), 
-              min_n = tune(), 
-              trees = 1000) %>% 
-  set_engine("ranger", num.threads = cores) %>% 
+tree_rec <- recipe(is_spillover_fixed ~ ., data = data_train) %>%
+  update_role(rowid, new_role ="ID") %>%
+  step_string2factor(is_bangladesh) %>%
+  themis::step_downsample(is_spillover_fixed)
+
+```
+
+Set up bagged tree specification and workflow.
+
+```{r}
+
+bag_spec <- bag_tree(min_n = 10) %>%
+  set_engine("rpart", times = 25) %>%
   set_mode("classification")
 
+bag_wf <- workflow() %>%
+  add_recipe(tree_rec) %>%
+  add_model(bag_spec)
+
+bag_wf
+
+```
+Fit model to cross-validation resamples.
+
+```{r}
+
+bag_res <- fit_resamples(
+  bag_wf,
+  val_set,
+  control = control_resamples(save_pred = TRUE)
+)
+
 ```
 
+Look at results.
+
+```{r}
+
+collect_metrics(bag_res)
+
+bag_res %>%
+  collect_predictions() %>%
+  roc_curve(is_spillover_fixed, .pred_No) %>%
+  ggplot(aes(1 - specificity, sensitivity)) +
+  geom_abline(lty = 2, color = "gray80", size = 1.5) +
+  geom_path(show.legend = FALSE, alpha = 0.6, size = 1.2) +
+  coord_equal()
+
+
+```
+
+
+
+
+
+
+*** RANDOM FOREST
+
+Set up model specification and workflow.
+
+```{r}
+
+tune_spec <- rand_forest(
+  mtry =tune(),
+  trees =1000,
+  min_n =tune()
+) %>%
+set_mode("classification") %>%
+set_engine("ranger")
+
+tune_wf <- workflow() %>%
+  add_recipe(tree_rec) %>%
+  add_model(tune_spec)
+
+```
+
+Train hyperparameters mtry and min_n.
+
+```{r}
+
+set.seed(456)
+
+tune_res <- tune_grid(
+  tune_wf,
+  resamples = val_set,
+  grid = 30)
+
+tune_res %>% collect_metrics()
+
+```
+
+Let's look at the grid so we can start to narrow down the best values for these hyperparameters.
+
+```{r}
+
+tune_res %>%
+  collect_metrics() %>%
+  filter(.metric == "roc_auc") %>%
+  select(mean, min_n, mtry) %>%
+  pivot_longer(min_n:mtry,
+    values_to = "value",
+    names_to = "parameter"
+  ) %>%
+  ggplot(aes(value, mean, color = parameter)) +
+  geom_point(show.legend = FALSE) +
+  facet_wrap(~parameter, scales = "free_x") +
+  labs(x = NULL, y = "AUC")
+
+
+```
+From the above, different values of min_n and mtry make little difference in area under the curve - mtry around 2 might be best but the range of values is very small. 
+
+Let's look at accuracy. 
+
+
+```{r}
+
+tune_res %>%
+  collect_metrics() %>%
+  filter(.metric == "accuracy") %>%
+  select(mean, min_n, mtry) %>%
+  pivot_longer(min_n:mtry,
+    values_to = "value",
+    names_to = "parameter"
+  ) %>%
+  ggplot(aes(value, mean, color = parameter)) +
+  geom_point(show.legend = FALSE) +
+  facet_wrap(~parameter, scales = "free_x") +
+  labs(x = NULL, y = "Accuracy")
+
+
+
+```
+Ok, more is going on here. It looks like we want min_n < 15 and mtry > 6. 
+
+```{r}
+
+rf_grid <-grid_regular(
+  mtry(range = c(3, 10)),
+  min_n(range = c(3, 8)),
+  levels = 5)
+
+rf_grid
+
+set.seed(456)
+
+regular_res <- tune_grid(
+  tune_wf,
+  resamples = val_set,
+  grid = rf_grid
+)
+
+regular_res
+
+```
+Let's look at these results, AUC first.
+
+```{r}
+
+regular_res %>%
+  collect_metrics() %>%
+  filter(.metric == "roc_auc") %>%
+  mutate(min_n = factor(min_n)) %>%
+  ggplot(aes(mtry, mean, color = min_n)) +
+  geom_line(alpha = 0.5, size = 1.5) +
+  geom_point() +
+  labs(y = "AUC")
+
+```
+
+And now for accuracy
+
+
+```{r}
+
+regular_res %>%
+  collect_metrics() %>%
+  filter(.metric == "accuracy") %>%
+  mutate(min_n = factor(min_n)) %>%
+  ggplot(aes(mtry, mean, color = min_n)) +
+  geom_line(alpha = 0.5, size = 1.5) +
+  geom_point() +
+  labs(y = "Accuracy")
+
+
+```
+
+
 Set up recipe we will use with the random forest model. 
+
+```{r}
+
+best_accuracy <- select_best(regular_res, "accuracy")
+
+final_rf <- finalize_model(
+  tune_spec,
+  best_accuracy
+)
+
+```
+
+Let's peek at variable importance.
+
+```{r}
+
+library(vip)
+
+tree_prep <- prep(tree_rec)
+juiced <- juice(tree_prep)
+
+final_rf %>%
+  set_engine("ranger", importance = "permutation") %>%
+  fit(is_spillover_fixed ~ .,
+    data = juice(tree_prep) %>% select(-rowid)
+  ) %>%
+  vip(geom = "point")
+
+```
+
+
 
 *** Do we actually need to normalize the skewed variables for a random forest?
 
@@ -93,15 +340,81 @@ rf_rec <- recipe(is_spillover_fixed ~ ., data = data_train) %>%
   step_sqrt(tree_loss) %>%
   step_sqrt(three_year_tree_loss) %>%
 #  step_log(population) %>%
-  update_role(rowid, new_role = "ID") %>% 
   step_string2factor(is_bangladesh) 
 #  step_dummy(continent) %>%
 #  step_dummy(biome_factor) 
 
+```
 
-test_rec <- recipe(is_spillover_fixed ~ ., data = data_train) %>%
-  update_role(rowid, new_role ="ID") %>%
-  step_downsample(is_spillover_fixed)
+LOGISTIC REGRESSION MODEL
+
+Build recipe for our logistic model. More pre-processing is required for a linear model. 
+
+We can't put factor variables into a linear model, which is a lot of what is going on below. Note the biome_factor data is currently only available as a number which cannot be turned into dummies easily. Once levels information is available, add something like : 
+  step_num2factor(biome_factor) %>%
+  step_dummy(biome_factor, is_spillover_fixed)
+  
+Year should probably be a dummy variable, here and elsewhere.
+
+*Need to discuss log transformation because I'm not familiar with it really. 
+
+```{r}
+
+linear_rec <- recipe(is_spillover_fixed ~ ., data = data_train) %>%
+  update_role(rowid, new_role = "ID") %>%
+  step_rm(biome_factor) %>%
+  themis::step_downsample(is_spillover_fixed) %>%
+  step_dummy(continent, is_bangladesh) %>%
+  step_sqrt(bat_species_richness, tree_canopy_2000, tree_loss, three_year_tree_loss)
+  
+
+```
+
+Set up the model specification.
+
+```{r}
+
+linear_spec <- logistic_reg() %>%
+  set_engine("glm")
+
+linear_wf <- workflow() %>%
+  add_model(linear_spec) %>%
+  add_recipe(linear_rec)
+
+```
+Fit resamples.
+
+```{r}
+
+linear_rs <- fit_resamples(linear_wf, resamples = val_set,
+    control = control_resamples(save_pred = TRUE))
+
+collect_metrics(linear_rs)
+
+```
+
+
+
+
+
+```
+
+
+
+
+
+RANDOM FOREST TUNING STARTS HERE
+
+Set up our random forest model tuning specification, specifying which parameters we plan to tune and our engine for the random forest, ranger.
+
+```{r}
+
+rf_tune_spec <- rand_forest(mtry = tune(), 
+              min_n = tune(), 
+              trees = 1000) %>% 
+  set_engine("ranger", num.threads = cores) %>% 
+  set_engine("ranger") %>%
+  set_mode("classification")
 
 ```
 
