@@ -69,12 +69,15 @@ Setting up function that returns variables based on single GADM polygon.
 ```{r}
 
 grab_polygon <-function(geom, id) {
-  geom %>% select(poly_geom = geom) %>% 
+  geom %>% dplyr::select(poly_geom = geom) %>% 
            mutate(point_geom = st_centroid(poly_geom),
                   precision = "centroid",
                   reuters_id = id,
                   country_iso = "BGD")
 }
+
+
+
 
 ```
 
