@@ -15,12 +15,49 @@ rough outline:
 Load shp with shapefile(s)
 Flag occurrence data as point or polygon
 
+```{r, echo = FALSE}
+
+library(seegSDM)
+
+library(tidymodels)
+library(tidyverse)
+library(data.table)
+
+library(baguette)
+
+library(sf)
+library(rgeos)
+
+```
 
 Remove full covariate data set loaded in analysis_1.Rmd, if it is stil present.
 
 ```{r}
 
 rm(long_data_joined_read)
+
+```
+
+Read in data from Ryan.
+
+```{r}
+
+raw_occ <- readRDS("C:/Users/0146156/Documents/mb_checks/all_combined.rds")
+
+occ <- raw_occ %>% 
+  mutate(poly = ifelse(str_detect(precision, "[Cc]entroid"), TRUE, FALSE))
+               
+
+
+```
+
+Load 5km raster template.
+
+```{r}
+
+library(raster)
+
+template <- raster("C:/Users/0146156/Documents/mb_checks/hansen_datamask.tif")
 
 ```
 
@@ -75,12 +112,91 @@ Flag our two fictional poly occurrence as poly = TRUE and create a data frames o
 dat <- hits %>% 
   mutate(poly = ifelse(rowid == "4435529" | rowid == "4448154", TRUE, FALSE)) 
 
-dat_poly <- dat %>% filter(poly)
+dat_poly <- dat %>% filter(poly) 
 dat_pt <- dat %>% filter(!poly)
+
+dat_pt
 
 ```
 
+Load raster template.
 
-bgd_90$poly_geom
+```{r}
+
+template <- raster("C:/Users/0146156/Documents/mb_checks/hansen_datamask.tif")
+
+```
+
+Use lapply to loop over each row in shp, our dataframe of polygons, and create lists of coordinates associated with the polygons.
+
+```{r}
+
+pt_list <- lapply(1:nrow(shp),
+
+  function(i, shp, template) {
+    poly <- shp[i, ] #  grab one polygon
+    
+    # buffer to cover the center of at least one pixel - we may not need this
+    #d <- sqrt(2 * 2500 ^ 2) + 1
+    #d <- d * 10 ^ -5 # rough conversion to decimal degrees
+    #poly <- gBuffer(poly, width = d)
+    
+    # rasterize the polygon and get coordinates
+    tmp <- rasterize(poly, template)
+    pts <- xyFromCell(tmp, which(!is.na(getValues(tmp))))
+    
+    return (pts)
+    
+  },
+
+  shp, template)
+
+pt_list
+
+```
+Loop through our polygon shapefile shp and create a new dataframe where each coordinate has its own row and other variables are duplicated, for sampling purposes later.
+
+*** This will work once dat_new has lat/long values as well (and migh tneed to fix names etc)
+
+```{r}
+
+# starting a new data frame that will contain both points and polygons 
+# weights are always 1 for point occurrences 
+dat_new <- dat_pt %>% mutate(wt = 1)
+
+# loop through polygon dataframe again
+for(i in 1:nrow(shp)) {
+  
+  # pull the rowid, points associated with this occurrence and point count 
+  rowid <- shp$rowid[i]
+  #rowid
+  
+  pts <- pt_list[[i]]
+  #pts
+  
+  n <- nrow(pts)
+  #n
+  
+  # return a warning if no points were found 
+  #if (n == 0) {
+  #  warning(paste("Polygon for occurrence ", rowid, "returned zero coordinates!" )
+  #  break
+  #}
+  
+  # pull other data and repeat it to match each point 
+  info <- dat_poly[i, ]
+  info_repeat <- info[rep(1:nrow(info), each = n), ]
+  
+  # add weights
+  info_repeat$wt <- 1/n
+  
+  # add coordinates
+  final <- cbind(info_repeat, pts)
+  
+  dat_new <- rbind(dat_new, final)
+  
+}
+
+```
 
 
