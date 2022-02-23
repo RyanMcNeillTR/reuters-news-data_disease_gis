@@ -46,8 +46,7 @@ raw_occ <- readRDS("C:/Users/0146156/Documents/mb_checks/all_combined.rds")
 
 occ <- raw_occ %>% 
   mutate(poly = ifelse(str_detect(precision, "[Cc]entroid"), TRUE, FALSE))
-               
-
+              
 
 ```
 
@@ -58,6 +57,23 @@ Load 5km raster template.
 library(raster)
 
 template <- raster("C:/Users/0146156/Documents/mb_checks/hansen_datamask.tif")
+
+```
+
+Generate artificial absence records and a fictional covariate.
+
+```{r}
+library(dismo)
+
+set.seed(123)
+
+tmp <- randomPoints(template, 1000)
+
+bg <- tmp %>% as_tibble() %>% 
+  mutate(spillover = FALSE) %>%
+  rowid_to_column("rowid") %>%
+  mutate(fic_cov = runif(nrow(bg), 1, 10)) %>%
+  select(rowid, spillover, fic_cov, x, y)
 
 ```
 
