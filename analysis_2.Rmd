@@ -7,6 +7,7 @@ This notebook tests some code to iterate over the area of polygons where spillov
 
 This is modelled on Pigott et al's Ebola risk map.
 
+
 This test file uses real occurrence data and polygons, and synthetic background data, and runs models only on one randomly generated covariate, fic_cov. 
 
 ```{r, echo = FALSE}
@@ -273,4 +274,6 @@ bag_res %>%
   coord_equal()
 
 ```
+
+
 
