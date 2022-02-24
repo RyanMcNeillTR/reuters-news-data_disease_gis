@@ -7,81 +7,273 @@ This notebook tests some code to iterate over the area of polygons where spillov
 
 This is modelled on Pigott et al's Ebola risk map.
 
-This test file uses a synthetic data set where all but one data point is a point, and a single occurrence has a large polygon associated with it.
 
-For speed, this file uses the 'hits' and 'controls' dataFRAMES from analysis_1.Rmd as a starting point.
+This test file uses real occurrence data and polygons, and synthetic background data, and runs models only on one randomly generated covariate, fic_cov. 
 
-rough outline:
-Load shp with shapefile(s)
-Flag occurrence data as point or polygon
+```{r, echo = FALSE}
 
+library(seegSDM)
 
-Remove full covariate data set loaded in analysis_1.Rmd, if it is stil present.
+library(tidymodels)
+library(tidyverse)
+library(data.table)
 
-```{r}
+library(baguette)
 
-rm(long_data_joined_read)
+library(sf)
+library(rgeos)
+library(raster)
 
 ```
 
-For now, we are going to create our shapefile dataframe 'shp' by associating the first two Bangladesh hits in the database to the shapefiles for Baliadangi and Rajshashi. THIS IS COMPLETE FICTION, FOR THE PURPOSES OF CODE DEVELOPMENT.
-
-Note the structure of the shapefile dataframe here: first column rowid, second is poly_geom.
+Read in data from Ryan, convert points object into coordinates and flag occurrences that are coded to polygons based on whether their point is a centroid or not. 
 
 ```{r}
 
-grab_polygon <-function(geom, id) {
-  geom %>% dplyr::select(poly_geom = geom) %>% 
-           mutate(point_geom = st_centroid(poly_geom),
-                  precision = "centroid",
-                  reuters_id = id,
-                  country_iso = "BGD")
+raw_occ <- readRDS("C:/Users/0146156/Documents/mb_checks/all_combined.rds")
+
+# pull coordinates from the geometry object
+coords <- raw_occ$point_geom %>% st_coordinates()
+
+# add a flag for occurrences coded to polygons, and add the coordinates we have to the main data frame 
+hits <- raw_occ %>% 
+  mutate(poly = ifelse(str_detect(precision, "[Cc]entroid"), TRUE, FALSE)) %>%
+  cbind(coords)
+
+# separate hits into poly and point data frames 
+dat_poly <- hits %>% filter(poly)
+dat_pt <- hits %>% filter(!poly)
+
+```
+Load 5km raster template.
+
+LATER: This should match the boundaries of our actual covariates. 
+
+```{r}
+
+library(raster)
+
+template <- raster("C:/Users/0146156/Documents/mb_checks/hansen_datamask.tif")
+
+```
+
+Generate artificial absence records and a fictional covariate.
+
+```{r}
+library(dismo)
+
+set.seed(123)
+
+tmp <- randomPoints(template, 1000)
+
+bg <- tmp %>% as_tibble() %>% 
+  mutate(spillover = FALSE) %>%
+  rowid_to_column("id") %>%
+  mutate(fic_cov = runif(nrow(tmp), 1, 10),
+         the_year = runif(nrow(tmp), 2001, 2020),
+         id = as.character(id)) %>%
+  dplyr::select(id, spillover, fic_cov, x, y)
+
+```
+
+Use lapply to loop over each row in shp, our dataframe of occurrence polygons, and create lists of coordinates associated with the polygons.
+
+```{r}
+
+shp <- st_sf(dat_poly$poly_geom, crs = 4326)
+
+pt_list <- lapply(1:nrow(shp),
+
+  function(i, shp, template) {
+    poly <- shp[i, ] #  grab one polygon
+    
+    # buffer the polygon so it covers at least one pixel 
+    poly <- poly %>% st_transform(8857) %>% 
+      st_buffer(3535) %>% 
+      st_transform(4326)
+    
+    # rasterize the polygon and get coordinates
+    tmp <- rasterize(poly, template)
+    pts <- xyFromCell(tmp, which(!is.na(getValues(tmp))))
+    
+    return (pts)
+    
+  },
+
+  shp, template)
+
+# how many coordinates have we collected? 
+pixel_count <- lengths(pt_list)/2
+
+# write out some stats on how many pixels each occurrence covers
+stats_buffer <- cbind(dat_poly$id, pixel_count, area) %>% as_tibble() %>%
+  rename(id = V1) %>%
+  mutate(pixels = as.integer(pixel_count), sq_km = as.numeric(area)/1000) %>%
+  select(-pixel_count, -area) %>%
+  arrange(desc(sq_km))
+  
+write.csv(stats_buffer, "stats_buffer.csv")
+
+```
+
+Loop through our polygon shapefile shp again, and create a new dataframe where each coordinate has its own row and other variables are duplicated, for sampling purposes later.
+
+Note we don't currently need to use the weights generated here - can likely cut them later. 
+
+```{r}
+
+# starting a new data frame that will eventually have points and polygons 
+# weights are always 1 for point occurrences 
+dat_new <- dat_pt %>% 
+  select(-point_geom) %>%
+  st_drop_geometry() %>% 
+  mutate(wt = 1)
+
+# to run the loop below, we need a simpler version of polygon occurrences
+polys_simple <- dat_poly %>% st_drop_geometry() %>% 
+  select(-point_geom, -X, -Y)
+
+# loop through polygons again
+for(i in 1:nrow(polys_simple)) {
+
+  # pull the rowid, points associated with this occurrence and point count 
+  id <- polys_simple$id[i]
+  pts <- pt_list[[i]]
+  n <- nrow(pts)
+  
+  # pull other data and repeat it to match each point 
+  info <- polys_simple[i, ]
+  info_repeat <- info[rep(1:nrow(info), each = n), ]
+  
+  # add weights
+  info_repeat$wt <- 1/n
+  
+  # add coordinates
+  final <- cbind(info_repeat, pts) %>%
+    rename(X = x, Y = y) %>%
+    select(precision:poly, X, Y, wt)
+  
+  dat_new <- rbind(dat_new, final)
+  
 }
 
-bgd_gadm_2 <- st_read("./input_data/Bangladesh/gadm/gadm36_BGD_gpkg/gadm36_BGD.gpkg",
-                      layer = "gadm36_BGD_2") %>%
-              janitor::clean_names()
-
-bgd_gadm_3 <- st_read("./input_data/Bangladesh/gadm/gadm36_BGD_gpkg/gadm36_BGD.gpkg",
-                      layer = "gadm36_BGD_3") %>%
-              janitor::clean_names()
-
-bgd_6 <- bgd_gadm_3 %>%
-  filter(str_detect(name_3, "Baliadangi")) %>%
-  grab_polygon(6) %>%
-  dplyr::select(poly_geom) %>%
-  mutate(rowid = "4435529") %>%
-  dplyr::select(rowid, poly_geom)
-
-bgd_90 <- bgd_gadm_2 %>% 
-  filter(str_detect(name_2, "Rajshahi")) %>%
-  grab_polygon(90) %>%
-  dplyr::select(poly_geom) %>%
-  mutate(rowid = "4448154") %>%
-  dplyr::select(rowid, poly_geom)
-
-shp <- rbind(bgd_6, bgd_90)
-
-rm(bgd_6, bgd_90, bgd_gadm_2, bgd_gadm_3)
-
-shp
+dat_new %>% str
 
 ```
-
-Flag our two fictional poly occurrence as poly = TRUE and create a data frames of polygon occurrences only and point occurrences only. 
+Let's make sure weights within each occurrence add up to 1. 
 
 ```{r}
 
-dat <- hits %>% 
-  mutate(poly = ifelse(rowid == "4435529" | rowid == "4448154", TRUE, FALSE)) 
+dat_new %>% group_by(id) %>% summarise(total_weight = sum(wt)) %>% arrange(total_weight)
 
-dat_poly <- dat %>% filter(poly)
-
-dat_pt <- dat %>% filter(!poly)
+dat_new %>% group_by(id) %>% summarise(total_weight = sum(wt)) %>% arrange(desc(total_weight))
 
 ```
 
+They do not. Using the code below we can fix them manually but again we are not currently using them, so this section is a dead end. 
 
-bgd_90$poly_geom
+```{r}
+
+dat_fixed_wts <- dat_new %>% mutate(wt = ifelse(id == "BGD_140" | id == "BGD_19", wt/2, wt))
+
+dat_fixed_wts %>% group_by(id) %>% summarise(total_weight = sum(wt)) %>%
+  arrange(desc(total_weight))
+
+```
+
+It's time to merge our hits data, dat_new, and our background samples.
+
+```{r}
+
+combined <- dat_new %>% 
+  mutate(spillover = TRUE, fic_cov = runif(nrow(dat_new), 5, 15)) %>% 
+  bind_rows(bg) %>%
+  mutate(spillover = as.factor(spillover))
+
+```
+
+Here we create out bespoke bootstraps, which differ from normal bootstraps in that different pixels are chosen within the occurrences coded to polygons. 
+
+Right now we are taking 50 bootstraps. Pigott et al did 500.
+
+```{r}
+
+# this function takes a single sample, using one set of coordinates per occurrence ID
+one_per_occ <- function(data) {
+  sample <- data %>% group_by(id) %>% slice_sample(n = 1) %>% ungroup()
+  return(sample)
+}
+
+n_model = 50
+all_boots <- NULL
+
+# for each bootstrap we start with a fresh geographic sample
+for (i in 1:n_model) {
+  one_split <- bootstraps(one_per_occ(combined), times = 1, simplify = TRUE)
+  all_boots <- rbind(all_boots, one_split)
+}
+
+```
+Let's see if we can use this split object to fit a model.
+
+The recipe is unchanged by our resampling approach.
+
+```{r}
+
+tree_rec <- recipe(spillover ~ fic_cov, data = combined) %>%
+  themis::step_downsample(spillover)
+  #update_role(id, new_role= "ID") 
+  #step_string2factor(is_bangladesh) %>%
+  #themis::step_downsample(is_spillover_fixed)
+
+```
+
+Same thing for the bagged tree specification and workflow.
+
+Previously we had called bag_tree() in the specification but since we are now doing our own bootstrap aggregation, I don't think that is appropriate? 
+
+Instead, I've used a simpler decision_tree below. It's possible we should be tuning this model. 
+
+For reference, this is the old specification:
+
+bag_spec <- bag_tree(min_n = 10) %>%
+  set_engine("rpart", times = 1) %>%
+  set_mode("classification")
+
+```{r}
+
+bag_spec <- decision_tree(min_n = 10) %>%
+  set_engine("rpart") %>%
+  set_mode("classification")
+
+bag_wf <- workflow() %>%
+  add_recipe(tree_rec) %>%
+  add_model(bag_spec)
+
+bag_wf
+
+```
+Fit model to bootstrap resamples generated above
+
+```{r}
+
+bag_res <- fit_resamples(
+  bag_wf,
+  all_boots,
+  control = control_resamples(save_pred = TRUE)
+)
+
+bag_res %>% collect_metrics()
+
+bag_res %>%
+  collect_predictions() %>%
+  roc_curve(spillover, .pred_FALSE) %>%
+  ggplot(aes(1 - specificity, sensitivity)) +
+  geom_abline(lty = 2, color = "gray80", size = 1.5) +
+  geom_path(show.legend = FALSE, alpha = 0.6, size = 1.2) +
+  coord_equal()
+
+```
+
 
 

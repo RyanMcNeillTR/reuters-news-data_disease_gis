@@ -1,0 +1,143 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+For now, we are going to create our shapefile dataframe 'shp' by associating the first two Bangladesh hits in the database to the shapefiles for Baliadangi and Rajshashi. THIS IS COMPLETE FICTION, FOR THE PURPOSES OF CODE DEVELOPMENT.
+
+Note the structure of the shapefile dataframe here: first column rowid, second is poly_geom.
+
+```{r}
+
+setwd("C:/Users/0146156/Documents/mb_checks/reuters-news-data_disease_gis")
+
+grab_polygon <-function(geom, id) {
+  geom %>% dplyr::select(poly_geom = geom) %>% 
+           mutate(point_geom = st_centroid(poly_geom),
+                  precision = "centroid",
+                  reuters_id = id,
+                  country_iso = "BGD")
+}
+
+bgd_gadm_2 <- st_read("./input_data/Bangladesh/gadm/gadm36_BGD_gpkg/gadm36_BGD.gpkg",
+                      layer = "gadm36_BGD_2") %>%
+              janitor::clean_names()
+
+bgd_gadm_3 <- st_read("./input_data/Bangladesh/gadm/gadm36_BGD_gpkg/gadm36_BGD.gpkg",
+                      layer = "gadm36_BGD_3") %>%
+              janitor::clean_names()
+
+bgd_6 <- bgd_gadm_3 %>%
+  filter(str_detect(name_3, "Baliadangi")) %>%
+  grab_polygon(6) %>%
+  dplyr::select(poly_geom) %>%
+  mutate(rowid = "4435529") %>%
+  dplyr::select(rowid, poly_geom)
+
+bgd_90 <- bgd_gadm_2 %>% 
+  filter(str_detect(name_2, "Rajshahi")) %>%
+  grab_polygon(90) %>%
+  dplyr::select(poly_geom) %>%
+  mutate(rowid = "4448154") %>%
+  dplyr::select(rowid, poly_geom)
+
+shp_old <- rbind(bgd_6, bgd_90)
+
+rm(bgd_6, bgd_90, bgd_gadm_2, bgd_gadm_3)
+
+shp_old
+
+```
+
+Flag our two fictional poly occurrence as poly = TRUE and create a data frames of polygon occurrences only and point occurrences only. 
+
+```{r}
+
+dat <- hits %>% 
+  mutate(poly = ifelse(rowid == "4435529" | rowid == "4448154", TRUE, FALSE)) 
+
+dat_poly <- dat %>% filter(poly) 
+dat_pt <- dat %>% filter(!poly)
+
+dat_pt
+
+```
+
+
+This first time through we will do it with no buffer and see how many pixels are covered.
+
+```{r}
+
+shp <- st_sf(dat_poly$poly_geom, crs = 4326)
+
+pt_list <- lapply(1:nrow(shp),
+
+  function(i, shp, template) {
+    poly <- shp[i, ] #  grab one polygon
+    
+    # rasterize the polygon and get coordinates
+    tmp <- rasterize(poly, template)
+    pts <- xyFromCell(tmp, which(!is.na(getValues(tmp))))
+    
+    return (pts)
+    
+  },
+
+  shp, template)
+
+pixel_count <- lengths(pt_list)/2
+
+area <- st_area(shp)
+
+stats_no_buffer <- cbind(dat_poly$id, pixel_count, area) %>% as_tibble() %>%
+  rename(id = V1) %>%
+  mutate(pixels = as.integer(pixel_count), sq_km = as.numeric(area)/1000) %>%
+  select(-pixel_count, -area) %>%
+  arrange(desc(sq_km))
+  
+write.csv(stats_no_buffer, "stats_no_buffer.csv")
+
+```
+
+
+
+Let's start by looking at what boostraps() normally generates by taking five bootstraps of our occurrence set.
+
+The command below generates a 5 x 2 tibble.
+
+$ splits is a list of 5 
+  First list, which is itself a list of 4 items
+    1. $ data: A data frame of 9859 observations of our 10 variables
+    2. $ in_id: An integer from 1 to 9859
+    3. $ out_id: logical vector, all NA
+    4. $ id: a 1 x 1 tibble that ocntains the word "Bootstrap1"
+  Second list, same structure as first
+  ....
+$ id is a character vector with the words "Bootstrap1", "Bootstrap2" etc.
+
+```{r}
+
+generic_bootstrap <- bootstraps(dat_new, times = 5)
+
+generic_bootstrap %>% str
+
+```
+
+How does a single run of our home grown bootstrap compare? 
+
+It looks to be of identical structure.
+
+
+```{r}
+
+# this function samples one set of coordinates per occurrence ID 
+one_per_occ <- function(data) {
+  sample <- data %>% group_by(id) %>% slice_sample(n = 1) %>% ungroup()
+  return(sample)
+}
+
+one_split <- bootstraps(one_per_occ(dat_new), times = 1, simplify = TRUE)
+
+one_split %>% str
+
+```
