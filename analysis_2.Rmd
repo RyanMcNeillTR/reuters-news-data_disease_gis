@@ -88,19 +88,16 @@ bg <- tmp %>% as_tibble() %>%
 
 Use lapply to loop over each row in shp, our dataframe of polygons, and create lists of coordinates associated with the polygons.
 
+This first time through we will do it with no buffer and see how many pixels are covered.
+
 ```{r}
 
-shp <- st_sf(dat_poly$poly_geom)
+shp <- st_sf(dat_poly$poly_geom, crs = 4326)
 
 pt_list <- lapply(1:nrow(shp),
 
   function(i, shp, template) {
     poly <- shp[i, ] #  grab one polygon
-    
-    # buffer to cover the center of at least one pixel - we may not need this
-    #d <- sqrt(2 * 2500 ^ 2) + 1
-    #d <- d * 10 ^ -5 # rough conversion to decimal degrees
-    #poly <- gBuffer(poly, width = d)
     
     # rasterize the polygon and get coordinates
     tmp <- rasterize(poly, template)
@@ -112,10 +109,59 @@ pt_list <- lapply(1:nrow(shp),
 
   shp, template)
 
-```
-Loop through our polygon shapefile shp and create a new dataframe where each coordinate has its own row and other variables are duplicated, for sampling purposes later.
+pixel_count <- lengths(pt_list)/2
 
-*** This will work once dat_new has lat/long values as well (and migh tneed to fix names etc)
+area <- st_area(shp)
+
+stats_no_buffer <- cbind(dat_poly$id, pixel_count, area) %>% as_tibble() %>%
+  rename(id = V1) %>%
+  mutate(pixels = as.integer(pixel_count), sq_km = as.numeric(area)/1000) %>%
+  select(-pixel_count, -area) %>%
+  arrange(desc(sq_km))
+  
+write.csv(stats_no_buffer, "stats_no_buffer.csv")
+
+```
+
+Loop through to build the point list again, but this time with buffers, and assess resulting pixel overlap and area. 
+
+```{r}
+
+shp <- st_sf(dat_poly$poly_geom, crs = 4326)
+
+pt_list <- lapply(1:nrow(shp),
+
+  function(i, shp, template) {
+    poly <- shp[i, ] #  grab one polygon
+    
+    # buffer the polygon so it covers at least one pixel 
+    poly <- poly %>% st_transform(8857) %>% 
+      st_buffer(3535) %>% 
+      st_transform(4326)
+    
+    # rasterize the polygon and get coordinates
+    tmp <- rasterize(poly, template)
+    pts <- xyFromCell(tmp, which(!is.na(getValues(tmp))))
+    
+    return (pts)
+    
+  },
+
+  shp, template)
+
+pixel_count <- lengths(pt_list)/2
+
+stats_buffer <- cbind(dat_poly$id, pixel_count, area) %>% as_tibble() %>%
+  rename(id = V1) %>%
+  mutate(pixels = as.integer(pixel_count), sq_km = as.numeric(area)/1000) %>%
+  select(-pixel_count, -area) %>%
+  arrange(desc(sq_km))
+  
+write.csv(stats_buffer, "stats_buffer.csv")
+
+```
+
+Loop through our polygon shapefile shp and create a new dataframe where each coordinate has its own row and other variables are duplicated, for sampling purposes later.
 
 ```{r}
 
@@ -126,37 +172,37 @@ dat_new <- dat_pt %>%
   st_drop_geometry() %>% 
   mutate(wt = 1)
 
+# to run the loop below, we need a simpler version of polygon occurrences
+polys_simple <- dat_poly %>% st_drop_geometry() %>% 
+  select(-point_geom, -X, -Y)
 
-# loop through polygon dataframe again
-for(i in 1:nrow(shp)) {
-  
+# loop through polygons again
+for(i in 1:nrow(polys_simple)) {
+
   # pull the rowid, points associated with this occurrence and point count 
-  id <- shp$id[i]
-  
+  id <- polys_simple$id[i]
   pts <- pt_list[[i]]
-  
   n <- nrow(pts)
   
-  # return a warning if no points were found 
-  #if (n == 0) {
-  #  warning(paste("Polygon for occurrence ", rowid, "returned zero coordinates!" )
-  #  break
-  #}
-  
   # pull other data and repeat it to match each point 
-  info <- dat_poly[i, ]
+  info <- polys_simple[i, ]
   info_repeat <- info[rep(1:nrow(info), each = n), ]
   
   # add weights
   info_repeat$wt <- 1/n
   
   # add coordinates
-  final <- cbind(info_repeat, pts)
+  final <- cbind(info_repeat, pts) %>%
+    rename(X = x, Y = y) %>%
+    select(precision:poly, X, Y, wt)
   
   dat_new <- rbind(dat_new, final)
   
 }
 
+dat_new %>% str
+
 ```
+
 
 
