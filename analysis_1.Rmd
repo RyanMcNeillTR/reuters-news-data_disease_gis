@@ -391,6 +391,9 @@ linear_rs <- fit_resamples(linear_wf, resamples = val_set,
 
 collect_metrics(linear_rs)
 
+
+
+
 ```
 
 

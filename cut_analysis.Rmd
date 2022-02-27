@@ -76,7 +76,7 @@ pt_list <- lapply(1:nrow(shp),
     poly <- shp[i, ] #  grab one polygon
     
     # rasterize the polygon and get coordinates
-    tmp <- rasterize(poly, template)
+    tmp <- raster::rasterize(poly, template)
     pts <- xyFromCell(tmp, which(!is.na(getValues(tmp))))
     
     return (pts)
@@ -117,7 +117,7 @@ $ id is a character vector with the words "Bootstrap1", "Bootstrap2" etc.
 
 ```{r}
 
-generic_bootstrap <- bootstraps(dat_new, times = 5)
+generic_bootstrap <- bootstraps(dat_new, times = 2)
 
 generic_bootstrap %>% str
 
@@ -139,5 +139,218 @@ one_per_occ <- function(data) {
 one_split <- bootstraps(one_per_occ(dat_new), times = 1, simplify = TRUE)
 
 one_split %>% str
+
+```
+
+generic_bootstrap$splits[[1]]$data
+
+
+This code maintains the class and runs but produces no metrics or predictions after the first split.
+
+
+```{r}
+
+# this function takes a single sample, using one set of coordinates per occurrence ID
+one_per_occ <- function(data) {
+  sample <- data %>% group_by(id) %>% slice_sample(n = 1) %>% ungroup()
+  return(sample)
+}
+
+n_model = 2
+all_boots_old <- NULL
+
+# for each bootstrap we start with a fresh geographic sample
+for (i in 1:n_model) {
+  one_split <- bootstraps(one_per_occ(combined), times = 1, simplify = TRUE) %>%
+    mutate(id = paste("Bootstrap", i, sep = ""))
+  all_boots_old <- rbind(all_boots_old, one_split)
+}
+
+attributes(all_boots_old)
+
+#attributes(all_boots_old)$class <- c("bootstraps", "rset", "tbl_df", "tbl", "data.frame")
+attributes(all_boots_old)$times <- n_model
+#attributes(all_boots_old)$apparent = FALSE
+#attributes(all_boots_old)$strata = FALSE
+
+attributes(all_boots_old)
+
+bag_res <- fit_resamples(
+  bag_wf,
+  all_boots_old,
+  control = control_resamples(save_pred = TRUE)
+)
+
+```
+
+Iniitally this code would not run because the class is not maintained. Now that we have assigned the attributes manually we are getting a new error.
+
+
+```{r}
+
+# this function takes a single sample, using one set of coordinates per occurrence ID
+one_per_occ <- function(data) {
+  sample <- data %>% group_by(id) %>% slice_sample(n = 1) %>% ungroup()
+  return(sample)
+}
+
+n_model = 2
+rm(all_boots_new)
+all_boots_new <- NULL
+#rm(all_boots_new)
+
+# for each bootstrap we start with a fresh geographic sample
+for (i in 1:n_model) {
+  one_split <- bootstraps(one_per_occ(combined), times = 1, simplify = TRUE) %>%
+    mutate(id = paste("Bootstrap", str_pad(i, 2, pad = "0"), sep = ""))
+  all_boots_new <- rbind(all_boots_new, one_split)
+}
+
+attributes(all_boots_new)
+
+attributes(all_boots_new)$class <- c("bootstraps", "rset", "tbl_df", "tbl", "data.frame")
+attributes(all_boots_new)$times <- n_model
+attributes(all_boots_new)$apparent = FALSE
+attributes(all_boots_new)$strata = FALSE
+#attributes(all_boots_new)$fingerprint = "a9c7793bdc669d100b7a9d24a688a877"
+
+all_boots_new
+
+bag_res <- fit_resamples(
+  bag_wf,
+  all_boots_new,
+  control = control_resamples(save_pred = TRUE)
+)
+
+```
+
+Let's try breaking up the loop. 
+
+This runs, but once again the metrics and predictions are empty after the first run.
+
+I noticed that the 'times' attribute is wrong here and on someother split objects so fixed it here, to no avail. 
+
+```{r}
+
+all_boots_noloop <- NULL
+
+one_split <- bootstraps(one_per_occ(combined), times = 1, simplify = TRUE)
+
+second_split <- bootstraps(one_per_occ(combined), times = 1, simplify = TRUE) %>% 
+  mutate(id = "Bootstrap2")
+
+all_boots_noloop <- rbind(one_split, second_split)
+
+attributes(all_boots_noloop)$times <- 2
+
+bag_res <- fit_resamples(
+  bag_wf,
+  all_boots_noloop,
+  control = control_resamples(save_pred = TRUE)
+)
+
+```
+
+Let's try some new approaches. 
+
+```{r}
+
+
+# this function takes a single sample, using one set of coordinates per occurrence ID
+one_per_occ <- function(data) {
+  sample <- data %>% group_by(id) %>% slice_sample(n = 1) %>% ungroup()
+  return(sample)
+}
+
+n_model = 2
+all_boots_new <- NULL
+#rm(all_boots_new)
+
+# for each bootstrap we start with a fresh geographic sample
+for (i in 1:n_model) {
+  one_split <- bootstraps(one_per_occ(combined), times = 1, simplify = TRUE) %>%
+    mutate(id = paste("Bootstrap", str_pad(i, 2, pad = "0"), sep = ""))
+  all_boots_new <- rbind(all_boots_new, one_split)
+}
+
+attributes(all_boots_new)$class <- c("bootstraps", "rset", "tbl_df", "tbl", "data.frame")
+attributes(all_boots_new)$times <- n_model
+attributes(all_boots_new)$apparent = FALSE
+attributes(all_boots_new)$strata = FALSE
+#attributes(all_boots_new)$fingerprint = "a9c7793bdc669d100b7a9d24a688a877"
+
+all_boots_new
+
+bag_spec <- bag_tree(min_n = 10) %>%
+  set_engine("rpart", times = 1) %>%
+  set_mode("classification")
+
+bag_wf <- workflow() %>%
+  add_recipe(tree_rec) %>%
+  add_model(bag_spec)
+
+bag_res <- fit_resamples(
+  bag_wf,
+  all_boots_new
+  control = control_resamples(save_pred = TRUE)
+)
+
+```
+
+
+What do our results like if we use the garden variety bootstrap and the same sample of occurrence locations every time? 
+
+```{r}
+
+one_per_occ <- function(data) {
+  sample <- data %>% group_by(id) %>% slice_sample(n = 1) %>% ungroup()
+  return(sample)
+}
+
+n_model = 2
+
+generic_boots <- bootstraps(one_per_occ(combined), times = n_model, simplify = TRUE)
+
+bag_res_generic <- fit_resamples(
+  bag_wf,
+  generic_boots,
+  control = control_resamples(save_pred = TRUE)
+)
+
+
+
+```
+
+Here we modify the second $id variable stored within the first column of the split object itself. 
+THIS WORKS
+
+```{r}
+
+# this function takes a single sample, using one set of coordinates per occurrence ID
+one_per_occ <- function(data) {
+  sample <- data %>% group_by(id) %>% slice_sample(n = 1) %>% ungroup()
+  return(sample)
+}
+
+n_model = 2
+all_boots3 <- NULL
+
+set.seed(456)
+
+# for each bootstrap we start with a fresh geographic sample
+for (i in 1:n_model) {
+  one_split <- bootstraps(one_per_occ(combined), times = 1, simplify = TRUE) %>%
+    mutate(id = paste("Bootstrap", i, sep = ""))
+  one_split$splits[[1]]$id <- as.tibble(paste("Bootstrap", i, sep = "")) %>% rename(id = value)
+  all_boots3 <- rbind(all_boots3, one_split)
+}
+
+attributes(all_boots3)$times <- 2
+
+bag_res_fixed <- fit_resamples(
+  bag_wf,
+  all_boots3,
+  control = control_resamples(save_pred = TRUE)
+)
 
 ```
