@@ -828,13 +828,11 @@ Deka lists a case in April 2008 in Jessore, Bangladesh. They cite [this](https:/
 
 Other WHO documents do mention the location, though for example [this pamphlet](https://afrohun.org/wp-content/uploads/2021/01/WHO-Nipah-Fact-Sheet.pdf)
 
-Note Satkhire can also be transliterated as Satkhira. 
-
 * Coding to Jessore 
 
 ```{r}
 
-bgd_140 <- bgd_gadm_2 %>% 
+bgd_141 <- bgd_gadm_2 %>% 
   filter(str_detect(name_2, "Jessore")) %>%
   grab_polygon(140)
 

@@ -255,9 +255,9 @@ bag_spec <- bag_tree(min_n = 10) %>%
 
 ```{r}
 
-bag_spec <- decision_tree(min_n = 10) %>%
+bag_spec <- decision_tree(min_n = 2) %>%
   set_engine("rpart") %>%
-  set_mode("classification")
+  set_mode("classification") 
 
 bag_wf <- workflow() %>%
   add_recipe(tree_rec) %>%
@@ -276,6 +276,8 @@ bag_res <- fit_resamples(
   control = control_resamples(save_pred = TRUE)
 )
 
+
+
 bag_res %>% collect_metrics()
 
 bag_res %>%
@@ -287,6 +289,17 @@ bag_res %>%
   coord_equal()
 
 ```
+Let's look at predictions.
+
+```{r}
+
+assess_res <- collect_predictions(bag_res)
+
+assess_res %>% filter(.row == 2)
+
+
+```
+
 
 
 
