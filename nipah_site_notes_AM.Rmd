@@ -324,7 +324,7 @@ Bhaluka is an upazila within the Mymensingh district, but Bhaluka is also a vill
 
 bgd_24 <- bgd_gadm_3 %>%
   filter(str_detect(name_3, "Bhaluka")) %>%
-  grab_polygon(19)
+  grab_polygon(24)
 
 ```
 
