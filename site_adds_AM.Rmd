@@ -7,7 +7,7 @@ Set working directory for Allison's Windows laptop
 
 ```{r}
 
-setwd("C:/Users/0146156/Documents/mb_checks/reuters-news-data_disease_gis")
+#setwd("C:/Users/0146156/Documents/mb_checks/reuters-news-data_disease_gis")
 
 ```
 
@@ -58,9 +58,10 @@ st_layers("./input_data/India/Kerala")
 ind_taluks <- st_read("./input_data/India/Kerala", layer = "taluk") %>%
   rename(geom = geometry, oid = OID_, taluk = TALUK, state = STATE, district = DISTRICT)
 
-st_layers("C:/Users/0146156/Documents/mb_checks/stanford_level_3")
 
-phl_level_3 <- st_read("C:/Users/0146156/Documents/mb_checks/stanford_level_3")
+#st_layers("./input_data/Philippines/stanford_level_3/stanford_level_3/hn643zf7626.shp")
+
+phl_level_3 <- st_read("./input_data/Philippines/stanford_level_3/stanford_level_3/hn643zf7626.shp")
 
 ```
 
@@ -88,7 +89,8 @@ Viral sequence is listed as a primary case in a male patient in April 2018 Rahma
 ```{r}
 
 bgd_90 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Rajshahi")) %>%
-  grab_polygon(90)
+  grab_polygon(90) %>%
+  mutate(the_year = 2018)
 
 ```
 
@@ -101,7 +103,8 @@ Viral sequence is listed as a primary case in a 26 year old male patient in Febr
 ```{r}
 
 bgd_91 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Faridpur")) %>%
-  grab_polygon(91)
+  grab_polygon(91) %>%
+  mutate(the_year = 2018)
 
 ```
 
@@ -119,7 +122,8 @@ The small area atlas [here](http://203.112.218.65:8008/WebTestApplication/userfi
 
 bgd_92 <- bgd_gadm_4 %>% filter(str_detect(name_2, "Pabna")) %>%
   filter(str_detect(name_4, "Malanchi")) %>%
-  grab_polygon(92)
+  grab_polygon(92) %>%
+  mutate(the_year = 2017)
 
 ```
 #bgd_93
@@ -181,7 +185,8 @@ ProMED bulletin from April 12, 2007: "According to the hospital and Civil Surgeo
 
 bgd_97 <- bgd_gadm_3 %>% filter(str_detect(name_2, "Kushtia")) %>%
   filter(str_detect(name_3, "Sadar")) %>%
-  grab_polygon(97)
+  grab_polygon(97) %>%
+  mutate(the_year = 2001)
 
 ```
 
@@ -193,7 +198,8 @@ This adds a second location to the incident first described in bgd_41, see notes
 ```{r}
 
 bgd_98 <- bgd_gadm_3 %>% filter(str_detect(name_3, "Khetlal")) %>%
-  grab_polygon(98)
+  grab_polygon(98) %>%
+  mutate(the_year = 2012)
   
 ```
 
@@ -207,7 +213,8 @@ This adds a second location to the incident described in phl_22, see notes there
 phl_99 <- phl_level_3 %>% filter(str_detect(name_3, "Midtungok")) %>%
   rename(geom = geometry) %>%
   grab_polygon(99) %>% 
-  mutate(country_iso = "PHL")
+  mutate(country_iso = "PHL")%>%
+  mutate(the_year = 2014)
 
 ```
 
@@ -235,7 +242,8 @@ Tentulia is a Union in Manda, the upazilla named in Walsh, 2015.
 
 bgd_100 <- bgd_gadm_4 %>% filter(str_detect(name_3, "Manda")) %>%
   filter(str_detect(name_4, "Tentulia")) %>%
-  grab_polygon()
+  grab_polygon(100) %>%
+  mutate(the_year = 2013)
 
 ```
 
@@ -285,7 +293,8 @@ IECDR's list of 2013 cases lists a 7 year old male who died in Kurigram that yea
 
 bgd_106 <- bgd_gadm_3 %>% filter(str_detect(name_2, "Kurigram")) %>%
   filter(str_detect(name_3, "Phulbari")) %>%
-  grab_polygon(106)
+  grab_polygon(106) %>%
+  mutate(the_year = 2013)
 
 ```
 #bgd_107
@@ -299,7 +308,8 @@ IEDCR's list of 2013 cases includes a 9 year old male who died in Gaibandha that
 ```{r}
 
 bgd_107 <- bgd_gadm_3 %>% filter(str_detect(name_3, "Palashbari")) %>%
-  grab_polygon(107)
+  grab_polygon(107) %>%
+  mutate(the_year = 2013)
 
 ```
 
@@ -316,7 +326,8 @@ From BDNews24 via ProMED: "The new deaths were from Pabna and Rajshahi while one
 ```{r}
 
 bgd_108 <- bgd_gadm_3 %>% filter(str_detect(name_3, "Chatmohar")) %>%
-  grab_polygon(108)
+  grab_polygon(108) %>%
+  mutate(the_year = 2013)
 
 ```
 
@@ -331,7 +342,8 @@ IEDCR's list of 2013 cases includes a 48 year old male who died in Nilphamari th
 ```{r}
 
 bgd_109 <- bgd_gadm_3 %>% filter(str_detect(name_3, "Saidpur")) %>%
-  grab_polygon(109)
+  grab_polygon(109) %>%
+  mutate(the_year = 2013)
 
 ```
 
@@ -347,7 +359,8 @@ IEDCR's list of 2014 case counts by district identifies four in Rangpur.
 
 bgd_110 <- bgd_gadm_3 %>% filter(str_detect(name_2, "Rangpur")) %>%
 filter(str_detect(name_3, "Sadar")) %>%
-  grab_polygon(110)
+  grab_polygon(110) %>%
+  mutate(the_year = 2014)
 
 ```
 #bgd_111
@@ -361,7 +374,8 @@ IEDCR's list of 2014 case counts by district identifies five in Faridpur
 ```{r}
 
 bgd_111 <- bgd_gadm_3 %>% filter(str_detect(name_3, "Saltha")) %>%
-  grab_polygon(111)
+  grab_polygon(111) %>%
+  mutate(the_year = 2014)
 
 ```
 
@@ -379,11 +393,13 @@ From Dhaka Tribune, archived through the Wayback Machine: "Health specialists ha
 
 bgd_112 <- bgd_gadm_3 %>% 
   filter(str_detect(name_3, "Shibalaya")) %>%
-  grab_polygon(112)
+  grab_polygon(112) %>%
+  mutate(the_year = 2012)
 
 bgd_113 <- bgd_gadm_3 %>% 
   filter(str_detect(name_3, "Ghior")) %>%
-  grab_polygon(113)
+  grab_polygon(113) %>%
+  mutate(the_year = 2012)
 
 ```
 
@@ -399,7 +415,8 @@ IEDCR's list of 2014 case counts by district identifies five in Magura
 ```{r}
 
 bgd_114 <- bgd_gadm_3 %>% filter(str_detect(name_3, "Magura Sadar")) %>%
-  grab_polygon(114)
+  grab_polygon(114) %>%
+  mutate(the_year = 2014)
 
 ```
 #bgd_115 
@@ -413,7 +430,8 @@ GADM data transliterates as more standard Muksudpur, which data [here](https://m
 ```{r}
 
 bgd_115 <- bgd_gadm_3 %>% filter(str_detect(name_3, "Muksudpur")) %>%
-  grab_polygon(115)
+  grab_polygon(115) %>%
+  mutate(the_year = 2015)
 
 ```
 
@@ -426,7 +444,9 @@ Viral sequence is listed as a primary case in a 36 year old male in Rahman et al
 ```{r}
 
 bgd_116 <- bgd_gadm_3 %>% filter(str_detect(name_3, "Shib Char")) %>%
-  grab_polygon(116)
+  grab_polygon(116) %>%
+  mutate(the_year = 2015)
+  
 
 ```
 
@@ -440,7 +460,8 @@ Viral sequence is listed as a primary case in a 42 year old male in Rahman et al
 
 bgd_117 <- bgd_gadm_3 %>% filter(str_detect(name_2, "Rajshahi")) %>%
   filter(str_detect(name_3, "Bagha")) %>%
-  grab_polygon(117)
+  grab_polygon(117) %>%
+  mutate(the_year = 2015)
 
 ```
 
@@ -456,7 +477,8 @@ Mymensingh district appears on the IEDCR case list for 2013 [here](https://webca
 
 bgd_118 <- bgd_gadm_2 %>% 
   filter(str_detect(name_2, "Mymensingh")) %>%
-  grab_polygon(118)
+  grab_polygon(118) %>%
+  mutate(the_year = 2013)
 
 
 ```
@@ -473,7 +495,8 @@ In #bgd_109 we coded a 48 year old who appears in the 2013 list and was sequence
 
 bgd_119 <- bgd_gadm_2 %>% 
   filter(str_detect(name_2, "Nilphamari")) %>%
-  grab_polygon(119)
+  grab_polygon(119) %>%
+  mutate(the_year = 2013)
 
 ```
 
@@ -488,7 +511,8 @@ Coding this separately from bgd_32, a specific spillover involving an 8 year old
 ```{r}
 
 bgd_120 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Naogaon")) %>%
-  grab_polygon(120)
+  grab_polygon(120) %>%
+  mutate(the_year = 2013)
 
 ```
 
@@ -501,7 +525,8 @@ Rajbari district appears on the IEDCR case list for 2013 [here](https://webcache
 ```{r}
 
 bgd_121 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Rajbari")) %>%
-  grab_polygon(121)
+  grab_polygon(121) %>%
+  mutate(the_year = 2013)
 
 ```
 
@@ -515,7 +540,8 @@ Jhenaidah district appears on the IEDCR case list for 2013 [here](https://webcac
 
 bgd_122 <- bgd_gadm_2 %>% 
   filter(str_detect(name_2, "Jhenaidah")) %>%
-  grab_polygon(122)
+  grab_polygon(122) %>%
+  mutate(the_year = 2013)
 
 ```
 
@@ -529,7 +555,8 @@ Faridpur district appears on the IEDCR case list for Dec 2013 - February 27, 201
 
 bgd_123 <- bgd_gadm_2 %>% 
   filter(str_detect(name_2, "Faridpur")) %>%
-  grab_polygon(123)
+  grab_polygon(123) %>%
+  mutate(the_year = 2014)
 
 ```
 
@@ -543,7 +570,8 @@ Shariatpur district appears on the IEDCR case list for Dec 2013 - February 27, 2
 
 bgd_124 <- bgd_gadm_2 %>%
   filter(str_detect(name_2, "Shariatpur")) %>%
-  grab_polygon(124)
+  grab_polygon(124) %>%
+  mutate(the_year = 2014)
 
 ```
 
@@ -557,7 +585,8 @@ Kushtia district appears on the IEDCR case list for Dec 2013 - February 27, 2014
 
 bgd_125 <- bgd_gadm_2 %>%
   filter(str_detect(name_2, "Kushtia")) %>%
-  grab_polygon(125)
+  grab_polygon(125) %>%
+  mutate(the_year = 2014)
 
 ```
 
@@ -604,7 +633,8 @@ Dinajpur district appears on the IEDCR case list for Dec 2013 - February 27, 201
 
 bgd_128 <- bgd_gadm_2 %>% 
   filter(str_detect(name_2, "Dinajpur")) %>%
-  grab_polygon(128)
+  grab_polygon(128) %>%
+  mutate(the_year = 2014)
 
 ```
 #bgd_129
@@ -619,7 +649,8 @@ This district name does not appear in GADM, but based on the associated upazilla
 
 bgd_129 <- bgd_gadm_2 %>% 
   filter(str_detect(name_2, "Nawabganj")) %>%
-  grab_polygon(129)
+  grab_polygon(129) %>%
+  mutate(the_year = 2014)
 
 ```
 
@@ -633,7 +664,8 @@ Madaripur appears on the IEDCR case list for Dec 2013 - February 27, 2014, archi
 
 bgd_130 <- bgd_gadm_2 %>% 
   filter(str_detect(name_2, "Madaripur")) %>%
-  grab_polygon(130)
+  grab_polygon(130) %>%
+  mutate(the_year = 2014)
 
 ```
 
@@ -648,7 +680,8 @@ Dhaka Tribune describes cases
 ```{r}
 
 bgd_131 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Dhaka")) %>%
-  grab_polygon(131)
+  grab_polygon(131) %>%
+  mutate(the_year = 2014)
 
 ```
 
@@ -663,7 +696,8 @@ Confirmation from Dhaka Tribune: "“A medical board has confirmed her infection
 ```{r}
 
 bgd_132 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Gopalganj")) %>%
-  grab_polygon(132)
+  grab_polygon(132) %>%
+  mutate(the_year = 2020)
 
 ```
 
@@ -688,9 +722,10 @@ FluTrackers quotes another local media story taht is no longer online on Feb 24:
 Even with all that, it's not clear which upazilla the initial spillover was in, so coding to Dinajpur.
 
 ```{r}
-bgd_133 <- bgd_gdam_2 %>% 
+bgd_133 <- bgd_gadm_2 %>% 
   filter(str_detect(name_2, "Dinajpur")) %>%
-  grab_polygon(133)
+  grab_polygon(133) %>%
+  mutate(the_year = 2011)
 
 ```
 #bgd_134
@@ -712,7 +747,8 @@ Skipping detailed notes on villages with cases, but there is an upazilla mention
 ```{r}
 
 bgd_134 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Rangpur")) %>%
-  grab_polygon(134)
+  grab_polygon(134) %>%
+  mutate(the_year = 2011)
 
 ```
 #bgd_135
@@ -728,7 +764,8 @@ The spillover is described in [this paper](https://www.ncbi.nlm.nih.gov/pmc/arti
 ```{r}
 
 bgd_135 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Comilla")) %>%
-  grab_polygon(135)
+  grab_polygon(135) %>%
+  mutate(the_year = 2011)
 
 ```
 
@@ -748,7 +785,8 @@ Dhaka Mirror, via ProMED, reported on Jan 24, 2011: "The director of the Institu
 ```{r}
 
 bgd_136 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Rajbari")) %>%
-  grab_polygon(136)
+  grab_polygon(136) %>%
+  mutate(the_year = 2011)
 
 
 ```
@@ -765,7 +803,8 @@ Research [IEDCR], Mahmudur Rahman, on Sunday [23 Jan 2011] said that 5 people we
 ```{r}
 
 bgd_137 <- bgd_gadm_3 %>% filter(str_detect(name_3, "Bhanga")) %>%
-  grab_polygon(137)
+  grab_polygon(137) %>%
+  mutate(the_year = 2011)
 
 ```
 #bgd_138
@@ -782,7 +821,8 @@ Kushtia."
 
 bgd_138 <- bgd_gadm_2 %>% 
   filter(str_detect(name_2, "Nilphamari")) %>%
-  grab_polygon(138)
+  grab_polygon(138) %>%
+  mutate(the_year = 2011)
   
 
 ```
@@ -796,7 +836,8 @@ IEDCR's list of outbreak investigations for 2008 lists a "suspected nipah cases"
 
 bgd_139 <- bgd_gadm_3 %>% 
   filter(str_detect(name_3, "Boalmari")) %>%
-  grab_polygon(139)
+  grab_polygon(139) %>%
+  mutate(the_year = 2008)
 
 
 ```
@@ -815,7 +856,8 @@ Note Satkhire can also be transliterated as Satkhira.
 
 bgd_140 <- bgd_gadm_2 %>% 
   filter(str_detect(name_2, "Satkhira")) %>%
-  grab_polygon(140)
+  grab_polygon(140)%>%
+  mutate(the_year = 2008)
 
 ```
 
@@ -831,8 +873,54 @@ Note Satkhire can also be transliterated as Satkhira.
 
 ```{r}
 
-bgd_140 <- bgd_gadm_2 %>% 
+bgd_141 <- bgd_gadm_2 %>% 
   filter(str_detect(name_2, "Jessore")) %>%
-  grab_polygon(140)
+  grab_polygon(140) %>%
+  mutate(the_year = 2008)
 
+```
+
+
+# Final assembly
+
+```{r}
+allison_site_adds <- bind_rows(bgd_90, bgd_91, bgd_92, bgd_97, bgd_98, phl_99, bgd_100, bgd_106, bgd_107, bgd_108, bgd_109, bgd_110, bgd_111, bgd_112, bgd_113, bgd_114, bgd_115, bgd_116, bgd_117, bgd_118, bgd_119, bgd_120, bgd_121, bgd_122, bgd_123, bgd_124, bgd_125, bgd_128, bgd_129, bgd_130, bgd_131, bgd_132, bgd_133, bgd_134, bgd_135, bgd_136, bgd_137, bgd_138, bgd_139, bgd_140, bgd_141) %>%
+  mutate(id = str_c(country_iso, "_", reuters_id)) %>%
+  select(!reuters_id:country_iso) %>%
+  mutate(family = "Paramyxoviridae",
+         genus = "Henipavirus",
+         species = "Nipah henipavirus")
+```
+
+Clean up after ourselves.
+
+```{r}
+rm(bgd_90, bgd_91, bgd_92, bgd_97, bgd_98, phl_99, bgd_100, bgd_106, bgd_107, bgd_108, bgd_109, bgd_110, bgd_111, bgd_112, bgd_113, bgd_114, bgd_115, bgd_116, bgd_117, bgd_118, bgd_119, bgd_120, bgd_121, bgd_122, bgd_123, bgd_124, bgd_125, bgd_128, bgd_129, bgd_130, bgd_131, bgd_132, bgd_133, bgd_134, bgd_135, bgd_136, bgd_137, bgd_138, bgd_139, bgd_140, bgd_141)
+```
+
+```{r}
+rm(bgd_gadm_2, bgd_gadm_3, bgd_gadm_4, ind_gadm_3, ind_taluks, phl_level_3)
+```
+
+Write it to disk. 
+
+```{r}
+write_rds(allison_site_adds, "./spatial_outputs/allison_site_adds.rds")
+```
+
+
+
+
+
+
+```{r}
+st_geometry(allison_site_adds) <- "point_geom"
+```
+
+```{r}
+allison_site_adds %>%
+  select(!poly_geom) %>%
+  mutate(id = str_c(country_iso, "_", reuters_id)) %>%
+  select(!reuters_id:country_iso) %>%
+  st_write("./spatial_outputs/site_adds_allison.gpkg", append=FALSE)
 ```

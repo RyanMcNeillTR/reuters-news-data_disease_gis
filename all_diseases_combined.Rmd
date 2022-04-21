@@ -6,16 +6,20 @@ output: html_notebook
 
 
 ```{r}
-ebola <- st_read("./spatial_outputs/ebola.gpkg")
-marburg <- st_read("./spatial_outputs/marburg.gpkg")
-other <- st_read("./spatial_outputs/other_spillovers.gpkg")
-nipah_ryan_unfinished <- st_read("./spatial_outputs/ryan_nipah_unfinished.gpkg")
-```
-```{r}
-all_combined <- bind_rows(ebola, marburg, other, nipah_ryan_unfinished)
+ebola <- read_rds("./spatial_outputs/ebola_spatial.rds")
+marburg <- read_rds("./spatial_outputs/marburg_spatial.rds")
+other <- read_rds("./spatial_outputs/other_spatial.rds")
+nipah_ryan_unfinished <- read_rds("./spatial_outputs/ryan_nipah_unfinished.rds")
+nipah_allison <- read_rds("./spatial_outputs/nipah_am_spatial.rds") %>%
+  select(precision, id, the_year, genus, family, species, poly_geom, point_geom)
+site_adds_allison <- read_rds("./spatial_outputs/allison_site_adds.rds")
 ```
 
 ```{r}
-st_write(all_combined, "./spatial_outputs/all_combined.gpkg", append = FALSE)
+all_combined <- bind_rows(ebola, marburg, other, nipah_ryan_unfinished, nipah_allison, site_adds_allison)
+```
+
+```{r}
+write_rds(all_combined, "./spatial_outputs/all_combined.rds")
 ```
 

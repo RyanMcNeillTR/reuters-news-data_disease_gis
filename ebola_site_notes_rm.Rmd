@@ -356,10 +356,10 @@ No geographical information on index case. GE search term 'Luwero District, Ugan
 
 ```{r}
 uga_39 <- mylne_polys %>%
-  select(uniq_id, geometry) %>%
+  select(uniq_id, poly_geom = geometry) %>%
   filter(uniq_id == 214) %>%
-  select(geometry) %>%
-  mutate(point_geom = st_centroid(geometry)) %>%
+  select(poly_geom) %>%
+  mutate(point_geom = st_centroid(poly_geom)) %>%
   mutate(precision = "exact",
          id = "uga_39",
          the_year = 2012)
@@ -608,23 +608,39 @@ awaiting results on cod_12
 
 ```{r}
 ebola_spatial <- bind_rows(gab_86, gab_85, gab_82, gab_78, cog_84, cog_83, cog_80, cog_79, cog_75, cog_74, cog_67, ssd_69, uga_58, uga_43, uga_39, uga_38, cod_57, cod_52, cod_37, cod_10, cod_9, cod_4, gin_23) %>%
-  st_drop_geometry() 
+  mutate(genus = "Ebolavirus",
+         family = "Filoviridae")
+```
+
+Clean things up. 
+
+```{r}
+rm(gab_86, gab_85, gab_82, gab_78, cog_84, cog_83, cog_80, cog_79, cog_75, cog_74, cog_67, ssd_69, uga_58, uga_43, uga_39, uga_38, cod_57, cod_52, cod_37, cod_10, cod_9, cod_4, gin_23)
+```
+
+```{r}
+rm(drc_admin_3, drc_health_areas, drc_health_zones, gadm36_GAB_2, mylne_points, mylne_polys)
+```
+
+Write to disk. 
+
+```{r}
+write_rds(ebola_spatial, "./spatial_outputs/ebola_spatial.rds")
 ```
 
 
+So, for the purposes of joining to our covariates and using the points, you can run these lines. 
+
+
 ```{r}
-st_geometry(ebola_spatial) <- "point_geom"
+ebola_for_points <- ebola_spatial %>%
+  st_drop_geometry() # drop the polygon geom
+
+st_geometry(ebola_for_points) <- "point_geom" # tell SF to treat this field as the active geometry field
 ```
 
 ```{r}
-ebola_spatial <- ebola_spatial %>%
-  select(!geometry)
-```
-
-
-
-```{r}
-st_write(ebola_spatial, "./spatial_outputs/ebola.gpkg", append=FALSE)
+st_write(ebola_for_points, "./spatial_outputs/ebola_for_points.gpkg", append=FALSE)
 ```
 
 
