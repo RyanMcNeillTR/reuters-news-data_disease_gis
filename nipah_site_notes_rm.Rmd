@@ -75,7 +75,10 @@ ind_88 <- india_gadm_3 %>%
   mutate(point_geom = st_centroid(poly_geom),
          precision = "centroid") %>%
   mutate(id = "ind_88",
-         the_year = 2001)
+         the_year = 2001) %>%
+  mutate(family = "Paramyxoviridae",
+         genus = "Henipavirus",
+         species = "Nipah henipavirus")
 ```
 
 
@@ -98,7 +101,10 @@ ind_63 <- tribble(
   select(point_geom = geometry) %>%
   mutate(precision = "precise",
          id = "ind_63",
-         the_year = 2007)
+         the_year = 2007) %>%
+  mutate(family = "Paramyxoviridae",
+         genus = "Henipavirus",
+         species = "Nipah henipavirus")
 ```
 
 
@@ -177,7 +183,10 @@ bgd_87 <- bgd_gadm_4 %>%
   mutate(point_geom = st_centroid(poly_geom),
          precision = "centroid") %>%
   mutate(the_year = 2001, 
-         id = "bgd_87")
+         id = "bgd_87") %>%
+  mutate(family = "Paramyxoviridae",
+         genus = "Henipavirus",
+         species = "Nipah henipavirus")
 ```
 
 
@@ -239,7 +248,10 @@ bgd_76 <- bgd_gadm_4 %>%
   mutate(point_geom = st_centroid(poly_geom),
          precision = "centroid") %>%
   mutate(the_year = 2003,
-         id = "bgd_76")
+         id = "bgd_76") %>%
+  mutate(family = "Paramyxoviridae",
+         genus = "Henipavirus",
+         species = "Nipah henipavirus")
 ```
 
 
@@ -273,7 +285,10 @@ bgd_73 <- bgd_gadm_4 %>%
   mutate(point_geom = st_centroid(poly_geom),
          precision = "centroid") %>%
   mutate(the_year = 2004,
-         id = "bgd_73")
+         id = "bgd_73") %>%
+  mutate(family = "Paramyxoviridae",
+         genus = "Henipavirus",
+         species = "Nipah henipavirus")
 ```
 
 
@@ -296,7 +311,10 @@ bgd_72 <- bgd_gadm_4 %>%
   select(name_3) %>%
   group_by(name_3) %>%
   summarise(geom = st_union(geom)) %>%
-  select(poly_geom = geom) 
+  select(poly_geom = geom) %>%
+  mutate(family = "Paramyxoviridae",
+         genus = "Henipavirus",
+         species = "Nipah henipavirus")
 ```
 
 We should try to nail down the location of Kazipara village.
@@ -315,7 +333,11 @@ bgd_72 <- bgd_gadm_4 %>%
   mutate(point_geom = st_centroid(poly_geom),
          precision = "centroid") %>%
     mutate(the_year = 2004,
-         id = "bgd_72")
+         id = "bgd_72") %>%
+    mutate(family = "Paramyxoviridae",
+         genus = "Henipavirus",
+         species = "Nipah henipavirus")
+
   
 ```
 
@@ -344,7 +366,10 @@ bgd_68 <- bgd_gadm_4 %>%
   mutate(point_geom = st_centroid(poly_geom),
          precision = "centroid") %>%
   mutate(the_year = 2005,
-         id = "bgd_68")
+         id = "bgd_68") %>%
+    mutate(family = "Paramyxoviridae",
+         genus = "Henipavirus",
+         species = "Nipah henipavirus")
 ```
 
 
@@ -385,7 +410,10 @@ bgd_61 <- bgd_gadm_4 %>%
   mutate(point_geom = st_centroid(poly_geom),
          precision = "centroid") %>%
   mutate(the_year = 2007,
-         id = "bgd_61")
+         id = "bgd_61") %>%
+    mutate(family = "Paramyxoviridae",
+         genus = "Henipavirus",
+         species = "Nipah henipavirus")
 ```
 
 
@@ -415,7 +443,10 @@ bgd_56 <- bgd_gadm_4 %>%
   mutate(point_geom = st_centroid(poly_geom),
          precision = "centroid") %>%
     mutate(the_year = 2008,
-         id = "bgd_56")
+         id = "bgd_56") %>%
+    mutate(family = "Paramyxoviridae",
+         genus = "Henipavirus",
+         species = "Nipah henipavirus")
   
 ```
 
@@ -449,7 +480,10 @@ bgd_55 <- bgd_gadm_4 %>%
   mutate(point_geom = st_centroid(poly_geom),
          precision = "centroid") %>%
     mutate(the_year = 2008,
-         id = "bgd_55")
+         id = "bgd_55") %>%
+    mutate(family = "Paramyxoviridae",
+         genus = "Henipavirus",
+         species = "Nipah henipavirus")
 ```
 
 
@@ -473,7 +507,10 @@ bgd_50 <- bgd_gadm_4 %>%
   mutate(point_geom = st_centroid(poly_geom),
          precision = "centroid") %>%
   mutate(the_year = 2009,
-         id = "bgd_50")
+         id = "bgd_50") %>%
+    mutate(family = "Paramyxoviridae",
+         genus = "Henipavirus",
+         species = "Nipah henipavirus")
   
 ```
 
@@ -543,7 +580,10 @@ bgd_45 <- tribble(
   st_as_sf(coords=c("longitude", "latitude"), crs=4326) %>%
   select(point_geom = geometry) %>%
   mutate(the_year = 2010,
-         id = "bgd_45")
+         id = "bgd_45") %>%
+    mutate(family = "Paramyxoviridae",
+         genus = "Henipavirus",
+         species = "Nipah henipavirus")
 ```
 
 
@@ -608,9 +648,28 @@ bgd_44 <- bgd_gadm_4 %>%
 # Assembly 
 
 ```{r}
-ryan_nipah_unfinished <- bind_rows(ind_88, ind_63, bgd_87, bgd_76, bgd_73, bgd_72, bgd_68, bgd_61, bgd_56, bgd_55, bgd_50, bgd_45) %>%
-  st_drop_geometry() 
+ryan_nipah_unfinished <- bind_rows(ind_88, ind_63, bgd_87, bgd_76, bgd_73, bgd_72, bgd_68, bgd_61, bgd_56, bgd_55, bgd_50, bgd_45)  
 ```
+
+Clean up after ourselves.
+
+```{r}
+rm(ind_88, ind_63, bgd_87, bgd_76, bgd_73, bgd_72, bgd_68, bgd_61, bgd_56, bgd_55, bgd_50, bgd_45)
+```
+
+```{r}
+rm(bgd_45_point, bgd_76_point, bgd_87_point, bgd_gadm_4, india_gadm_3)
+```
+
+Save it to disk.
+
+```{r}
+write_rds(ryan_nipah_unfinished, "./spatial_outputs/ryan_nipah_unfinished.rds")
+```
+
+
+
+
 
 ```{r}
 st_geometry(ryan_nipah_unfinished) <- "point_geom"

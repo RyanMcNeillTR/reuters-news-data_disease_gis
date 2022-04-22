@@ -66,7 +66,10 @@ chn_13 <- china_admin_3 %>%
   mutate(point_geom = st_centroid(poly_geom),
          precision = "centroid",
          id = "chn_13",
-         the_year = 2017)
+         the_year = 2017,
+         family = "Rhabdoviridae",
+         genus = "Lyssavirus",
+         species = "Irkut lyssavirus")
 ```
 
 ### chn_77
@@ -86,7 +89,10 @@ chn_77 <- china_admin_3 %>%
   mutate(point_geom = st_centroid(poly_geom),
          precision = "centroid",
          id = "chn_77",
-         the_year = 2002)
+         the_year = 2002,
+         family = "Coronaviridae",
+         genus = "Betacoronavirus",
+         species = "Severe acute respiratory syndrome–related coronavirus")
   
 ```
 
@@ -122,7 +128,10 @@ mys_46 <- tribble(
   select(point_geom = geometry) %>%
   mutate(precision = "manual village siting") %>%
   mutate(id = "mys_46",
-         the_year = 2010)
+         the_year = 2010,
+         family = "Reoviridae",
+         genus = "Orthoreovirus",
+         species = "Nelson Bay orthoreovirus")
 ```
 
 
@@ -139,7 +148,7 @@ come back to this, asked Deb for
 ## Australia 
 
 ```{r}
-oz_lga <- st_read("./input_data/Australia/LGA_2021_AUST_GDA2020_SHP/LGA_2021_AUST_GDA2020.shp")
+#oz_lga <- st_read("./input_data/Australia/LGA_2021_AUST_GDA2020_SHP/LGA_2021_AUST_GDA2020.shp")
 oz_localities <- st_read("./input_data/Australia/SAL_2021_AUST_GDA2020_SHP/SAL_2021_AUST_GDA2020.SHP")
 ```
 
@@ -169,7 +178,10 @@ aus_48 <- oz_localities %>%
   mutate(point_geom = st_centroid(poly_geom),
          precision = "centroid",
          id = "aus_48",
-         the_year = 2009)
+         the_year = 2009,
+         family = "Paramyxoviridae",
+         genus = "Henipavirus",
+         species = "Hendra henipavirus")
 ```
 
 
@@ -206,7 +218,10 @@ aus_54 <- tribble(
   select(point_geom = geometry) %>%
   mutate(precision = "manual siting") %>%
   mutate(id = "aus_54",
-         the_year = 2008)
+         the_year = 2008,
+         family = "Paramyxoviridae",
+         genus = "Henipavirus",
+         species = "Hendra henipavirus")
 ```
 
 
@@ -235,7 +250,10 @@ aus_71 <- oz_localities %>%
   mutate(point_geom = st_centroid(poly_geom),
          precision = "centroid",
          id = "aus_71",
-         the_year = 2004)
+         the_year = 2004,
+         family = "Paramyxoviridae",
+         genus = "Henipavirus",
+         species = "Hendra henipavirus")
 ```
 
 
@@ -243,8 +261,28 @@ aus_71 <- oz_localities %>%
 # assemble it
 
 ```{r}
-other_combined <- bind_rows(chn_13, chn_77, mys_46, aus_48, aus_54, aus_71)
+other_spatial <- bind_rows(chn_13, chn_77, mys_46, aus_48, aus_54, aus_71)
 ```
+
+Clean up after ourselves.
+
+```{r}
+rm(chn_13, chn_77, mys_46, aus_48, aus_54, aus_71)
+```
+
+
+```{r}
+rm(china_admin_3, malaysia_level_3, oz_localities)
+```
+
+
+Write it to disk.
+
+```{r}
+write_rds(other_spatial, "./spatial_outputs/other_spatial.rds")
+```
+
+
 
 
 ```{r}

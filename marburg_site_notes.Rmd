@@ -233,8 +233,29 @@ ago_70 <- uige_province %>%
 Let's combine the individual records. 
 
 ```{r}
-marburg_points <- bind_rows(ago_70, uga_x6, uga_21, uga_40, uga_53, uga_59, uga_60)
+marburg_spatial <- bind_rows(ago_70, uga_x6, uga_21, uga_40, uga_53, uga_59, uga_60) %>%
+  mutate(genus = "Marburgvirus",
+         family = "Filoviridae")
 ```
+
+Clean up after myself. 
+
+```{r}
+rm(ago_70, uga_x6, uga_21, uga_40, uga_53, uga_59, uga_60)
+```
+
+```{r}
+rm(angola_gadm, hits, nyakarahuka, nyakarahuka_marburg, uga_gadm_4, uganda_active_mining, uige_province)
+```
+
+
+Write it to disk. 
+
+```{r}
+write_rds(marburg_spatial, "./spatial_outputs/marburg_spatial.rds")
+```
+
+
 
 This command effectively tells R which geometry column is the operative one.
 

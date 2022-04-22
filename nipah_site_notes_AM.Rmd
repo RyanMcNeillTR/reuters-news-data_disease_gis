@@ -17,7 +17,7 @@ Set working directory for Allison's Windows laptop
 
 ```{r}
 
-setwd("C:/Users/0146156/Documents/mb_checks/reuters-news-data_disease_gis")
+#setwd("C:/Users/0146156/Documents/mb_checks/reuters-news-data_disease_gis")
 
 ```
 
@@ -56,9 +56,9 @@ st_layers("./input_data/India/Kerala")
 ind_taluks <- st_read("./input_data/India/Kerala", layer = "taluk") %>%
   rename(geom = geometry, oid = OID_, taluk = TALUK, state = STATE, district = DISTRICT)
 
-st_layers("./input_data/Philippines/stanford_level_3")
+#st_layers("./input_data/Philippines/stanford_level_3/stanford_level_3/hn643zf7626.shp")
 
-phl_level_3 <- st_read("C:/Users/0146156/Documents/mb_checks/stanford_level_3")
+phl_level_3 <- st_read("./input_data/Philippines/stanford_level_3/stanford_level_3/hn643zf7626.shp")
 
 
 
@@ -95,6 +95,14 @@ ind_2 <- data.frame(poly_geom = NA,
                     reuters_id = 2,
                     country_iso = "IND")
 
+# ryan replacement code
+ind_2 <- temp_point %>%
+  rename(point_geom = geometry) %>%
+  mutate(precision = "point",
+         reuters_id = 2,
+         country_iso = "IND") %>%
+  mutate(the_year = 2021)
+
 ```
 
 #ind_7
@@ -113,6 +121,14 @@ ind_7 <- data.frame(poly_geom = NA,
                     precision = "point",
                     reuters_id = 7,
                     country_iso = "IND")
+
+# ryan replacement
+ind_7 <- temp_point %>%
+  rename(point_geom = geometry) %>%
+  mutate(precision = "point",
+         reuters_id = 7,
+         country_iso = "IND") %>%
+  mutate(the_year = 2019)
 
 ```
 #ind_11
@@ -142,18 +158,26 @@ house <- tribble(~latitude, ~longitude, 11.59878, 75.78154) %>%
   st_as_sf(coords = c("longitude", "latitude"), crs = 4326)
 
 # map taluk and hospital location to make sure hospital is within the taluk
-ggplot(world) +
-  geom_sf() +
-  geom_sf(data = ind_11$poly_geom, aes(color = "blue")) +
-  geom_sf(data = hospital, aes(color = "red")) + 
-  coord_sf(xlim = c(74, 80),
-           ylim = c(11, 13))
+#ggplot(world) +
+#  geom_sf() +
+#  geom_sf(data = ind_11$poly_geom, aes(color = "blue")) +
+#  geom_sf(data = hospital, aes(color = "red")) + 
+#  coord_sf(xlim = c(74, 80),
+#           ylim = c(11, 13))
 
 # Calculate distance between the hospital and the centroid of this taluk
 st_distance(house, ind_11$point_geom)
 
 # replacing centroid with more precise point
 ind_11 <- ind_11 %>% mutate(point_geom = house, precision = "home")
+
+# temporary ryan code
+ind_11 <- house %>%
+  rename(point_geom=geometry) %>%
+  mutate(precision = "home",
+         reuters_id = 11,
+         country_iso = "IND") %>%
+  mutate(the_year = 2018)
 
 ```
 # PHILIPPINES
@@ -175,7 +199,8 @@ It is not completely established that this was Nipah and not Hendra but there se
 phl_22 <- phl_level_3 %>% filter(str_detect(name_3, "Tinalon")) %>%
   rename(geom = geometry) %>%
   grab_polygon(22) %>% 
-  mutate(country_iso = "PHL")
+  mutate(country_iso = "PHL") %>%
+  mutate(the_year = 2014)
 
 ```
 
@@ -221,7 +246,8 @@ Mention in this local press report of Baliadangi Upazila Health Complex, in rela
 
 bgd_6 <- bgd_gadm_3 %>%
   filter(str_detect(name_3, "Baliadangi")) %>%
-  grab_polygon(6)
+  grab_polygon(6) %>%
+  mutate(the_year = 2019)
 
 ```
 
@@ -249,27 +275,33 @@ Also from New Nation, detail on the spillover: "ACCORDING to data provided by th
 
 bgd_14 <- bgd_gadm_2 %>% 
   filter(str_detect(name_2, "Faridpur")) %>%
-  grab_polygon(14)
+  grab_polygon(14) %>%
+  mutate(the_year = 2015)
 
 bgd_15 <- bgd_gadm_2 %>% 
   filter(str_detect(name_2, "Rajbari")) %>%
-  grab_polygon(15)
+  grab_polygon(15) %>%
+  mutate(the_year = 2015)
   
 bgd_17 <- bgd_gadm_3 %>%
   filter(str_detect(name_3, "Manda")) %>%
-  grab_polygon(17)
+  grab_polygon(17) %>%
+  mutate(the_year = 2015)
 
 bgd_16 <- bgd_gadm_2 %>% 
   filter(str_detect(name_2, "Magura")) %>%
-  grab_polygon(16)
+  grab_polygon(16) %>%
+  mutate(the_year = 2015)
 
 bgd_18 <- bgd_gadm_2 %>% 
   filter(str_detect(name_2, "Nilphamari")) %>%
-  grab_polygon(18)
+  grab_polygon(18) %>%
+  mutate(the_year = 2015)
 
 bgd_19 <- bgd_gadm_2 %>%
   filter(str_detect(name_2, "Panchagarh")) %>%
-  grab_polygon(19)
+  grab_polygon(19) %>%
+  mutate(the_year = 2015)
 
 
 ```
@@ -324,8 +356,8 @@ Bhaluka is an upazila within the Mymensingh district, but Bhaluka is also a vill
 
 bgd_24 <- bgd_gadm_3 %>%
   filter(str_detect(name_3, "Bhaluka")) %>%
-  grab_polygon(24)
-
+  grab_polygon(24) %>%
+  mutate(the_year = 2013)
 ```
 
 #bgd_25
@@ -365,7 +397,8 @@ Hafeznagara is not in Google Maps or the [Manikganj small area atlas](http://203
 ```{r}
 
 bgd_27 <- bgd_gadm_3 %>% filter(str_detect(name_3, "Shibalaya")) %>%
-  grab_polygon(27)
+  grab_polygon(27) %>%
+  mutate(the_year = 2013)
 
 ```
 
@@ -388,7 +421,8 @@ IEDCR bulletin for 2013 says a 5 year old girl died in Kushtia that year, see [h
 ```{r}
 
 bgd_29 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Kushtia")) %>%
-  grab_polygon(29)
+  grab_polygon(29) %>%
+  mutate(the_year = 2013)
 
 ```
 
@@ -410,7 +444,8 @@ The small area atlas lists a "Ghoshgati" in Gangarampur Union of Shalikha upazil
 
 bgd_30 <- bgd_gadm_4 %>% filter(str_detect(name_2, "Magura")) %>%
   filter(str_detect(name_4, "Gangarampur")) %>%
-  grab_polygon(30)
+  grab_polygon(30) %>%
+  mutate(the_year = 2013)
 
 ```
 #bgd_31
@@ -442,7 +477,8 @@ Viral sequence is listed as a primary case in a 8 year old male in Rahman et al 
 ```{r}
 
 bgd_32 <- bgd_gadm_3 %>% filter(str_detect(name_3, "Badalgachhi")) %>%
-  grab_polygon(32)
+  grab_polygon(32) %>%
+  mutate(the_year = 2013)
 
 ```
 
@@ -461,7 +497,8 @@ Similar from bdnews24.com [here](https://bdnews24.com/business/2013/01/25/nipah-
 ```{r}
 
 bgd_33 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Natore")) %>%
-  grab_polygon(33)
+  grab_polygon(33) %>%
+  mutate(the_year = 2013)
 
 ```
 
@@ -481,7 +518,8 @@ Later story makes clear that the 8 month old is the one from Natore, see [here](
 ```{r}
 
 bgd_34 <- bgd_gadm_2 %>% filter(str_detect(name_2, "Rajshahi")) %>%
-  grab_polygon(34)
+  grab_polygon(34) %>%
+  mutate(the_year = 2013)
 
 ```
 
@@ -527,7 +565,54 @@ Rahman et al 2021 (IECDR/CDC/EcoHealth paper on genetic diversity) includes sequ
 
 ```{r}
 
-bgd_41 <- bgd_gadm_4 %>% filter(str_detect(name_4, "Joypurhat")) %>%
-  grab_polygon(41)
+#bgd_41 <- bgd_gadm_4 %>% filter(str_detect(name_4, "Joypurhat")) %>%
+#  grab_polygon(41) %>%
+#  mutate(the_year = 2012)
 
 ```
+
+
+
+# Final assembly
+
+```{r}
+nipah_am_spatial <- bind_rows(ind_11, bgd_14, bgd_15, bgd_16, bgd_17, bgd_18, bgd_19, bgd_24, bgd_27, bgd_29, bgd_30, bgd_32, bgd_33, bgd_34, bgd_6, ind_2, ind_7, phl_22) %>%
+  mutate(id = str_c(country_iso, "_", reuters_id)) %>%
+  select(!reuters_id:country_iso) %>%
+    mutate(family = "Paramyxoviridae",
+         genus = "Henipavirus",
+         species = "Nipah henipavirus") 
+```
+
+
+```{r}
+rm(bgd_14, bgd_15, bgd_16, bgd_17, bgd_18, bgd_19, bgd_24, bgd_27, bgd_29, bgd_30, bgd_32, bgd_33, bgd_34, bgd_6, ind_2, ind_7, phl_22, ind_11)
+```
+
+```{r}
+rm(bgd_gadm_2, bgd_gadm_3, bgd_gadm_4, house, ind_gadm_3, ind_taluks, phl_level_3, temp_point, world)
+```
+
+Write to disk. 
+
+```{r}
+write_rds(nipah_am_spatial, "./spatial_outputs/nipah_am_spatial.rds")
+```
+
+
+
+
+
+
+```{r}
+st_geometry(nipah_allison) <- "point_geom"
+```
+
+```{r}
+nipah_allison %>%
+  select(!poly_geom) %>%
+  mutate(id = str_c(country_iso, "_", reuters_id)) %>%
+  select(!reuters_id:country_iso) %>%
+  st_write("./spatial_outputs/nipah_allison.gpkg")
+```
+
